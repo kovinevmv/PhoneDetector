@@ -44,14 +44,14 @@ class OverlayActivity : Activity() {
     }
 
     private fun setSpamSettings(){
-        overlay_user_image.setImageResource(R.mipmap.ic_spam_round)
+        overlay_user_image.setImageResource(R.drawable.ic_spam)
         overlay_button_action.text = resources.getString(R.string.button_block_number)
 
         // TODO Add button listener
     }
 
     private fun setNotSpamSettings(){
-        overlay_user_image.setImageResource(R.mipmap.ic_empty_user)
+        overlay_user_image.setImageResource(R.drawable.ic_empty_user)
         overlay_button_action.text = resources.getString(R.string.button_add_contact)
 
         // TODO Add button listener

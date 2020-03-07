@@ -21,7 +21,7 @@ internal class DataAdapter(context: Context, private val phones: Array<PhoneInfo
 
     override fun onBindViewHolder(holder: DataAdapter.ViewHolder, position: Int) {
         val phone = phones[position]
-        holder.imageView.setImageResource(R.mipmap.ic_spam)
+        holder.imageView.setImageResource(R.drawable.ic_empty_user)
         holder.nameView.text = phone.name
         holder.numberView.text = phone.number
         holder.checkBox.isChecked = phone.isSpam
