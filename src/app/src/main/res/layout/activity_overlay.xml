@@ -13,7 +13,7 @@
 
         <ImageView
             android:id="@+id/overlay_user_image"
-            app:srcCompat="@mipmap/ic_empty_user"
+            app:srcCompat="@drawable/ic_empty_user"
 
             android:layout_width="@dimen/overlay_icon_size"
             android:layout_height="@dimen/overlay_icon_size"
