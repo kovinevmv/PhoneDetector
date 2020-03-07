@@ -7,42 +7,55 @@
     tools:context=".OverlayActivity">
 
     <LinearLayout
+        android:id="@+id/overlay_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/overlay_margin_size"
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/overlay_user_image"
-            app:srcCompat="@drawable/ic_empty_user"
-
             android:layout_width="@dimen/overlay_icon_size"
-            android:layout_height="@dimen/overlay_icon_size"
-            android:layout_margin="@dimen/overlay_margin_size"
-            android:layout_gravity="center_vertical"
 
+            android:layout_height="@dimen/overlay_icon_size"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/overlay_margin_size"
             app:layout_constraintEnd_toEndOf="parent"
+
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_empty_user" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/overlay_text_view_number"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="+78005553535"
                 android:textAlignment="center"
-                android:textStyle="bold"
-                android:text="+78005553535"/>
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/overlay_text_view_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Быстрые займы кредит"/>
+                android:text="Быстрые займы кредит"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/overlay_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tags\nTags\nTags\nTags"
+                android:textAllCaps="false" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,14 +64,14 @@
 
                 <Button
                     android:id="@+id/overlay_button_action"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Action" />
 
                 <Button
                     android:id="@+id/overlay_button_exit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:text="OK" />
             </LinearLayout>
