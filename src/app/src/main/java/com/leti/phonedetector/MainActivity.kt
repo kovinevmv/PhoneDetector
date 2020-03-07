@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     // Sample of input data
     // TODO get this from sqlite
     val phones = arrayOf(PhoneInfo("Max", "+79992295999", false),
-                         PhoneInfo("Sber", "+79992295998", true),
+                         PhoneInfo("Сбербанк", "+79992295998", true, tags = arrayOf("Sberbank", "Постоянные звонки", "Мошенники")),
                          PhoneInfo("Pizza", "+79992295997", false),
                          PhoneInfo("Citron", "+79992295996", false))
 
