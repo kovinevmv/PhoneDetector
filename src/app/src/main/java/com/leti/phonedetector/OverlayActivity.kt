@@ -2,6 +2,7 @@ package com.leti.phonedetector
 
 import android.app.Activity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_overlay.*
 
 class OverlayActivity : Activity() {
@@ -18,6 +19,7 @@ class OverlayActivity : Activity() {
 
         overlay_text_view_number.text = user.number
         overlay_text_view_name.text = user.name
+        overlay_tags.text = user.tags.take(5).joinToString(separator = "\n")
 
         when(user.isSpam){
             true -> setSpamSettings()
