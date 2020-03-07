@@ -34,10 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         createSharedPref()
         createRecycleView()
-
-        // Samples TODO remove it later
-        createSpamOverlay()
-        createNotSpamOverlay()
     }
 
     private fun createRecycleView(){
@@ -49,18 +45,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.itemAnimator = DefaultItemAnimator()
-    }
-
-    private fun createSpamOverlay(){
-        val mIntent = Intent(this, OverlayActivity::class.java)
-        mIntent.putExtra("user", phones[1])
-        this.startActivity(mIntent)
-    }
-
-    private fun createNotSpamOverlay(){
-        val mIntent = Intent(this, OverlayActivity::class.java)
-        mIntent.putExtra("user", phones[0])
-        this.startActivity(mIntent)
     }
 
     @SuppressLint("CommitPrefEdits")
