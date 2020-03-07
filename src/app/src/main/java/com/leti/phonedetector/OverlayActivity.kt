@@ -14,28 +14,12 @@ class OverlayActivity : Activity() {
     }
 
     private fun createUserByIntentExtra(){
-        val extras = intent.extras
+        val user = intent.getParcelableExtra<PhoneInfo>("user") ?: return
 
-        var number: String? = ""
-        var name: String? = resources.getString(R.string.info_user_not_found)
-        var isSpam = false
+        overlay_text_view_number.text = user.number
+        overlay_text_view_name.text = user.name
 
-        if (extras != null){
-            if (extras.containsKey("number")) {
-                number = intent.getStringExtra("number")
-            }
-            if (extras.containsKey("name")) {
-                name = intent.getStringExtra("name")
-            }
-            if (extras.containsKey("is_spam")){
-                isSpam = intent.getBooleanExtra("is_spam", false)
-            }
-        }
-
-        overlay_text_view_number.text = number
-        overlay_text_view_name.text = name
-
-        when(isSpam){
+        when(user.isSpam){
             true -> setSpamSettings()
             false -> setNotSpamSettings()
         }

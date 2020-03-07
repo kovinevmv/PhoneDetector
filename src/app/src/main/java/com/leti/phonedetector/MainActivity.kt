@@ -53,19 +53,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun createSpamOverlay(){
         val mIntent = Intent(this, OverlayActivity::class.java)
-        mIntent.putExtra("number", phones[1].number)
-        mIntent.putExtra("name", phones[1].name)
-        mIntent.putExtra("is_spam", phones[1].isSpam)
-
+        mIntent.putExtra("user", phones[1])
         this.startActivity(mIntent)
     }
 
     private fun createNotSpamOverlay(){
         val mIntent = Intent(this, OverlayActivity::class.java)
-        mIntent.putExtra("number", phones[0].number)
-        mIntent.putExtra("name", phones[0].name)
-        mIntent.putExtra("is_spam", phones[0].isSpam)
-
+        mIntent.putExtra("user", phones[0])
         this.startActivity(mIntent)
     }
 
