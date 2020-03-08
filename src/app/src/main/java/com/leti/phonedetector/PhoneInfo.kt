@@ -10,7 +10,7 @@ class PhoneInfo(val name: String = "Undefined user",
                 val isSpam: Boolean = false,
                 val tags: Array<String> = emptyArray(),
                 val time: String = "23:59",
-                val date: String = "01/01/1970",
+                val date: String = "01.01.1970",
                 val image: String = "empty") : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
