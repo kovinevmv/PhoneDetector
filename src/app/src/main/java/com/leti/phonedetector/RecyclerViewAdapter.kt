@@ -32,6 +32,8 @@ internal class DataAdapter(val context: Context, private val phones: Array<Phone
         }
         holder.nameView.text = phone.name
         holder.numberView.text = phone.number
+        holder.timeView.text = phone.time
+        holder.dateView.text = phone.date
 
         holder.initClick(phone)
     }
@@ -46,6 +48,8 @@ internal class DataAdapter(val context: Context, private val phones: Array<Phone
         internal val numberView: TextView = view.findViewById(R.id.log_element_text_number) as TextView
         internal val checkBox: CheckBox = view.findViewById(R.id.checkbox_) as CheckBox
         private val logLayout : LinearLayout = view.findViewById(R.id.log_layout) as LinearLayout
+        internal val timeView : TextView = view.findViewById(R.id.log_element_text_time) as TextView
+        internal val dateView : TextView = view.findViewById(R.id.log_element_text_date) as TextView
 
         fun initClick(phone : PhoneInfo){
             logLayout.setOnClickListener{
