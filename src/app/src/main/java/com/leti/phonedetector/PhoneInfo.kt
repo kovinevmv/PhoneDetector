@@ -134,5 +134,4 @@ class PhoneLogInfo(val name: String = "Undefined user",
             return arrayOfNulls(size)
         }
     }
-
 }

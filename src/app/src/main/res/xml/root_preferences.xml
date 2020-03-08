@@ -1,0 +1,44 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/messages_header">
+
+        <SwitchPreferenceCompat
+            app:key="activate_phone_detection_switch"
+            app:defaultValue="Off"
+            app:summary="@string/activate_phone_detection_description"
+            app:title="@string/activate_phone_detection" />
+
+        <SwitchPreferenceCompat
+            app:key="disable_search_in_contacts_switch"
+            app:defaultValue="Off"
+            app:summary="@string/search_in_contacts_description"
+            app:title="@string/search_in_contacts" />
+
+        <SeekBarPreference
+            android:defaultValue="5"
+            android:key="detection_delay_seekbar"
+            android:max="40"
+            android:title="@string/detection_delay"
+            app:showSeekBarValue="true"
+            app:summary="@string/detection_delay_description" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/notification_header">
+
+        <SwitchPreferenceCompat
+            app:key="notification_switch"
+            app:summary="@string/create_notification_description"
+            app:title="@string/create_notification" />
+
+        <SeekBarPreference
+            app:showSeekBarValue="true"
+            app:dependency="notification_switch"
+            android:defaultValue="1"
+            android:max="30"
+            android:key="time_notification"
+            app:summary="@string/time_notification_description"
+            android:title="@string/time_notification"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

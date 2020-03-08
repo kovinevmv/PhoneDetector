@@ -2,11 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.leti.phonedetector.MainActivity">
+
+    <item
+        android:id="@+id/action_search"
+        android:title="@android:string/search_go"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
     <group android:checkableBehavior="all">
         <item
             android:id="@+id/item_menu_option_is_show_spam"
-            android:title="@string/menu_option_is_show_spam"
             android:checkable="true"
+            android:title="@string/menu_option_is_show_spam"
             app:showAsAction="never" />
         <item
             android:id="@+id/item_menu_option_is_not_show_spam"

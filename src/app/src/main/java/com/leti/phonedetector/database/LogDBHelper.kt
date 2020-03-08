@@ -11,7 +11,7 @@ import android.util.Log
 import com.leti.phonedetector.PhoneInfo
 import com.leti.phonedetector.PhoneLogInfo
 
-class PhoneLogDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     val LOG_TAG = "PHONEDETECTOR_VERBOSE"
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -89,7 +89,7 @@ class PhoneLogDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         return true
     }
 
-    private fun findTagsByPhoneNumber(number : String) : Array<String>{
+    private fun findTagsByPhoneNumber(number : String) : ArrayList<String>{
         Log.d(LOG_TAG, "Call findTagsByPhone with param phone:$number")
 
         val db = readableDatabase
@@ -114,15 +114,15 @@ class PhoneLogDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             Log.d(LOG_TAG, "Error in findTagsByPhone: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
-            return emptyArray()
+            return tags
         }
 
         db.close()
-        return tags.toTypedArray()
+        return tags
     }
 
     @SuppressLint("Recycle")
-    fun findPhoneByNumber(number: String): PhoneInfo {
+    fun findPhoneByNumber(number: String): PhoneInfo? {
         // TODO SQL Injection
         Log.d(LOG_TAG, "Call findPhoneByNumber with param number:$number")
 
@@ -142,7 +142,7 @@ class PhoneLogDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     val image = cursor.getString(cursor.getColumnIndex(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_IMAGE))
 
                     val tags = this.findTagsByPhoneNumber(number)
-                    users.add(PhoneInfo(name, number, isSpam != 0, tags, image))
+                    users.add(PhoneInfo(name, number, isSpam != 0, tags.toTypedArray(), image))
                     cursor.moveToNext()
                 }
             }
@@ -151,21 +151,24 @@ class PhoneLogDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             Log.d(LOG_TAG, "Error in findPhoneByNumber: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
-            return PhoneInfo()
+            return null
         }
 
         db.close()
-        return if (users.size > 0) users[0] else PhoneInfo()
+        return if (users.size > 0) users[0] else null
     }
 
-    fun readPhoneLog(): Array<PhoneLogInfo> {
+    fun readPhoneLog(): ArrayList<PhoneLogInfo> {
         Log.d(LOG_TAG, "Call readPhoneLog")
 
         val phones = ArrayList<PhoneLogInfo>()
         val db = writableDatabase
 
         try {
-            val cursor = db.rawQuery("SELECT * FROM ${DBContract.PhoneLogEntry.TABLE_NAME}", null)
+
+            // TODO fix sort
+            val cursor = db.rawQuery("SELECT * FROM ${DBContract.PhoneLogEntry.TABLE_NAME} " +
+                    "ORDER BY ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} DESC", null)
 
             if (cursor!!.moveToFirst()) {
                 while (!cursor.isAfterLast) {
@@ -173,9 +176,11 @@ class PhoneLogDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     val time = cursor.getString(cursor.getColumnIndex(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME))
                     val date = cursor.getString(cursor.getColumnIndex(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE))
 
-                    val phoneInfo : PhoneInfo = this.findPhoneByNumber(number)
+                    val phoneInfo : PhoneInfo? = this.findPhoneByNumber(number)
+                    if (phoneInfo != null)
+                        phones.add(PhoneLogInfo(phoneInfo, time, date))
 
-                    phones.add(PhoneLogInfo(phoneInfo, time, date))
+
                     cursor.moveToNext()
                 }
             }
@@ -184,14 +189,14 @@ class PhoneLogDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             Log.d(LOG_TAG, "Error in readPhoneLog: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
-            return emptyArray()
+            return phones
         }
 
         db.close()
-        return phones.toTypedArray()
+        return phones
     }
 
-    fun findPhonesByQuery(query : String) : Array<PhoneLogInfo>{
+    fun findPhonesByQuery(query : String) : ArrayList<PhoneLogInfo>{
         // TODO SQL Injection
         Log.d(LOG_TAG, "Call findPhonesByQuety with param query:$query")
 
@@ -216,7 +221,7 @@ class PhoneLogDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     val date = cursor.getString(cursor.getColumnIndex(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE))
 
                     val tags = this.findTagsByPhoneNumber(number)
-                    phones.add(PhoneLogInfo(PhoneInfo(name, number, isSpam != 0, tags, image), time, date))
+                    phones.add(PhoneLogInfo(PhoneInfo(name, number, isSpam != 0, tags.toTypedArray(), image), time, date))
                     cursor.moveToNext()
                 }
             }
@@ -225,11 +230,11 @@ class PhoneLogDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             Log.d(LOG_TAG, "Error in findPhoneByNumber: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
-            return emptyArray()
+            return phones
         }
 
         db.close()
-        return phones.toTypedArray()
+        return phones
     }
 
     companion object {

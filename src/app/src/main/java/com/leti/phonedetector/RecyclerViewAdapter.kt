@@ -1,9 +1,9 @@
 package com.leti.phonedetector
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.text.Layout
+import android.content.SharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +14,18 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
-internal class DataAdapter(val context: Context, private val phones: Array<PhoneLogInfo>) :
+internal class DataAdapter(val context: Context, private var phones: ArrayList<PhoneLogInfo>) :
+
     RecyclerView.Adapter<DataAdapter.ViewHolder>() {
 
+    val APP_PREFERENCES = "PHONEDETECTOR_PREFERENCES"
+    private var sharedPreferences: SharedPreferences
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+
+    init{
+        sharedPreferences = context.getSharedPreferences(APP_PREFERENCES, AppCompatActivity.MODE_PRIVATE)
+        this.update(phones)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = inflater.inflate(R.layout.element_log, parent, false)
@@ -42,6 +50,25 @@ internal class DataAdapter(val context: Context, private val phones: Array<Phone
         return phones.size
     }
 
+    fun update(data : ArrayList<PhoneLogInfo>) {
+        phones = data
+        phones = filterShow()
+        this.notifyDataSetChanged()
+    }
+
+    private fun filterShow( ) : ArrayList<PhoneLogInfo>{
+        val showSpam : Boolean = sharedPreferences.getBoolean("is_show_spam", true)
+        val showNotSpam: Boolean = sharedPreferences.getBoolean("is_show_not_spam", true)
+
+        return when {
+            showSpam && !showNotSpam -> ArrayList(phones.filter { it.isSpam })
+            !showSpam && showNotSpam -> ArrayList(phones.filter { !it.isSpam })
+            showSpam && showNotSpam -> phones
+            !showSpam && !showNotSpam -> ArrayList()
+            else -> phones
+        }
+    }
+
     inner class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
         internal val imageView: ImageView = view.findViewById(R.id.log_element_user_image) as ImageView
         internal val nameView: TextView = view.findViewById(R.id.log_element_text_name) as TextView
@@ -58,7 +85,7 @@ internal class DataAdapter(val context: Context, private val phones: Array<Phone
                 this@DataAdapter.context.startActivity(mIntent)
             }
             logLayout.setOnLongClickListener{
-                checkBox.isChecked = !checkBox.isChecked
+                //checkBox.isChecked = !checkBox.isChecked
                 return@setOnLongClickListener true
             }
         }

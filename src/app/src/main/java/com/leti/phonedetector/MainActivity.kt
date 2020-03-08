@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity() {
 
     private val APP_PREFERENCES = "PHONEDETECTOR_PREFERENCES"
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor : SharedPreferences.Editor
+    private lateinit var adapter : DataAdapter
+
     private val db = PhoneLogDBHelper(this)
 
     // Sample of input data
@@ -49,7 +52,8 @@ class MainActivity : AppCompatActivity() {
          * Create RecycleView with list of phone call activity of user
          */
         val recyclerView = findViewById<View>(R.id.list_of_phones) as RecyclerView
-        val adapter = DataAdapter(this, db.readPhoneLog())
+        adapter = DataAdapter(this, db.readPhoneLog())
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.itemAnimator = DefaultItemAnimator()
@@ -62,6 +66,8 @@ class MainActivity : AppCompatActivity() {
          * Options: is_show_spam, is_show_not_spam
          */
         sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -74,6 +80,31 @@ class MainActivity : AppCompatActivity() {
 
         menu.findItem(R.id.item_menu_option_is_show_spam).isChecked = sharedPreferences.getBoolean("is_show_spam", true)
         menu.findItem(R.id.item_menu_option_is_not_show_spam).isChecked = sharedPreferences.getBoolean("is_show_not_spam", true)
+
+        val mSearch = menu.findItem(R.id.action_search)
+        val mSearchView = mSearch.actionView as SearchView
+        mSearchView.queryHint = "Search"
+        mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                editor.putBoolean("is_use_query", true)
+                editor.putString("last_query", newText)
+                editor.apply()
+
+                adapter.update(db.findPhonesByQuery(newText))
+                return true
+            }
+        })
+        mSearchView.setOnCloseListener{
+            editor.putBoolean("is_use_query", false)
+            editor.apply()
+
+            adapter.update(db.readPhoneLog())
+            return@setOnCloseListener false
+        }
 
         return true
     }
@@ -98,9 +129,12 @@ class MainActivity : AppCompatActivity() {
          * @param item element 'Show Spam'
          */
         updateMenuOptionState(item, "is_show_spam", !item.isChecked)
-
-        // TODO Set filters here
-        Toast.makeText(this, "Clicked on Show Spam. State: ${item.isChecked}", Toast.LENGTH_LONG).show()
+        if (sharedPreferences.getBoolean("is_use_query", false)){
+            adapter.update(db.findPhonesByQuery(sharedPreferences.getString("last_query", "*").toString()))
+        }
+        else {
+            adapter.update(db.readPhoneLog())
+        }
     }
 
     private fun clickedOnShowNotSpam(item : MenuItem){
@@ -109,18 +143,21 @@ class MainActivity : AppCompatActivity() {
          * @param item element 'Show Spam'
          */
         updateMenuOptionState(item, "is_show_not_spam", !item.isChecked)
-
-        // TODO Set filters here
-        Toast.makeText(this, "Clicked on Show Not Spam. State: ${item.isChecked}", Toast.LENGTH_LONG).show()
+        if (sharedPreferences.getBoolean("is_use_query", false)){
+            adapter.update(db.findPhonesByQuery(sharedPreferences.getString("last_query", "*").toString()))
+        }
+        else {
+            adapter.update(db.readPhoneLog())
+        }
     }
+
 
     private fun clickedOnSetting(){
         /**
          * Redirect on Settings Activity
          */
-
-        // TODO Create intent of Settings activity and start it
-        Toast.makeText(this, "Clicked on Settings", Toast.LENGTH_LONG).show()
+        val mIntent = Intent(this, SettingsActivity::class.java)
+        startActivity(mIntent)
     }
 
     private fun updateMenuOptionState(item : MenuItem, key : String, state : Boolean){
@@ -130,10 +167,10 @@ class MainActivity : AppCompatActivity() {
          * @param key key in Shared Pref map. Example: 'is_show_not_spam'
          * @param state: boolean, clicked or not
          */
-        val editor = sharedPreferences.edit()
         editor.putBoolean(key, state)
         editor.apply()
 
         item.isChecked = state
     }
+
 }

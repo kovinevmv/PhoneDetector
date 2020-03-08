@@ -6,5 +6,20 @@
     <string name="info_user_not_found">Undefined User</string>
     <string name="button_block_number">Block number</string>
     <string name="button_add_contact">Add contact</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="messages_header">Main Activity</string>
+    <string name="activate_phone_detection">Enable phone detection</string>
+    <string name="activate_phone_detection_description">Read Call Log permission required for app work</string>
+
+    <string name="search_in_contacts">Disable search in contacts</string>
+    <string name="search_in_contacts_description">Don\'t show overlay of known contact. Read Contacts permission required for app work</string>
+    <string name="detection_delay">Detection delay</string>
+    <string name="detection_delay_description">Set maximum recognition timeout for incoming call (in seconds)</string>
+    <string name="notification_header">Notification Activity</string>
+    <string name="create_notification_description">Send notification after setted timeout about information last call</string>
+    <string name="create_notification">Delayed notification</string>
+    <string name="time_notification_description">Set the time (in min) after which a reminder notification will arrive (0 is after call) </string>
+    <string name="time_notification">Time of delay</string>
 
 </resources>

@@ -11,6 +11,7 @@
     <CheckBox
         android:id="@+id/checkbox_"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="match_parent" />
 
     <ImageView
