@@ -14,7 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
-internal class DataAdapter(val context: Context, private val phones: Array<PhoneInfo>) :
+internal class DataAdapter(val context: Context, private val phones: Array<PhoneLogInfo>) :
     RecyclerView.Adapter<DataAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -51,16 +51,14 @@ internal class DataAdapter(val context: Context, private val phones: Array<Phone
         internal val timeView : TextView = view.findViewById(R.id.log_element_text_time) as TextView
         internal val dateView : TextView = view.findViewById(R.id.log_element_text_date) as TextView
 
-        fun initClick(phone : PhoneInfo){
+        fun initClick(phone : PhoneLogInfo){
             logLayout.setOnClickListener{
-                checkBox.isChecked = !checkBox.isChecked
+                val mIntent = Intent(this@DataAdapter.context, OverlayActivity::class.java)
+                mIntent.putExtra("user", phone.toPhoneInfo())
+                this@DataAdapter.context.startActivity(mIntent)
             }
             logLayout.setOnLongClickListener{
-
-                val mIntent = Intent(this@DataAdapter.context, OverlayActivity::class.java)
-                mIntent.putExtra("user", phone)
-                this@DataAdapter.context.startActivity(mIntent)
-
+                checkBox.isChecked = !checkBox.isChecked
                 return@setOnLongClickListener true
             }
         }

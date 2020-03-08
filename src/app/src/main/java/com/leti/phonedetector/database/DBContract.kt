@@ -11,14 +11,13 @@ object DBContract {
             val COLUMN_INFO_PHONE_NAME = "name"
             val COLUMN_INFO_PHONE_NUMBER = "number"
             val COLUMN_INFO_PHONE_IS_SPAM = "isSpam"
-            val COLUMN_INFO_PHONE_TAGS = "tags"
             val COLUMN_INFO_PHONE_IMAGE = "image"
         }
     }
 
     class PhoneLogEntry : BaseColumns {
         companion object {
-            val TABLE_NAME = "log"
+            val TABLE_NAME = "phone_log"
             val COLUMN_LOG_PHONE_NUMBER = "number"
             val COLUMN_LOG_PHONE_TIME= "time"
             val COLUMN_LOG_PHONE_DATE = "date"

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.leti.phonedetector.database.PhoneLogDBHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -19,18 +20,25 @@ class MainActivity : AppCompatActivity() {
 
     private val APP_PREFERENCES = "PHONEDETECTOR_PREFERENCES"
     private lateinit var sharedPreferences: SharedPreferences
+    private val db = PhoneLogDBHelper(this)
 
     // Sample of input data
     // TODO get this from sqlite
-    val phones = arrayOf(PhoneInfo("Max", "+79992295999", false),
-                         PhoneInfo("Сбербанк", "+79992295998", true, tags = arrayOf("Sberbank", "Постоянные звонки", "Мошенники")),
-                         PhoneInfo("Pizza", "+79992295997", false),
-                         PhoneInfo("Citron", "+79992295996", false))
+    val phones = arrayOf(PhoneLogInfo("Max", "+79992295999", false),
+        PhoneLogInfo("Сбербанк", "+79992295998", true, tags = arrayOf("Sberbank", "Постоянные звонки", "Мошенники")),
+        PhoneLogInfo("Pizza", "+79992295997", false),
+        PhoneLogInfo("Citron", "+79992295996", false))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        // Fill db
+        val db = PhoneLogDBHelper(this)
+        for (phone in phones){
+            db.insertPhone(phone)
+        }
 
         createSharedPref()
         createRecycleView()
@@ -41,7 +49,7 @@ class MainActivity : AppCompatActivity() {
          * Create RecycleView with list of phone call activity of user
          */
         val recyclerView = findViewById<View>(R.id.list_of_phones) as RecyclerView
-        val adapter = DataAdapter(this, phones)
+        val adapter = DataAdapter(this, db.readPhoneLog())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.itemAnimator = DefaultItemAnimator()
