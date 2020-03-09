@@ -38,7 +38,7 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
             true -> holder.imageView.setImageResource(R.drawable.ic_spam)
             false -> holder.imageView.setImageResource(R.drawable.ic_empty_user)
         }
-        holder.nameView.text = phone.name
+        holder.nameView.text = if (phone.name.length < 25) phone.name else phone.name.take(25) + "..."
         holder.numberView.text = phone.number
         holder.timeView.text = phone.time
         holder.dateView.text = phone.date
