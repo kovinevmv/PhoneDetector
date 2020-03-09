@@ -19,7 +19,7 @@ import java.util.*
 
 class PhoneStateReceiver : BroadcastReceiver() {
     
-    @SuppressLint("UnsafeProtectedBroadcastReceiver")
+    @SuppressLint("UnsafeProtectedBroadcastReceiver", "SimpleDateFormat")
     override fun onReceive(context: Context, intent: Intent) {
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -48,7 +48,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
             mIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             mIntent.addCategory(Intent.CATEGORY_LAUNCHER)
 
-            val date = SimpleDateFormat("dd.MM.yyyy").format(Date())
+            val date = SimpleDateFormat("yyyy.MM.dd").format(Date())
             val time = SimpleDateFormat("hh:mm:ss").format(Date())
 
             val db = PhoneLogDBHelper(context)

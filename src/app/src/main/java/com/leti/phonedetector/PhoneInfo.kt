@@ -10,7 +10,7 @@ val DEFAULT_IS_SPAM_STATE = false
 val DEFAULT_TAGS : Array<String> = emptyArray()
 val DEFAULT_IMAGE = "empty"
 val DEFAULT_TIME = "23:59"
-val DEFAULT_DATE = "01.01.1970"
+val DEFAULT_DATE = "1970.01.01"
 
 // Information about phone number
 class PhoneInfo(val name: String = DEFAULT_NAME,
