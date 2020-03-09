@@ -54,7 +54,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
             val db = PhoneLogDBHelper(context)
             val foundUser : PhoneInfo? = db.findPhoneByNumber(incomingNumber)
 
-            var user: PhoneLogInfo
+            val user: PhoneLogInfo
 
             user = if (foundUser != null && !foundUser.isDefault())
                 PhoneLogInfo(foundUser, time, date)
@@ -79,7 +79,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
         }
     }
 
-    fun getContactName(phoneNumber: String?, context: Context): String? {
+    private fun getContactName(phoneNumber: String?, context: Context): String? {
         val uri = Uri.withAppendedPath(
             ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
             Uri.encode(phoneNumber)
