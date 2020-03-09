@@ -44,7 +44,7 @@ class OverlayActivity : Activity() {
         overlay_button_exit.setOnClickListener { finish() }
     }
 
-    @SuppressLint("ServiceCast")
+    @SuppressLint("ServiceCast", "Recycle")
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setSpamSettings(){
         overlay_user_image.setImageResource(R.drawable.ic_spam)
