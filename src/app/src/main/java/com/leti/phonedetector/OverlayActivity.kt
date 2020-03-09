@@ -51,7 +51,7 @@ class OverlayActivity : Activity() {
         overlay_button_action.text = resources.getString(R.string.button_block_number)
 
 
-        Toast.makeText(this@OverlayActivity, "Number saved in clipboard", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@OverlayActivity, "Number has been copied to clipboard", Toast.LENGTH_SHORT).show()
 
         overlay_button_action.setOnClickListener{
             val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
