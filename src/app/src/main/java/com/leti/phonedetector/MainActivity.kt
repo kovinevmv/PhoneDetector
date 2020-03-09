@@ -130,12 +130,7 @@ class MainActivity : AppCompatActivity() {
          * @param item element 'Show Spam'
          */
         updateMenuOptionState(item, "is_show_spam", !item.isChecked)
-        if (sharedPreferences.getBoolean("is_use_query", false)){
-            adapter.update(db.findPhonesByQuery(sharedPreferences.getString("last_query", "*").toString()))
-        }
-        else {
-            adapter.update(db.readPhoneLog())
-        }
+        updateRecycleView()
     }
 
     private fun clickedOnShowNotSpam(item : MenuItem){
@@ -144,6 +139,10 @@ class MainActivity : AppCompatActivity() {
          * @param item element 'Show Spam'
          */
         updateMenuOptionState(item, "is_show_not_spam", !item.isChecked)
+        updateRecycleView()
+    }
+
+    private fun updateRecycleView(){
         if (sharedPreferences.getBoolean("is_use_query", false)){
             adapter.update(db.findPhonesByQuery(sharedPreferences.getString("last_query", "*").toString()))
         }
@@ -176,7 +175,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun createSwipeRefresh(){
         swipe_refresh_layout.setOnRefreshListener {
-            adapter.update(db.readPhoneLog())
+            updateRecycleView()
             swipe_refresh_layout.isRefreshing = false
         }
     }
