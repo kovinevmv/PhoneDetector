@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.leti.phonedetector.database.PhoneLogDBHelper
 import kotlinx.android.synthetic.main.activity_main.*
-
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,14 +37,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        // Fill db
-        val db = PhoneLogDBHelper(this)
-        for (phone in phones){
-            db.insertPhone(phone)
-        }
+//        // Fill db
+//        val db = PhoneLogDBHelper(this)
+//        for (phone in phones){
+//            db.insertPhone(phone)
+//        }
 
         createSharedPref()
         createRecycleView()
+        createSwipeRefresh()
     }
 
     private fun createRecycleView(){
@@ -172,5 +173,13 @@ class MainActivity : AppCompatActivity() {
 
         item.isChecked = state
     }
+
+    private fun createSwipeRefresh(){
+        swipe_refresh_layout.setOnRefreshListener {
+            adapter.update(db.readPhoneLog())
+            swipe_refresh_layout.isRefreshing = false
+        }
+    }
+
 
 }
