@@ -61,7 +61,7 @@ class OverlayActivity : Activity() {
 
             val telecomManager = this.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
             this.startActivity(telecomManager.createManageBlockedNumbersIntent(), null)
-            val c = contentResolver.query(
+            contentResolver.query(
                 BlockedNumbers.CONTENT_URI,
                 arrayOf(
                     BlockedNumbers.COLUMN_ID,
