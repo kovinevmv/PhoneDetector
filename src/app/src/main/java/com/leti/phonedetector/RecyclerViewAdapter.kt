@@ -44,6 +44,7 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
         holder.dateView.text = phone.date
 
         holder.initClick(phone)
+
     }
 
     override fun getItemCount(): Int {
@@ -51,21 +52,20 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
     }
 
     fun update(data : ArrayList<PhoneLogInfo>) {
-        phones = data
-        phones = filterShow()
+        phones = filterShow(data)
         this.notifyDataSetChanged()
     }
 
-    private fun filterShow( ) : ArrayList<PhoneLogInfo>{
+    private fun filterShow(data : ArrayList<PhoneLogInfo>) : ArrayList<PhoneLogInfo>{
         val showSpam : Boolean = sharedPreferences.getBoolean("is_show_spam", true)
         val showNotSpam: Boolean = sharedPreferences.getBoolean("is_show_not_spam", true)
 
         return when {
-            showSpam && !showNotSpam -> ArrayList(phones.filter { it.isSpam })
-            !showSpam && showNotSpam -> ArrayList(phones.filter { !it.isSpam })
-            showSpam && showNotSpam -> phones
+            showSpam && !showNotSpam -> ArrayList(data.filter { it.isSpam })
+            !showSpam && showNotSpam -> ArrayList(data.filter { !it.isSpam })
+            showSpam && showNotSpam -> data
             !showSpam && !showNotSpam -> ArrayList()
-            else -> phones
+            else -> data
         }
     }
 
