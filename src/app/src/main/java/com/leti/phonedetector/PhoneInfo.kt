@@ -3,12 +3,21 @@ package com.leti.phonedetector
 import android.os.Parcel
 import android.os.Parcelable
 
+
+val DEFAULT_NAME = "Undefined user"
+val DEFAULT_NUMBER = "+7800553535"
+val DEFAULT_IS_SPAM_STATE = false
+val DEFAULT_TAGS : Array<String> = emptyArray()
+val DEFAULT_IMAGE = "empty"
+val DEFAULT_TIME = "23:59"
+val DEFAULT_DATE = "01.01.1970"
+
 // Information about phone number
-class PhoneInfo(val name: String = "Undefined user",
-                 val number: String = "+7800553535",
-                 val isSpam: Boolean = false,
-                 val tags: Array<String> = emptyArray(),
-                 val image: String = "empty") : Parcelable{
+class PhoneInfo(val name: String = DEFAULT_NAME,
+                 val number: String = DEFAULT_NUMBER,
+                 val isSpam: Boolean = DEFAULT_IS_SPAM_STATE,
+                 val tags: Array<String> = DEFAULT_TAGS,
+                 val image: String = DEFAULT_IMAGE) : Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
         parcel.readString().toString(),
@@ -16,6 +25,14 @@ class PhoneInfo(val name: String = "Undefined user",
         parcel.createStringArray() as Array<String>,
         parcel.readString().toString()
     )
+
+    fun isDefault() : Boolean{
+        return name == DEFAULT_NAME &&
+               isSpam == DEFAULT_IS_SPAM_STATE &&
+               tags.contentEquals(DEFAULT_TAGS) &&
+               image == DEFAULT_IMAGE
+
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
@@ -89,6 +106,9 @@ class PhoneLogInfo(val name: String = "Undefined user",
         return PhoneInfo(name, number, isSpam, tags, image)
     }
 
+    fun isDefault() : Boolean{
+        return this.toPhoneInfo().isDefault() && time == DEFAULT_TIME && date == DEFAULT_DATE
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
     }

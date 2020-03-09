@@ -50,13 +50,13 @@ class PhoneStateReceiver : BroadcastReceiver() {
 
             val date = SimpleDateFormat("dd.MM.yyyy").format(Date())
             val time = SimpleDateFormat("hh:mm:ss").format(Date())
-            
+
             val db = PhoneLogDBHelper(context)
             val foundUser : PhoneInfo? = db.findPhoneByNumber(incomingNumber)
 
             var user: PhoneLogInfo
 
-            user = if (foundUser != null) 
+            user = if (foundUser != null && !foundUser.isDefault())
                 PhoneLogInfo(foundUser, time, date)
             else{
                 if (contactName.isNotEmpty())
@@ -70,7 +70,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
                     Handler().postDelayed({
                         mIntent.putExtra("user", user.toPhoneInfo())
                         db.insertPhone(user)
-                        context.startActivity(mIntent) 
+                        context.startActivity(mIntent)
                     }, 200)
                 }
                 TelephonyManager.EXTRA_STATE_OFFHOOK -> {}
