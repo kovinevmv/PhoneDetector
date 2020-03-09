@@ -12,6 +12,7 @@ import android.provider.ContactsContract
 import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import com.leti.phonedetector.api.NeberitrubkuAPI
 import com.leti.phonedetector.database.PhoneLogDBHelper
 import java.text.SimpleDateFormat
 import java.util.*
@@ -59,10 +60,14 @@ class PhoneStateReceiver : BroadcastReceiver() {
             user = if (foundUser != null && !foundUser.isDefault())
                 PhoneLogInfo(foundUser, time, date)
             else{
-                if (contactName.isNotEmpty())
-                    PhoneLogInfo(number = incomingNumber, name=contactName, date=date, time = time)
-                else
+                val n_user = NeberitrubkuAPI(incomingNumber).getUser()
+
+                if (!n_user.isDefault()){
+                    PhoneLogInfo(n_user, time, date)
+                }
+                else {
                     PhoneLogInfo(number = incomingNumber, date=date, time=time)
+                }
             }
             
             when (state) {
