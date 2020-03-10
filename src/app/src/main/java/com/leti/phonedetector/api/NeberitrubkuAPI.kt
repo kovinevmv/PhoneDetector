@@ -49,7 +49,7 @@ class NeberitrubkuAPI(number_ : String){
 
         val isSpam = rating?.contains("отриц") ?: false
 
-        val user = if (name == null || rating == null) PhoneInfo(convertPhoneDefault(number))
+        val user = if (name == null || rating == null) PhoneInfo(number=convertPhoneDefault(number))
         else PhoneInfo(number=convertPhoneDefault(number), name="$name: $rating", tags=tags, isSpam = isSpam)
 
         return user
