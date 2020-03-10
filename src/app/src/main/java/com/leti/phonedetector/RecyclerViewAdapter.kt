@@ -82,6 +82,7 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
             logLayout.setOnClickListener{
                 val mIntent = Intent(this@DataAdapter.context, OverlayActivity::class.java)
                 mIntent.putExtra("user", phone.toPhoneInfo())
+                mIntent.putExtra("is_display_buttons", true)
                 this@DataAdapter.context.startActivity(mIntent)
             }
             logLayout.setOnLongClickListener{

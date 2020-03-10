@@ -74,6 +74,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
                 TelephonyManager.EXTRA_STATE_RINGING -> {
                     Handler().postDelayed({
                         mIntent.putExtra("user", user.toPhoneInfo())
+                        mIntent.putExtra("is_display_buttons", false)
                         db.insertPhone(user)
                         context.startActivity(mIntent)
                     }, 200)
