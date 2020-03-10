@@ -83,13 +83,13 @@ class PhoneInfo(val name: String = DEFAULT_NAME,
 
 
 // Log element with info about phone number
-class PhoneLogInfo(val name: String = "Undefined user",
-                   val number: String = "+7800553535",
-                   val isSpam: Boolean = false,
-                   val tags: Array<String> = emptyArray(),
-                   val time: String = "23:59",
-                   val date: String = "01.01.1970",
-                   val image: String = "empty") : Parcelable{
+class PhoneLogInfo(val name: String = DEFAULT_NAME,
+                   val number: String = DEFAULT_NUMBER,
+                   val isSpam: Boolean = DEFAULT_IS_SPAM_STATE,
+                   val tags: Array<String> = DEFAULT_TAGS,
+                   val time: String = DEFAULT_TIME,
+                   val date: String = DEFAULT_DATE,
+                   val image: String = DEFAULT_IMAGE) : Parcelable{
 
     constructor(parcel: Parcel) : this( parcel.readString().toString(),
         parcel.readString().toString(),
@@ -99,8 +99,8 @@ class PhoneLogInfo(val name: String = "Undefined user",
         parcel.readString().toString(),
         parcel.readString().toString())
 
-    constructor(phoneInfo: PhoneInfo, time_: String = "23:59", date_: String = "01.01.1970") :
-            this(phoneInfo.name, phoneInfo.number, phoneInfo.isSpam, phoneInfo.tags, time_, date_, phoneInfo.image)
+    constructor(phoneInfo: PhoneInfo, time: String = DEFAULT_TIME, date: String = DEFAULT_DATE) :
+            this(phoneInfo.name, phoneInfo.number, phoneInfo.isSpam, phoneInfo.tags, time, date, phoneInfo.image)
 
     fun toPhoneInfo() : PhoneInfo{
         return PhoneInfo(name, number, isSpam, tags, image)
