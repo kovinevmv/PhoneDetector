@@ -13,7 +13,6 @@ class NeberitrubkuAPI(number_ : String, val timeout : Int){
 
     init {
         number = convertPhoneToAPI(number_)
-
     }
 
     private fun convertPhoneToAPI(number: String) : String{
@@ -93,7 +92,7 @@ class NeberitrubkuAPI(number_ : String, val timeout : Int){
                 this@NeberitrubkuAPI.findInfo()
             } catch (e: Exception) {
                 Log.d("PHONEDETECTOR_VERBOSE", "Error on API: $e")
-                PhoneInfo()
+                PhoneInfo(number=convertPhoneDefault(number))
             }
         }
     }
