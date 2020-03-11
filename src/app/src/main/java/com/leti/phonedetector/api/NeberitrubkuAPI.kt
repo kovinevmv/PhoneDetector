@@ -7,7 +7,7 @@ import com.leti.phonedetector.PhoneInfo
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 
-class NeberitrubkuAPI(number_ : String){
+class NeberitrubkuAPI(number_ : String, val timeout : Int){
     var number : String
     val url : String = "https://www.neberitrubku.ru/nomer-telefona/"
 
@@ -38,7 +38,7 @@ class NeberitrubkuAPI(number_ : String){
 
 
     fun findInfo() : PhoneInfo{
-        val doc = Jsoup.connect("https://www.neberitrubku.ru/nomer-telefona/$number").get()
+        val doc = Jsoup.connect("https://www.neberitrubku.ru/nomer-telefona/$number").timeout(timeout * 1000 + 1).get()
         val categories = doc.select("div.categories")
         val ratings = doc.select("div.ratings")
         val comments = doc.select("span.review_comment")

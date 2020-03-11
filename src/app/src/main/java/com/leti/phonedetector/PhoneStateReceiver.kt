@@ -26,6 +26,8 @@ class PhoneStateReceiver : BroadcastReceiver() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val notFindInContacts = sharedPreferences.getBoolean("disable_search_in_contacts_switch",false)
         val isRun = sharedPreferences.getBoolean("activate_phone_detection_switch",false)
+        val timeout = sharedPreferences.getInt("detection_delay_seekbar",5)
+
 
         if (!isRun) return
 
@@ -60,7 +62,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
             user = if (foundUser != null && !foundUser.isDefault())
                 PhoneLogInfo(foundUser, time, date)
             else{
-                val n_user = NeberitrubkuAPI(incomingNumber).getUser()
+                val n_user = NeberitrubkuAPI(incomingNumber, timeout).getUser()
 
                 if (!n_user.isDefault()){
                     PhoneLogInfo(n_user, time, date)
