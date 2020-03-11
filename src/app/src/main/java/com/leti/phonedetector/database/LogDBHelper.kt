@@ -26,12 +26,23 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         Log.d(LOG_TAG, "Call onUpgrade onCreate class PhoneLogDBHelper")
 
+        cleanTables(db)
+    }
+
+
+    private fun cleanTables(db: SQLiteDatabase){
         db.execSQL(drop_info)
         db.execSQL(drop_log)
         db.execSQL(drop_tags)
         db.execSQL(drop_tokens)
 
         onCreate(db)
+    }
+
+    fun cleanTables(){
+        val db = writableDatabase
+        cleanTables(db)
+        db.close()
     }
 
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

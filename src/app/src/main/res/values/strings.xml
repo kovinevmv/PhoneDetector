@@ -21,5 +21,7 @@
     <string name="create_notification">Delayed notification</string>
     <string name="time_notification_description">Set the time (in min) after which a reminder notification will arrive (0 is after call) </string>
     <string name="time_notification">Time of delay</string>
+    <string name="drop_table_description">Delete all log information</string>
+    <string name="drop_table">Clean phones info</string>
 
 </resources>

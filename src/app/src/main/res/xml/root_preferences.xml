@@ -41,4 +41,15 @@
             android:title="@string/time_notification"/>
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="DataBase">
+
+    <Preference
+        android:summary="@string/drop_table_description"
+        android:title="@string/drop_table"
+        android:key="drop_table">
+    </Preference>
+
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
