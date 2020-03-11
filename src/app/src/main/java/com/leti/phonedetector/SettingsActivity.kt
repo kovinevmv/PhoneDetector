@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.preference.Preference
@@ -49,8 +50,21 @@ class SettingsActivity : AppCompatActivity() {
             dropTables = preferenceScreen.findPreference("drop_table")!!
 
             dropTables.setOnPreferenceClickListener {
-                val db = PhoneLogDBHelper(context!!)
-                db.cleanTables()
+                val builder = AlertDialog.Builder(context!!)
+                builder.setTitle("Clean all log and phone information")
+                builder.setMessage("This action cannot be undone. Information from logs and all detected numbers will be deleted")
+
+                builder.setPositiveButton(android.R.string.yes) { _, _ ->
+                    val db = PhoneLogDBHelper(context!!)
+                    db.cleanTables()
+                    Toast.makeText(context,
+                        "Database was cleaned", Toast.LENGTH_SHORT).show()
+                }
+
+                builder.setNegativeButton(android.R.string.no) { _, _ ->}
+
+                builder.show()
+
                 return@setOnPreferenceClickListener true
             }
 
