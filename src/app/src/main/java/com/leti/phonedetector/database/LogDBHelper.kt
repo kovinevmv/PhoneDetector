@@ -220,7 +220,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
 
     fun findPhonesByQuery(query : String) : ArrayList<PhoneLogInfo>{
         // TODO SQL Injection
-        Log.d(LOG_TAG, "Call findPhonesByQuety with param query:$query")
+        Log.d(LOG_TAG, "Call findPhonesByQuery with param query:$query")
 
         val phones = ArrayList<PhoneLogInfo>()
         val db = readableDatabase

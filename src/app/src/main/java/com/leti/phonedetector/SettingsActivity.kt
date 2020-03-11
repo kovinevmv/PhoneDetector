@@ -113,7 +113,6 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            Log.d("CHECKER", "WAS HERE")
             if (requestCode == REQUEST_CODE_READ_CALL_LOG) {
                 val arrayList = checkCallLogPermissions()
                 if (arrayList.isNotEmpty()){
