@@ -50,7 +50,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
             mIntent.addCategory(Intent.CATEGORY_LAUNCHER)
 
             val date = SimpleDateFormat("yyyy.MM.dd").format(Date())
-            val time = SimpleDateFormat("hh:mm:ss").format(Date())
+            val time = SimpleDateFormat("HH:mm:ss").format(Date())
 
             val db = PhoneLogDBHelper(context)
             val foundUser : PhoneInfo? = db.findPhoneByNumber(incomingNumber)
