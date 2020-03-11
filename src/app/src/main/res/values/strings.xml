@@ -23,5 +23,9 @@
     <string name="time_notification">Time of delay</string>
     <string name="drop_table_description">Delete all log information</string>
     <string name="drop_table">Clean phones info</string>
+    <string name="always_network_description">Use only network information about incoming phone and ignore cached log</string>
+    <string name="always_network">Use always network</string>
+    <string name="show_empty_user_description">Show information popup when incoming number is not detected</string>
+    <string name="show_empty_user">Show empty phone popup</string>
 
 </resources>

@@ -22,6 +22,13 @@
             android:title="@string/detection_delay"
             app:showSeekBarValue="true"
             app:summary="@string/detection_delay_description" />
+
+        <SwitchPreferenceCompat
+            app:key="show_empty_user"
+            app:defaultValue="false"
+            app:summary="@string/show_empty_user_description"
+            app:title="@string/show_empty_user" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/notification_header">
@@ -49,7 +56,11 @@
         android:key="drop_table">
     </Preference>
 
-
+    <SwitchPreferenceCompat
+        app:key="use_only_network_info"
+        app:defaultValue="true"
+        app:summary="@string/always_network_description"
+        app:title="@string/always_network" />
     </PreferenceCategory>
 
 </PreferenceScreen>
