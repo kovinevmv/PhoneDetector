@@ -22,10 +22,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private val APP = "PHONEDETECTOR"
-    private val APP_PREFERENCES = "${APP}_PREFERENCES"
-    val CHANNEL_ID = "${APP}_CHANNEL_ID"
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor : SharedPreferences.Editor
     private lateinit var adapter : DataAdapter
