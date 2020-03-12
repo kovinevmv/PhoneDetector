@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.leti.phonedetector.model.PhoneInfo
 import kotlinx.android.synthetic.main.activity_overlay.*
 
 

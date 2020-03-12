@@ -1,23 +1,23 @@
-package com.leti.phonedetector
+package com.leti.phonedetector.model
 
 import android.os.Parcel
 import android.os.Parcelable
 
-
-val DEFAULT_NAME = "Undefined user"
-val DEFAULT_NUMBER = "+7800553535"
-val DEFAULT_IS_SPAM_STATE = false
+const val DEFAULT_NAME = "Undefined user"
+const val DEFAULT_NUMBER = "+7800553535"
+const val DEFAULT_IS_SPAM_STATE = false
+const val DEFAULT_IMAGE = "empty"
+const val DEFAULT_TIME = "23:59:59"
+const val DEFAULT_DATE = "1970.01.01"
 val DEFAULT_TAGS : Array<String> = emptyArray()
-val DEFAULT_IMAGE = "empty"
-val DEFAULT_TIME = "23:59:59"
-val DEFAULT_DATE = "1970.01.01"
 
 // Information about phone number
 class PhoneInfo(val name: String = DEFAULT_NAME,
-                 val number: String = DEFAULT_NUMBER,
-                 val isSpam: Boolean = DEFAULT_IS_SPAM_STATE,
-                 val tags: Array<String> = DEFAULT_TAGS,
-                 val image: String = DEFAULT_IMAGE) : Parcelable{
+                val number: String = DEFAULT_NUMBER,
+                val isSpam: Boolean = DEFAULT_IS_SPAM_STATE,
+                val tags: Array<String> = DEFAULT_TAGS,
+                val image: String = DEFAULT_IMAGE
+) : Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
         parcel.readString().toString(),
@@ -89,7 +89,8 @@ class PhoneLogInfo(val name: String = DEFAULT_NAME,
                    val tags: Array<String> = DEFAULT_TAGS,
                    val time: String = DEFAULT_TIME,
                    val date: String = DEFAULT_DATE,
-                   val image: String = DEFAULT_IMAGE) : Parcelable{
+                   val image: String = DEFAULT_IMAGE
+) : Parcelable{
 
     constructor(parcel: Parcel) : this( parcel.readString().toString(),
         parcel.readString().toString(),
@@ -102,8 +103,14 @@ class PhoneLogInfo(val name: String = DEFAULT_NAME,
     constructor(phoneInfo: PhoneInfo, time: String = DEFAULT_TIME, date: String = DEFAULT_DATE) :
             this(phoneInfo.name, phoneInfo.number, phoneInfo.isSpam, phoneInfo.tags, time, date, phoneInfo.image)
 
-    fun toPhoneInfo() : PhoneInfo{
-        return PhoneInfo(name, number, isSpam, tags, image)
+    fun toPhoneInfo() : PhoneInfo {
+        return PhoneInfo(
+            name,
+            number,
+            isSpam,
+            tags,
+            image
+        )
     }
 
     fun isDefault() : Boolean{
