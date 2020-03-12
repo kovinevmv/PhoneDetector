@@ -23,7 +23,7 @@ import java.util.*
 
 class PhoneStateReceiver : BroadcastReceiver() {
     
-    @SuppressLint("UnsafeProtectedBroadcastReceiver", "SimpleDateFormat")
+    @SuppressLint( "SimpleDateFormat")
     override fun onReceive(context: Context, intent: Intent) {
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -62,13 +62,15 @@ class PhoneStateReceiver : BroadcastReceiver() {
             TelephonyManager.EXTRA_STATE_IDLE -> {
                 if (incomingNumber != null && isCreatePushUp){
                     val user = findUserByPhone(context, incomingNumber)
-                    if (user.isSpam) createSheduledPushUp(context, createPushUp(context, user), delayNotificationTime)
+                    val intentOnPushUpClick = createIntent(context, user, true)
+                    if (user.isSpam)
+                        BlockNotification(context, intentOnPushUpClick, user).notify(delayNotificationTime)
                 }
             }
         }
     }
 
-    private fun findUserByPhone(context : Context, number : String) : PhoneInfo{
+    private fun findUserByPhone(context : Context, number : String) : PhoneInfo {
         val db = PhoneLogDBHelper(context)
         return db.findPhoneByNumber(number) ?: PhoneInfo(
             number = number
@@ -89,7 +91,8 @@ class PhoneStateReceiver : BroadcastReceiver() {
         return mIntent
     }
 
-    private fun startPhoneDetection(context: Context, incomingNumber : String) : PhoneLogInfo{
+    @SuppressLint("SimpleDateFormat")
+    private fun startPhoneDetection(context: Context, incomingNumber : String) : PhoneLogInfo {
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val timeout = sharedPreferences.getInt("detection_delay_seekbar", 5)
@@ -116,7 +119,11 @@ class PhoneStateReceiver : BroadcastReceiver() {
                     foundUserNetwork
                 }
                 else {
-                    PhoneLogInfo(number=incomingNumber, date=date, time=time)
+                    PhoneLogInfo(
+                        number = incomingNumber,
+                        date = date,
+                        time = time
+                    )
                 }
             }
         }
@@ -125,10 +132,14 @@ class PhoneStateReceiver : BroadcastReceiver() {
         return user
     }
 
-    private fun findUserByNetwork(number : String, timeout : Int, time : String, date : String) : PhoneLogInfo{
+    private fun findUserByNetwork(number : String, timeout : Int, time : String, date : String) : PhoneLogInfo {
         val newUser = NeberitrubkuAPI(number, timeout).getUser()
         // TODO add here GetContact
-        return PhoneLogInfo(newUser, time=time, date=date)
+        return PhoneLogInfo(
+            newUser,
+            time = time,
+            date = date
+        )
     }
 
     private fun getContactName(phoneNumber: String?, context: Context): String? {
