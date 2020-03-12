@@ -14,7 +14,7 @@
 
     <string name="search_in_contacts">Disable search in contacts</string>
     <string name="search_in_contacts_description">Don\'t show overlay of known contact. Read Contacts permission required for app work</string>
-    <string name="detection_delay">Detection delay</string>
+    <string name="detection_delay">Detection timeout</string>
     <string name="detection_delay_description">Set maximum recognition timeout for incoming call (in seconds)</string>
     <string name="notification_header">Notification Activity</string>
     <string name="create_notification_description">Send notification after setted timeout about information last call</string>
