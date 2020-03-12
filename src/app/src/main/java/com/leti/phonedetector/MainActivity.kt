@@ -114,6 +114,12 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        adapter.update(db.readPhoneLog())
+
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         /**
          * Detect touch event on item in menu list. Select action for every option
