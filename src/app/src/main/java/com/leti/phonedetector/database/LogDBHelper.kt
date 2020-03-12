@@ -25,6 +25,34 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         Log.d(LOG_TAG, "Call onUpgrade onCreate class PhoneLogDBHelper")
+    fun fillSampleData(){
+        val phones = arrayOf(
+            PhoneLogInfo(
+                "Max",
+                "+79992295999",
+                false
+            ),
+            PhoneLogInfo(
+                "Сбербанк",
+                "+79992295998",
+                true,
+                tags = arrayOf("Sberbank", "Постоянные звонки", "Мошенники")
+            ),
+            PhoneLogInfo(
+                "Pizza",
+                "+79992295997",
+                false
+            ),
+            PhoneLogInfo(
+                "Citron",
+                "+79992295996",
+                false
+            )
+        )
+
+        for (phone in phones)
+            this.insertPhone(phone)
+    }
 
         cleanTables(db)
     }

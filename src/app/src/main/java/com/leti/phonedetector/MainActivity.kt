@@ -28,23 +28,12 @@ class MainActivity : AppCompatActivity() {
 
     private val db = PhoneLogDBHelper(this)
 
-    // Sample of input data
-    // TODO get this from sqlite
-    val phones = arrayOf(PhoneLogInfo("Max", "+79992295999", false),
-        PhoneLogInfo("Сбербанк", "+79992295998", true, tags = arrayOf("Sberbank", "Постоянные звонки", "Мошенники")),
-        PhoneLogInfo("Pizza", "+79992295997", false),
-        PhoneLogInfo("Citron", "+79992295996", false))
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-//        // Fill db
-//        val db = PhoneLogDBHelper(this)
-//        for (phone in phones){
-//            db.insertPhone(phone)
-//        }
+        //db.fillSampleData()
 
         createSharedPref()
         createRecycleView()
