@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".NotificationPublisher" />
+        <receiver android:name=".notification.NotificationPublisher" />
 
         <receiver android:name=".PhoneStateReceiver">
             <intent-filter>
