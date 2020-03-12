@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PhoneDetector</string>
+    <string name="app_name">Phone Detector</string>
     <string name="menu_option_is_show_spam">Show spam</string>
     <string name="menu_option_is_not_show_spam">Show not spam</string>
     <string name="menu_option_setting">Settings</string>
