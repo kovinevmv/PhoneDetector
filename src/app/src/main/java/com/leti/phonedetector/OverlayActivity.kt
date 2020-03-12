@@ -65,17 +65,8 @@ class OverlayActivity : Activity() {
                 val clip = ClipData.newPlainText("BLOCKED_NUMBER_${user.number}", user.number)
                 clipboard.setPrimaryClip(clip)
 
-
                 val telecomManager = this.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
                 this.startActivity(telecomManager.createManageBlockedNumbersIntent(), null)
-                contentResolver.query(
-                    BlockedNumbers.CONTENT_URI,
-                    arrayOf(
-                        BlockedNumbers.COLUMN_ID,
-                        BlockedNumbers.COLUMN_ORIGINAL_NUMBER,
-                        BlockedNumbers.COLUMN_E164_NUMBER
-                    ), null, null, null
-                )
             }
         }
 
