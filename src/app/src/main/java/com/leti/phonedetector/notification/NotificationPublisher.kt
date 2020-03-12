@@ -1,4 +1,4 @@
-package com.leti.phonedetector
+package com.leti.phonedetector.notification
 
 import android.app.Notification
 import android.app.NotificationManager
