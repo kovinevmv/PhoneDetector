@@ -36,7 +36,7 @@ class NeberitrubkuAPI(number_ : String, val timeout : Int){
     }
 
 
-    fun findInfo() : PhoneInfo{
+    fun findInfo() : PhoneInfo {
         val doc = Jsoup.connect("https://www.neberitrubku.ru/nomer-telefona/$number").timeout(timeout * 1000 + 1).get()
         val categories = doc.select("div.categories")
         val ratings = doc.select("div.ratings")
@@ -48,8 +48,14 @@ class NeberitrubkuAPI(number_ : String, val timeout : Int){
 
         val isSpam = rating?.contains("отриц") ?: false
 
-        val user = if (name == null || rating == null) PhoneInfo(number=convertPhoneDefault(number))
-        else PhoneInfo(number=convertPhoneDefault(number), name="$name: $rating", tags=tags, isSpam = isSpam)
+        val user = if (name == null || rating == null) PhoneInfo(
+            number = convertPhoneDefault(number)
+        )
+        else PhoneInfo(
+            number = convertPhoneDefault(
+                number
+            ), name = "$name: $rating", tags = tags, isSpam = isSpam
+        )
 
         return user
     }
@@ -92,7 +98,11 @@ class NeberitrubkuAPI(number_ : String, val timeout : Int){
                 this@NeberitrubkuAPI.findInfo()
             } catch (e: Exception) {
                 Log.d("PHONEDETECTOR_VERBOSE", "Error on API: $e")
-                PhoneInfo(number=convertPhoneDefault(number))
+                PhoneInfo(
+                    number = convertPhoneDefault(
+                        number
+                    )
+                )
             }
         }
     }
