@@ -2,23 +2,21 @@ package com.leti.phonedetector
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.Notification
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Handler
-import android.os.SystemClock
 import android.provider.ContactsContract
 import android.telephony.TelephonyManager
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.leti.phonedetector.api.NeberitrubkuAPI
 import com.leti.phonedetector.database.PhoneLogDBHelper
+import com.leti.phonedetector.model.PhoneInfo
+import com.leti.phonedetector.model.PhoneLogInfo
+import com.leti.phonedetector.notification.BlockNotification
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -72,38 +70,12 @@ class PhoneStateReceiver : BroadcastReceiver() {
 
     private fun findUserByPhone(context : Context, number : String) : PhoneInfo{
         val db = PhoneLogDBHelper(context)
-        return db.findPhoneByNumber(number) ?: PhoneInfo(number=number)
-    }
-
-    private fun createPushUp(context : Context, user : PhoneInfo) : Notification{
-        val intent = createIntent(context, user, true)
-        val snoozePendingIntent = PendingIntent.getActivity(context, System.currentTimeMillis().toInt(), intent, 0)
-
-        val builder = NotificationCompat.Builder(context, "PHONEDETECTOR_CHANNEL_ID")
-            .setSmallIcon(android.R.drawable.alert_dark_frame)
-            .setContentTitle("Don't forget to block incoming number")
-            .setContentText("${user.number} - ${user.name}")
-            .setContentIntent(snoozePendingIntent)
-
-        return builder.build()
-    }
-
-    private fun createSheduledPushUp(context: Context, notification : Notification, delayTime : Int){
-        val notificationIntent = Intent(context, NotificationPublisher::class.java)
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1)
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification)
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            0,
-            notificationIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+        return db.findPhoneByNumber(number) ?: PhoneInfo(
+            number = number
         )
-
-        val futureInMillis = SystemClock.elapsedRealtime() + delayTime * 60 * 1000
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
-
     }
+
+
     private fun createIntent(context: Context, user: PhoneInfo, isDisplayButtons : Boolean) : Intent{
         val mIntent = Intent(context, OverlayActivity::class.java)
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
