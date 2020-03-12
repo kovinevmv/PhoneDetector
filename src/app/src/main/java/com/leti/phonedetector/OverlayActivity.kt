@@ -57,9 +57,10 @@ class OverlayActivity : Activity() {
             disableActionButton()
         } else {
             overlay_button_action.text = resources.getString(R.string.button_block_number)
-            Toast.makeText(this@OverlayActivity, "Number has been copied to clipboard", Toast.LENGTH_SHORT).show()
 
             overlay_button_action.setOnClickListener{
+                Toast.makeText(this@OverlayActivity, "Number has been copied to clipboard", Toast.LENGTH_SHORT).show()
+
                 val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("BLOCKED_NUMBER_${user.number}", user.number)
                 clipboard.setPrimaryClip(clip)
