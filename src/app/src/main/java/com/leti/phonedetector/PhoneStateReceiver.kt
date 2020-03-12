@@ -2,15 +2,19 @@ package com.leti.phonedetector
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Handler
+import android.os.SystemClock
 import android.provider.ContactsContract
 import android.telephony.TelephonyManager
-import android.util.Log
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.leti.phonedetector.api.NeberitrubkuAPI
@@ -28,6 +32,8 @@ class PhoneStateReceiver : BroadcastReceiver() {
         val isRun = sharedPreferences.getBoolean("activate_phone_detection_switch",false)
         val notFindInContacts = sharedPreferences.getBoolean("disable_search_in_contacts_switch",false)
         val showEmptyUser = sharedPreferences.getBoolean("show_empty_user", false)
+        val isCreatePushUp = sharedPreferences.getBoolean("notification_switch", false)
+        val delayNotificationTime = sharedPreferences.getInt("time_notification", 1)
 
         if (!isRun) return
 
@@ -38,7 +44,6 @@ class PhoneStateReceiver : BroadcastReceiver() {
             TelephonyManager.EXTRA_STATE_RINGING -> {
                 Handler().postDelayed({
                     if (incomingNumber != null) {
-
                         if (notFindInContacts){
                             if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
                                 val contactName = getContactName(incomingNumber, context)
@@ -48,7 +53,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
 
                         val user = startPhoneDetection(context, incomingNumber)
                         if (!user.toPhoneInfo().isDefault() || showEmptyUser) {
-                            val mIntent = createIntent(context, user)
+                            val mIntent = createIntent(context, user.toPhoneInfo(), false)
                             context.startActivity(mIntent)
                         }
 
@@ -56,11 +61,50 @@ class PhoneStateReceiver : BroadcastReceiver() {
                 }, 100)
             }
             TelephonyManager.EXTRA_STATE_OFFHOOK -> {}
-            TelephonyManager.EXTRA_STATE_IDLE -> {}
+            TelephonyManager.EXTRA_STATE_IDLE -> {
+                if (incomingNumber != null && isCreatePushUp){
+                    val user = findUserByPhone(context, incomingNumber)
+                    if (user.isSpam) createSheduledPushUp(context, createPushUp(context, user), delayNotificationTime)
+                }
+            }
         }
     }
 
-    private fun createIntent(context: Context, user: PhoneLogInfo) : Intent{
+    private fun findUserByPhone(context : Context, number : String) : PhoneInfo{
+        val db = PhoneLogDBHelper(context)
+        return db.findPhoneByNumber(number) ?: PhoneInfo(number=number)
+    }
+
+    private fun createPushUp(context : Context, user : PhoneInfo) : Notification{
+        val intent = createIntent(context, user, true)
+        val snoozePendingIntent = PendingIntent.getActivity(context, System.currentTimeMillis().toInt(), intent, 0)
+
+        val builder = NotificationCompat.Builder(context, "PHONEDETECTOR_CHANNEL_ID")
+            .setSmallIcon(android.R.drawable.alert_dark_frame)
+            .setContentTitle("Don't forget to block incoming number")
+            .setContentText("${user.number} - ${user.name}")
+            .setContentIntent(snoozePendingIntent)
+
+        return builder.build()
+    }
+
+    private fun createSheduledPushUp(context: Context, notification : Notification, delayTime : Int){
+        val notificationIntent = Intent(context, NotificationPublisher::class.java)
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1)
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            0,
+            notificationIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val futureInMillis = SystemClock.elapsedRealtime() + delayTime * 60 * 1000
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
+
+    }
+    private fun createIntent(context: Context, user: PhoneInfo, isDisplayButtons : Boolean) : Intent{
         val mIntent = Intent(context, OverlayActivity::class.java)
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         mIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -68,8 +112,8 @@ class PhoneStateReceiver : BroadcastReceiver() {
         mIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         mIntent.addCategory(Intent.CATEGORY_LAUNCHER)
 
-        mIntent.putExtra("user", user.toPhoneInfo())
-        mIntent.putExtra("is_display_buttons", false)
+        mIntent.putExtra("user", user)
+        mIntent.putExtra("is_display_buttons", isDisplayButtons)
         return mIntent
     }
 
