@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Handler
 import android.provider.ContactsContract
+import android.telephony.PhoneNumberUtils
 import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
@@ -42,32 +43,40 @@ class PhoneStateReceiver : BroadcastReceiver() {
             TelephonyManager.EXTRA_STATE_RINGING -> {
                 Handler().postDelayed({
                     if (incomingNumber != null) {
+                        val formattedIncoming = formatE164NumberRU(incomingNumber)
                         if (notFindInContacts){
                             if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
-                                val contactName = getContactName(incomingNumber, context)
+                                val contactName = getContactName(formattedIncoming, context)
                                 if (contactName != null) return@postDelayed
                             }
                         }
 
-                        val user = startPhoneDetection(context, incomingNumber)
+                        val user = startPhoneDetection(context, formattedIncoming)
                         if (!user.toPhoneInfo().isDefault() || showEmptyUser) {
                             val mIntent = createIntent(context, user.toPhoneInfo(), false)
                             context.startActivity(mIntent)
                         }
-
                     }
                 }, 100)
             }
             TelephonyManager.EXTRA_STATE_OFFHOOK -> {}
             TelephonyManager.EXTRA_STATE_IDLE -> {
                 if (incomingNumber != null && isCreatePushUp){
-                    val user = findUserByPhone(context, incomingNumber)
+                    val formattedIncoming = formatE164NumberRU(incomingNumber)
+                    val user = findUserByPhone(context, formattedIncoming)
                     val intentOnPushUpClick = createIntent(context, user, true)
                     if (user.isSpam)
                         BlockNotification(context, intentOnPushUpClick, user).notify(delayNotificationTime)
                 }
             }
         }
+    }
+    fun formatE164NumberRU(number : String) : String{
+        return formatE164Number(number, "RU")
+    }
+
+    fun formatE164Number(phNum: String, countryCode: String): String {
+        return PhoneNumberUtils.formatNumberToE164(phNum, countryCode) ?: phNum
     }
 
     private fun findUserByPhone(context : Context, number : String) : PhoneInfo {
