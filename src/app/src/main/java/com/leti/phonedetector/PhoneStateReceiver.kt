@@ -14,6 +14,7 @@ import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.leti.phonedetector.api.NeberitrubkuAPI
+import com.leti.phonedetector.contacts.Contacts
 import com.leti.phonedetector.database.PhoneLogDBHelper
 import com.leti.phonedetector.model.PhoneInfo
 import com.leti.phonedetector.model.PhoneLogInfo
@@ -45,10 +46,8 @@ class PhoneStateReceiver : BroadcastReceiver() {
                     if (incomingNumber != null) {
                         val formattedIncoming = formatE164NumberRU(incomingNumber)
                         if (notFindInContacts){
-                            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
-                                val contactName = getContactName(formattedIncoming, context)
-                                if (contactName != null) return@postDelayed
-                            }
+                            val contactName = Contacts(context).getContactNameByPhone(formattedIncoming)
+                            if (contactName != null) return@postDelayed
                         }
 
                         val user = startPhoneDetection(context, formattedIncoming)
@@ -149,22 +148,5 @@ class PhoneStateReceiver : BroadcastReceiver() {
             time = time,
             date = date
         )
-    }
-
-    private fun getContactName(phoneNumber: String?, context: Context): String? {
-        val uri = Uri.withAppendedPath(
-            ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
-            Uri.encode(phoneNumber)
-        )
-        val projection = arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME)
-        var contactName : String? = null
-        val cursor = context.contentResolver.query(uri, projection, null, null, null)
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                contactName = cursor.getString(0)
-            }
-            cursor.close()
-        }
-        return contactName
     }
 }
