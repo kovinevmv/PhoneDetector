@@ -14,10 +14,10 @@ class Token(val token: String = TOKEN,
             val aesKey : String = AES_KEY,
             val androidOS : String = ANDROID_OS,
             val deviceId : String = DEVICE_ID,
-            val isActive : Boolean = IS_ACTIVE,
+            var isActive : Boolean = IS_ACTIVE,
             val privateKey : Int = PRIVATE_KEY,
-            val remainCount : Int = REMAIN_COUNT,
-            val isPrimaryUse : Boolean = IS_PRIMARY_USE) {
+            var remainCount : Int = REMAIN_COUNT,
+            var isPrimaryUse : Boolean = IS_PRIMARY_USE) {
 
     fun isValid() : Boolean{
         return isActive && remainCount > 0
