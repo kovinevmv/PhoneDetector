@@ -120,6 +120,8 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
 
         // TODO SQL Injection
         db.execSQL("DELETE FROM ${DBContract.PhoneInfoEntry.TABLE_NAME} WHERE ${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NUMBER} = '$number'")
+
+        // TODO fix delete tags
         db.execSQL("DELETE FROM ${DBContract.PhoneLogTagsEntry.TABLE_NAME} WHERE ${DBContract.PhoneLogTagsEntry.COLUMN_PHONE_LOG_TAGS_NUMBER} = '$number'")
         db.close()
         return true
