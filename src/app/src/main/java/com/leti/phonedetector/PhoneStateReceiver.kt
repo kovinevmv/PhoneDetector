@@ -80,9 +80,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
 
     private fun findUserByPhone(context : Context, number : String) : PhoneInfo {
         val db = PhoneLogDBHelper(context)
-        return db.findPhoneByNumber(number) ?: PhoneInfo(
-            number = number
-        )
+        return db.findPhoneByNumber(number) ?: PhoneInfo(number = number)
     }
 
 
@@ -104,7 +102,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val timeout = sharedPreferences.getInt("detection_delay_seekbar", 5)
-        val isNetworkOnly = sharedPreferences.getBoolean("use_only_network_info",true)
+        val isNetworkOnly = sharedPreferences.getBoolean("use_only_network_info",false)
 
         val db = PhoneLogDBHelper(context)
 

@@ -58,7 +58,7 @@
 
     <SwitchPreferenceCompat
         app:key="use_only_network_info"
-        app:defaultValue="true"
+        app:defaultValue="false"
         app:summary="@string/always_network_description"
         app:title="@string/always_network" />
     </PreferenceCategory>
