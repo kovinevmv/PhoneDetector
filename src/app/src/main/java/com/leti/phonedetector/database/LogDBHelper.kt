@@ -162,7 +162,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
         }
 
         catch (e : SQLiteConstraintException){
-            Log.d(LOG_TAG_ERROR, "Error in findTagsByPhone: $e")
+            Log.e(LOG_TAG_ERROR, "Error in findTagsByPhone: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
             return tags
@@ -208,7 +208,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
             }
 
         } catch (e: SQLiteException) {
-            Log.d(LOG_TAG_ERROR, "Error in findPhoneByNumber: $e")
+            Log.e(LOG_TAG_ERROR, "Error in findPhoneByNumber: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
             return null
@@ -253,7 +253,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
             }
 
         } catch (e: SQLiteException) {
-            Log.d(LOG_TAG_ERROR, "Error in readPhoneLog: $e")
+            Log.e(LOG_TAG_ERROR, "Error in readPhoneLog: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
             return phones
@@ -308,7 +308,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
             }
 
         } catch (e: SQLiteException) {
-            Log.d(LOG_TAG_ERROR, "Error in findPhoneByNumber: $e")
+            Log.e(LOG_TAG_ERROR, "Error in findPhoneByNumber: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
             return phones

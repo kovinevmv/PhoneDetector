@@ -120,7 +120,7 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
             }
 
         } catch (e: SQLiteException) {
-            Log.d(LOG_TAG_ERROR, "Error in findToken: $e")
+            Log.e(LOG_TAG_ERROR, "Error in findToken: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
             return null
@@ -148,7 +148,7 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
             }
 
         } catch (e: SQLiteException) {
-            Log.d(LOG_TAG_ERROR, "Error in getTokens: $e")
+            Log.e(LOG_TAG_ERROR, "Error in getTokens: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
             db.close()
             return tokens
