@@ -82,12 +82,12 @@ class NeberitrubkuAPI(number_ : String, val timeout : Int){
         val resultComments= ArrayList<String>()
         for (comment in comments){
             var commentText = comment.text()
-            if (commentText.isNotEmpty()){
-                commentText = if (commentText.length < 30) commentText else commentText.substring(0, 30) + "..."
+            if (commentText.length >= 3){
+                commentText = if (commentText.length < 40) commentText else commentText.substring(0, 37) + "..."
                 resultComments.add(commentText)
             }
         }
-        return resultComments.toSet().take(5).toTypedArray()
+        return resultComments.toSet().toList().sortedWith(compareBy { it.length }).take(5).toTypedArray()
     }
 
     @SuppressLint("StaticFieldLeak")
