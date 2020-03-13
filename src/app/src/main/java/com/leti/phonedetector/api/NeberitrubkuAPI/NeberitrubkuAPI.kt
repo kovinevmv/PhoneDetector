@@ -82,7 +82,7 @@ class NeberitrubkuAPI(number_ : String, val timeout : Int){
         val resultComments= ArrayList<String>()
         for (comment in comments){
             var commentText = comment.text()
-            if (commentText.length >= 3){
+            if (commentText.length >= 3 && !commentText.contains("Этот комментарий был")){
                 commentText = if (commentText.length < 40) commentText else commentText.substring(0, 37) + "..."
                 resultComments.add(commentText)
             }
