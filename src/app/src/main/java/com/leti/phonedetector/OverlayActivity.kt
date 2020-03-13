@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.provider.BlockedNumberContract.BlockedNumbers
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.view.View
