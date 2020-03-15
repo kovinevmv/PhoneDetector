@@ -51,13 +51,12 @@ class PhoneStateReceiver : BroadcastReceiver() {
                         val user = startPhoneDetection(context, formattedIncoming)
                         if (!user.toPhoneInfo().isDefault() || showEmptyUser) {
                             val mIntentEnabledButtons = createIntent(context, user.toPhoneInfo(), false)
+                            context.startActivity(mIntentEnabledButtons)
 
                             if (isShowNotificationInsteadOfPopup){
                                 val mIntent = createIntent(context, user.toPhoneInfo(), true)
                                 IncomingNotification(context, mIntent, user.toPhoneInfo()).notifyNow()
                             }
-                            context.startActivity(mIntentEnabledButtons)
-
                         }
                     }
                 }, 100)
