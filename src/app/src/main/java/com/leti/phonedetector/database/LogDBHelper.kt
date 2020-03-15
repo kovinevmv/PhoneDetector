@@ -27,23 +27,31 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
             PhoneLogInfo(
                 "Max",
                 "+79992295999",
-                false
+                false,
+                date = "2020.01.01",
+                time = "20:01"
             ),
             PhoneLogInfo(
                 "Сбербанк",
                 "+79992295998",
                 true,
-                tags = arrayOf("Sberbank", "Постоянные звонки", "Мошенники")
+                tags = arrayOf("Sberbank", "Постоянные звонки", "Мошенники"),
+                date = "2020.02.01",
+                time = "20:01"
             ),
             PhoneLogInfo(
                 "Pizza",
                 "+79992295997",
-                false
+                false,
+                date = "2020.01.01",
+                time = "20:02"
             ),
             PhoneLogInfo(
                 "Citron",
                 "+79992295996",
-                false
+                false,
+                date = "2020.02.01",
+                time = "10:01"
             )
         )
 
@@ -82,7 +90,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
         val foundUser = this.findPhoneByNumber(phone.number)
         Log.d(LOG_TAG_VERBOSE, "Found user: ${foundUser?.number}")
 
-        if (foundUser != null && foundUser.isDefault()){
+        if (foundUser != null){
             this.deletePhoneInfo(phone.number)
         }
 
