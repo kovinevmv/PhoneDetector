@@ -149,20 +149,19 @@ class PhoneStateReceiver : BroadcastReceiver() {
         val nebUser = NeberitrubkuAPI(number, timeout).getUser()
         val getUser = GetContactAPI(context, timeout).getAllByPhone(number)
 
-        var resultUser = getUser
-//        var resultUser =
-//        if (nebUser.isDefault() && !getUser.isDefault()){
-//            getUser
-//        }
-//        else if (!nebUser.isDefault() && getUser.isDefault()){
-//            nebUser
-//        }
-//        else if (!nebUser.isDefault() && nebUser.isSpam){
-//            nebUser
-//        }
-//        else{
-//            getUser
-//        }
+        var resultUser =
+        if (nebUser.isDefault() && !getUser.isDefault()){
+            getUser
+        }
+        else if (!nebUser.isDefault() && getUser.isDefault()){
+            nebUser
+        }
+        else if (!nebUser.isDefault() && nebUser.isSpam){
+            nebUser
+        }
+        else{
+            getUser
+        }
 
         return PhoneLogInfo(
             resultUser,
