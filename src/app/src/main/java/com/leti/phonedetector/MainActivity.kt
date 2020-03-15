@@ -84,11 +84,17 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                editor.putBoolean("is_use_query", true)
-                editor.putString("last_query", newText)
-                editor.apply()
+                if (newText != ""){
+                    editor.putBoolean("is_use_query", true)
+                    editor.putString("last_query", newText)
+                    editor.apply()
+                    adapter.update(db.findPhonesByQuery(newText))
+                } else{
+                    editor.putBoolean("is_use_query", false)
+                    editor.apply()
+                    adapter.update(db.readPhoneLog())
+                }
 
-                adapter.update(db.findPhonesByQuery(newText))
                 return true
             }
         })
@@ -97,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             editor.apply()
 
             adapter.update(db.readPhoneLog())
-            return@setOnCloseListener false
+            return@setOnCloseListener true
         }
 
         return true
