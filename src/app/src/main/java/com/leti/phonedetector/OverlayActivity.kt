@@ -13,8 +13,10 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.leti.phonedetector.model.DEFAULT_IMAGE
 import com.leti.phonedetector.model.PhoneInfo
 import kotlinx.android.synthetic.main.activity_overlay.*
+import java.io.ByteArrayOutputStream
 
 
 class OverlayActivity : Activity() {
@@ -35,7 +37,7 @@ class OverlayActivity : Activity() {
 
         overlay_text_view_number.text = user.number
         overlay_text_view_name.text = user.name
-        overlay_tags.text = user.tags.take(5).joinToString(separator = "\n")
+        overlay_tags.text = user.tags.joinToString(separator = "\n")
 
         when(user.isSpam){
             true -> setSpamSettings()
