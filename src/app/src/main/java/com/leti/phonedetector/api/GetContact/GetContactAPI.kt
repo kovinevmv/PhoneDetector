@@ -35,7 +35,7 @@ class GetContactAPI(context: Context, private val timeout : Int) {
 
             } catch (e: Exception) {
                 Log.d(LOG_TAG_VERBOSE, "Error on API NetworkTaskGetContact: $e")
-                PhoneInfo()
+                PhoneInfo(number = parts[0])
             }
         }
     }
@@ -82,7 +82,7 @@ class GetContactAPI(context: Context, private val timeout : Int) {
             return PhoneInfo(number=number, name=finalName, tags=tags.toTypedArray(), isSpam = isSpam, image = profileImage)
         }
 
-        return PhoneInfo()
+        return PhoneInfo(number=number)
     }
 
     private fun findTagsByPhone(number : String) : Array<String> {
