@@ -110,6 +110,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val timeout = sharedPreferences.getInt("detection_delay_seekbar", 5)
         val isNetworkOnly = sharedPreferences.getBoolean("use_only_network_info",false)
+        val noCacheEmpty = sharedPreferences.getBoolean("no_cache_empty_phones", false)
 
         val db = PhoneLogDBHelper(context)
 
@@ -141,7 +142,8 @@ class PhoneStateReceiver : BroadcastReceiver() {
             }
         }
 
-        db.insertPhone(user)
+        if (!noCacheEmpty || !user.isDefault())
+            db.insertPhone(user)
         return user
     }
 

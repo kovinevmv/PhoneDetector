@@ -29,5 +29,7 @@
     <string name="show_empty_user">Show empty phone popup</string>
     <string name="notification_instead_overlay_description">Show notification with detected number when ringing</string>
     <string name="notification_instead_overlay">Notification when ringing</string>
+    <string name="no_cache_empty_phones_description">Don\'t save in database empty phones</string>
+    <string name="no_cache_empty_phones">No cache empty phones</string>
 
 </resources>

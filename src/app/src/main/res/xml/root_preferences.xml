@@ -63,6 +63,12 @@
     </Preference>
 
     <SwitchPreferenceCompat
+        app:key="no_cache_empty_phones"
+        app:defaultValue="false"
+        app:summary="@string/no_cache_empty_phones_description"
+        app:title="@string/no_cache_empty_phones" />
+
+    <SwitchPreferenceCompat
         app:key="use_only_network_info"
         app:defaultValue="false"
         app:summary="@string/always_network_description"
