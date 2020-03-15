@@ -32,5 +32,10 @@ class Token(val token: String = TOKEN,
                 isPrimaryUse == isPrimaryUse
     }
 
+    fun updateRemainCount(remainCount_: Int){
+        remainCount = remainCount_
+        isActive = remainCount_ > 0
+    }
+
 
 }

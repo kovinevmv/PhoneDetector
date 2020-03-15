@@ -81,6 +81,7 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
         valuesInfo.put(DBContract.TokenEntry.COLUMN_PRIVATE_KEY, token.privateKey)
         valuesInfo.put(DBContract.TokenEntry.COLUMN_REMAIN_COUNT, token.remainCount)
         valuesInfo.put(DBContract.TokenEntry.COLUMN_IS_PRIMARY_USE, token.isPrimaryUse)
+        db.insert(DBContract.TokenEntry.TABLE_NAME, null, valuesInfo)
 
         db.close()
         return true
@@ -156,6 +157,23 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
         db.close()
         return tokens
+    }
+
+    @Throws(SQLiteConstraintException::class)
+    fun updateToken(token : Token){
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(DBContract.TokenEntry.COLUMN_AES_KEY, token.aesKey)
+        contentValues.put(DBContract.TokenEntry.COLUMN_ANDROID_OS, token.androidOS)
+        contentValues.put(DBContract.TokenEntry.COLUMN_DEVICE_ID, token.deviceId)
+        contentValues.put(DBContract.TokenEntry.COLUMN_IS_ACTIVE, token.isActive)
+        contentValues.put(DBContract.TokenEntry.COLUMN_PRIVATE_KEY, token.privateKey)
+        contentValues.put(DBContract.TokenEntry.COLUMN_REMAIN_COUNT, token.remainCount)
+        contentValues.put(DBContract.TokenEntry.COLUMN_TOKEN, token.token)
+        contentValues.put(DBContract.TokenEntry.COLUMN_IS_PRIMARY_USE, token.isPrimaryUse)
+
+        db.update(DBContract.TokenEntry.TABLE_NAME, contentValues, "token = ?", arrayOf(token.token))
+        db.close()
     }
 
     private fun parseCursor(cursor : Cursor) : Token{

@@ -110,7 +110,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
         val time = SimpleDateFormat("HH:mm:ss").format(Date())
 
         val user: PhoneLogInfo = if (isNetworkOnly){
-            findUserByNetwork(incomingNumber, timeout, time, date)
+            findUserByNetwork(context, incomingNumber, timeout, time, date)
         }
         else{
             val foundUser : PhoneInfo? = db.findPhoneByNumber(incomingNumber)
@@ -119,7 +119,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
                 PhoneLogInfo(foundUser, time, date)
             }
             else{
-                val foundUserNetwork = findUserByNetwork(incomingNumber, timeout, time, date)
+                val foundUserNetwork = findUserByNetwork(context, incomingNumber, timeout, time, date)
 
                 if (!foundUserNetwork.toPhoneInfo().isDefault()){
                     foundUserNetwork
@@ -138,11 +138,27 @@ class PhoneStateReceiver : BroadcastReceiver() {
         return user
     }
 
-    private fun findUserByNetwork(number : String, timeout : Int, time : String, date : String) : PhoneLogInfo {
-        val newUser = NeberitrubkuAPI(number, timeout).getUser()
-        // TODO add here GetContact
+    private fun findUserByNetwork(context : Context, number : String, timeout : Int, time : String, date : String) : PhoneLogInfo {
+        val nebUser = NeberitrubkuAPI(number, timeout).getUser()
+        val getUser = GetContactAPI(context, timeout).getAllByPhone(number)
+
+        var resultUser = getUser
+//        var resultUser =
+//        if (nebUser.isDefault() && !getUser.isDefault()){
+//            getUser
+//        }
+//        else if (!nebUser.isDefault() && getUser.isDefault()){
+//            nebUser
+//        }
+//        else if (!nebUser.isDefault() && nebUser.isSpam){
+//            nebUser
+//        }
+//        else{
+//            getUser
+//        }
+
         return PhoneLogInfo(
-            newUser,
+            resultUser,
             time = time,
             date = date
         )
