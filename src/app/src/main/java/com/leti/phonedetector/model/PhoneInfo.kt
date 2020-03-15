@@ -70,6 +70,10 @@ class PhoneInfo(val name: String = DEFAULT_NAME,
         return result
     }
 
+    override fun toString(): String {
+        return "PhoneInfo {name:$name, number:$number, isSpam:$isSpam, tags:$tags, image:$image"
+    }
+
     companion object CREATOR : Parcelable.Creator<PhoneInfo> {
         override fun createFromParcel(parcel: Parcel): PhoneInfo {
             return PhoneInfo(parcel)
