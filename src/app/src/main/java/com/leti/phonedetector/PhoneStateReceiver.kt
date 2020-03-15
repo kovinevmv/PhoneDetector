@@ -13,6 +13,7 @@ import android.telephony.PhoneNumberUtils
 import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import com.leti.phonedetector.api.GetContact.GetContactAPI
 import com.leti.phonedetector.api.NeberitrubkuAPI
 import com.leti.phonedetector.contacts.Contacts
 import com.leti.phonedetector.database.PhoneLogDBHelper
