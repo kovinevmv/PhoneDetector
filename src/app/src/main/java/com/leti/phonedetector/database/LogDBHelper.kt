@@ -280,7 +280,8 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
                     "${DBContract.PhoneInfoEntry.TABLE_NAME}.${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_NUMBER} == " +
                     "${DBContract.PhoneLogEntry.TABLE_NAME}.${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NUMBER} WHERE " +
                     "${DBContract.PhoneInfoEntry.TABLE_NAME}.${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NUMBER} LIKE \"%${query}%\" " +
-                    "OR ${DBContract.PhoneInfoEntry.TABLE_NAME}.${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NAME} LIKE \"%${query}%\"", null)
+                    "OR ${DBContract.PhoneInfoEntry.TABLE_NAME}.${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NAME} LIKE \"%${query}%\" " +
+                    "ORDER BY ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} DESC", null)
 
             if (cursor!!.moveToFirst()) {
                 while (!cursor.isAfterLast) {
