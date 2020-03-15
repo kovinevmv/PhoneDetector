@@ -3,6 +3,7 @@ package com.leti.phonedetector
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.leti.phonedetector.model.DEFAULT_IMAGE
 import com.leti.phonedetector.model.PhoneLogInfo
 
 internal class DataAdapter(val context: Context, private var phones: ArrayList<PhoneLogInfo>) :
@@ -42,6 +44,7 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
         holder.numberView.text = phone.number
         holder.timeView.text = phone.time
         holder.dateView.text = phone.date
+        if (phone.image != DEFAULT_IMAGE) holder.imageView.setImageBitmap(BitmapFactory.decodeFile(phone.image))
 
         holder.initClick(phone)
 

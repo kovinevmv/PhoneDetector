@@ -2,10 +2,9 @@ package com.leti.phonedetector
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -43,8 +42,8 @@ class OverlayActivity : Activity() {
             false -> setNotSpamSettings()
         }
 
+        if (user.image != DEFAULT_IMAGE) overlay_user_image.setImageBitmap(BitmapFactory.decodeFile(user.image))
         overlay_button_exit.setOnClickListener { finish() }
-
     }
 
     @SuppressLint("ServiceCast", "Recycle")
@@ -84,9 +83,26 @@ class OverlayActivity : Activity() {
                 val contactIntent = Intent(ContactsContract.Intents.Insert.ACTION)
                 contactIntent.type = ContactsContract.RawContacts.CONTENT_TYPE
 
+                if (user.image != DEFAULT_IMAGE){
+                    val bit = BitmapFactory.decodeFile(user.image)
+                    val data = ArrayList<ContentValues>()
+
+                    val stream = ByteArrayOutputStream()
+                    bit.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    val byteArray: ByteArray = stream.toByteArray()
+                    bit.recycle()
+
+                    val row = ContentValues()
+                    row.put(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)
+                    row.put(ContactsContract.CommonDataKinds.Photo.PHOTO, byteArray)
+                    data.add(row)
+                    contactIntent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, data)
+                }
+
                 contactIntent
                     .putExtra(ContactsContract.Intents.Insert.NAME, user.name)
                     .putExtra(ContactsContract.Intents.Insert.PHONE, user.number)
+
 
                 startActivityForResult(contactIntent, 1)
             }
