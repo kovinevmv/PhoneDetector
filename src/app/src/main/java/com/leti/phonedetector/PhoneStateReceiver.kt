@@ -1,17 +1,12 @@
 package com.leti.phonedetector
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Handler
-import android.provider.ContactsContract
 import android.telephony.PhoneNumberUtils
 import android.telephony.TelephonyManager
-import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.leti.phonedetector.api.GetContact.GetContactAPI
 import com.leti.phonedetector.api.NeberitrubkuAPI
@@ -20,6 +15,7 @@ import com.leti.phonedetector.database.PhoneLogDBHelper
 import com.leti.phonedetector.model.PhoneInfo
 import com.leti.phonedetector.model.PhoneLogInfo
 import com.leti.phonedetector.notification.BlockNotification
+import com.leti.phonedetector.notification.IncomingNotification
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,6 +31,7 @@ class PhoneStateReceiver : BroadcastReceiver() {
         val showEmptyUser = sharedPreferences.getBoolean("show_empty_user", false)
         val isCreatePushUp = sharedPreferences.getBoolean("notification_switch", false)
         val delayNotificationTime = sharedPreferences.getInt("time_notification", 1)
+        val isShowNotificationInsteadOfPopup = sharedPreferences.getBoolean("notification_instead_overlay", false)
 
         if (!isRun) return
 
@@ -54,7 +51,12 @@ class PhoneStateReceiver : BroadcastReceiver() {
                         val user = startPhoneDetection(context, formattedIncoming)
                         if (!user.toPhoneInfo().isDefault() || showEmptyUser) {
                             val mIntent = createIntent(context, user.toPhoneInfo(), false)
+
+                            if (isShowNotificationInsteadOfPopup){
+                                IncomingNotification(context, mIntent, user.toPhoneInfo()).notifyNow()
+                            }
                             context.startActivity(mIntent)
+
                         }
                     }
                 }, 100)
@@ -96,6 +98,10 @@ class PhoneStateReceiver : BroadcastReceiver() {
         mIntent.putExtra("user", user)
         mIntent.putExtra("is_display_buttons", isDisplayButtons)
         return mIntent
+    }
+
+    private fun showNotification(context: Context, phone: PhoneLogInfo){
+        BlockNotification(context, createIntent(context, phone.toPhoneInfo(), true), phone.toPhoneInfo()).createNotification()
     }
 
     @SuppressLint("SimpleDateFormat")

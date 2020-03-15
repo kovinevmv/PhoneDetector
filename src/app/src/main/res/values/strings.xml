@@ -27,5 +27,7 @@
     <string name="always_network">Use always network</string>
     <string name="show_empty_user_description">Show information popup when incoming number is not detected</string>
     <string name="show_empty_user">Show empty phone popup</string>
+    <string name="notification_instead_overlay_description">Show notification with detected number when ringing</string>
+    <string name="notification_instead_overlay">Notification when ringing</string>
 
 </resources>

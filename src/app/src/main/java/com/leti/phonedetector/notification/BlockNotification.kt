@@ -14,7 +14,7 @@ import com.leti.phonedetector.model.PhoneInfo
 
 class BlockNotification(private val context: Context, private val intent : Intent, private val user : PhoneInfo) {
 
-    private fun createNotification() : Notification {
+    fun createNotification() : Notification {
         val snoozePendingIntent = PendingIntent.getActivity(context, System.currentTimeMillis().toInt(), intent, 0)
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {

@@ -46,6 +46,12 @@
             android:key="time_notification"
             app:summary="@string/time_notification_description"
             android:title="@string/time_notification"/>
+
+        <SwitchPreferenceCompat
+            app:key="notification_instead_overlay"
+            app:defaultValue="false"
+            app:summary="@string/notification_instead_overlay_description"
+            app:title="@string/notification_instead_overlay" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="DataBase">
