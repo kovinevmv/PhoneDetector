@@ -239,7 +239,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
         try {
             // TODO fix sort
             val cursor = db.rawQuery("SELECT * FROM ${DBContract.PhoneLogEntry.TABLE_NAME} " +
-                    "ORDER BY ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} DESC", null)
+                    "ORDER BY ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} DESC, ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME} DESC", null)
 
             if (cursor!!.moveToFirst()) {
                 while (!cursor.isAfterLast) {
@@ -289,7 +289,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
                     "${DBContract.PhoneLogEntry.TABLE_NAME}.${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NUMBER} WHERE " +
                     "${DBContract.PhoneInfoEntry.TABLE_NAME}.${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NUMBER} LIKE \"%${query}%\" " +
                     "OR ${DBContract.PhoneInfoEntry.TABLE_NAME}.${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NAME} LIKE \"%${query}%\" " +
-                    "ORDER BY ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} DESC", null)
+                    "ORDER BY ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} DESC, ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME} DESC", null)
 
             if (cursor!!.moveToFirst()) {
                 while (!cursor.isAfterLast) {
