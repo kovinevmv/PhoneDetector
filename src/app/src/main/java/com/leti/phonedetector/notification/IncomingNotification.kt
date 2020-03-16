@@ -19,8 +19,8 @@ class IncomingNotification(val context: Context, val intent : Intent, val phone 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
             setSmallIcon(R.drawable.ic_notification_icon)
             setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher))
-            setContentTitle("${phone.number} - ${phone.name}")
-            setContentText(if (phone.tags.isNotEmpty()) phone.tags.joinToString(separator ="\n") else "No tags found")
+            setContentTitle(phone.number)
+            setContentText(phone.name + "\n" + if (phone.tags.isNotEmpty()) phone.tags.joinToString(separator ="\n") else "No tags found")
             setContentIntent(snoozePendingIntent)
             setAutoCancel(true)
             setSound(null)
