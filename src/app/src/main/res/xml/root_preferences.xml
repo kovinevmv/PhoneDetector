@@ -64,7 +64,7 @@
 
     <SwitchPreferenceCompat
         app:key="no_cache_empty_phones"
-        app:defaultValue="false"
+        app:defaultValue="true"
         app:summary="@string/no_cache_empty_phones_description"
         app:title="@string/no_cache_empty_phones" />
 
