@@ -22,22 +22,6 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
         db.execSQL(create_token_table)
     }
 
-    fun fillSampleData(){
-        val tokens = arrayOf(
-            Token("hEmffc9d833620e4e13cf96e56d13552c5284f5d99665aa8856a06d4990",
-                "389383a471af66f4e84b6722d59b7d45e771620857e579565763e1fe3e8ebd0a",
-                "android 5.0",
-                "14130e29cebe9c39",
-                true,
-                2047896,
-                200,
-                false)
-        )
-
-        for (token in tokens)
-            this.insertToken(token)
-    }
-
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         Log.d(LOG_TAG_VERBOSE, "Call onUpgrade onCreate class TokenLogDBHelper")
         cleanTables(db)
