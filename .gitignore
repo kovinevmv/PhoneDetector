@@ -85,5 +85,5 @@ lint/tmp/
 # lint/reports/
 
 # Android Studio
-*/.idea/
+.idea/
 src/.idea/*
