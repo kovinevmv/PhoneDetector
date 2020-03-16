@@ -142,8 +142,9 @@ class PhoneStateReceiver : BroadcastReceiver() {
             }
         }
 
-        if (!noCacheEmpty || !user.isDefault())
+        if (!noCacheEmpty || !user.toPhoneInfo().isDefault()) {
             db.insertPhone(user)
+        }
         return user
     }
 
