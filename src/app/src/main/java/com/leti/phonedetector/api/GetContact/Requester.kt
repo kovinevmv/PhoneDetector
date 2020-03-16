@@ -64,7 +64,7 @@ class Requester(val context: Context, var token : Token, val timeout : Int) {
 
     private fun sendPost(url : String, data : String) : Pair<Boolean, String> {
         Log.d(LOG_TAG_VERBOSE, "Header $headers, data: $data")
-        val (_, response, result) = Fuel.post(url).header(headers).body(data).timeout(timeout * 1000).response()
+        val (_, response, _) = Fuel.post(url).header(headers).body(data).timeout(timeout * 1000).response()
         Log.d(LOG_TAG_VERBOSE, "${response.statusCode}, ${response.data.toString(Charset.defaultCharset())}")
         timestamp = updateTimestamp()
         return parseResponse(response)
