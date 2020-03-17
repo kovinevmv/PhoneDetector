@@ -18,6 +18,8 @@ class ConfigUpdater(val context: Context) {
         for (token in tokensInput){
             db.insertToken(token)
         }
+
+        tokens = db.getTokens()
     }
 
     fun updateRemainCountByToken(tokenString : String, remainCount : Int){
