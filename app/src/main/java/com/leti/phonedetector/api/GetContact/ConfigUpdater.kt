@@ -1,6 +1,8 @@
 package com.leti.phonedetector.api.GetContact
 
 import android.content.Context
+import android.util.Log
+import com.leti.phonedetector.LOG_TAG_VERBOSE
 import com.leti.phonedetector.database.TokenDBHelper
 import com.leti.phonedetector.model.Token
 
@@ -56,6 +58,7 @@ class ConfigUpdater(val context: Context) {
 
     fun getPrimaryUse() : Token{
         val primaryTokens = this.getAllActive().filter { it.isPrimaryUse }
-        return if (primaryTokens.isNotEmpty()) primaryTokens[0] else Token()
+        Log.d(LOG_TAG_VERBOSE, "Count tokens: ${primaryTokens.size}")
+        return if (primaryTokens.isNotEmpty()) primaryTokens.first() else Token()
     }
 }
