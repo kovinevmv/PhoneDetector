@@ -85,12 +85,12 @@ class Requester(val context: Context, var token : Token, val timeout : Int) {
         return when (response.statusCode){
             200 -> Pair(true, JSONObject(response.data.toString(Charset.defaultCharset())).getString("data"))
             201 -> Pair(true, response.data.toString(Charset.defaultCharset()))
-            403, 404 -> Pair(false, response.data.toString())
+            404 -> Pair(false, response.data.toString())
             else -> {
                 val responseText = JSONObject(response.data.toString(Charset.defaultCharset())).getString("data")
                 val responseDecrypted = cipherAES.decryptAESWithBase64(responseText.toString())
                 val errorCode = JSONObject(responseDecrypted).getJSONObject("meta").getString("errorCode")
-                Log.d(LOG_TAG_VERBOSE, "Error in parseResponse: $errorCode")
+                Log.d(LOG_TAG_VERBOSE, "Error in parseResponse: $errorCode, $responseDecrypted")
 
                 // TODO captcha bypass
                 when(errorCode){
