@@ -59,7 +59,7 @@ class Requester(val context: Context, var token : Token, val timeout : Int) {
     }
 
     private fun preparePayload(data: MutableMap<String, String>): String {
-        return JSONObject(data.toString().replace("[ ~]".toRegex(), "")).toString()
+        return JSONObject(data as Map<*, *>).toString().replace("[ ~]".toRegex(), "")
     }
 
     private fun sendPost(url : String, data : String) : Pair<Boolean, String> {
@@ -106,7 +106,7 @@ class Requester(val context: Context, var token : Token, val timeout : Int) {
 
     private fun sendReqToTheServer(url : String, payload : MutableMap<String, String>, noEncryption : Boolean=false) : String{
         val payloadPrepared = preparePayload(payload)
-        Log.d(LOG_TAG_VERBOSE,"Payload: $payloadPrepared, $payload, $timestamp")
+        Log.d(LOG_TAG_VERBOSE,"Payload: $payloadPrepared, $timestamp")
         headers["X-Req-Signature"] = cipherAES.createSignature(payloadPrepared, timestamp)
 
         val (isOk, response) = if (noEncryption){ sendRequestNoEncrypted(url, payloadPrepared) }
