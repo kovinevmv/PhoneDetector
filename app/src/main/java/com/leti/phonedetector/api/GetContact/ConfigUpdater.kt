@@ -6,7 +6,7 @@ import com.leti.phonedetector.model.Token
 
 class ConfigUpdater(val context: Context) {
     private val db = TokenDBHelper(context)
-    private var tokens : ArrayList<Token> = db.getTokens()
+    private var tokens : ArrayList<Token>
 
     init{
         val tokensInput = arrayOf(Token(aesKey = "389383a471af66f4e84b6722d59b7d45e771620857e579565763e1fe3e8ebd0a",
