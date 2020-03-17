@@ -91,6 +91,9 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
         Log.d(LOG_TAG_VERBOSE, "Found user: ${foundUser?.number}")
 
         if (foundUser != null){
+            if (foundUser == phone.toPhoneInfo()){
+                return true
+            }
             this.deletePhoneInfo(phone.number)
         }
 
