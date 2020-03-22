@@ -1,16 +1,11 @@
 package com.leti.phonedetector
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.leti.phonedetector.model.DEFAULT_IMAGE
@@ -89,7 +84,12 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
                 this@DataAdapter.context.startActivity(mIntent)
             }
             logLayout.setOnLongClickListener{
-                //checkBox.isChecked = !checkBox.isChecked
+                Toast.makeText(this@DataAdapter.context, "Number has been copied to clipboard", Toast.LENGTH_SHORT).show()
+
+                val number = numberView.text
+                val clipboard = this@DataAdapter.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("ADD_PHONE_NUMBER_$number", number)
+                clipboard.setPrimaryClip(clip)
                 return@setOnLongClickListener true
             }
         }
