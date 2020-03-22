@@ -54,7 +54,7 @@ class NeberitrubkuAPI(number_ : String, val timeout : Int){
         else PhoneInfo(
             number = convertPhoneDefault(
                 number
-            ), name = "$name: $rating", tags = tags, isSpam = isSpam
+            ), name = "$name", tags = tags, isSpam = isSpam
         )
 
         return user
