@@ -90,34 +90,48 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
         val foundUser = this.findPhoneByNumber(phone.number)
         Log.d(LOG_TAG_VERBOSE, "Found user: ${foundUser?.number}")
 
+        var isInsertInfo = true
         if (foundUser != null){
-            if (foundUser == phone.toPhoneInfo()){
-                return true
+            Log.d(LOG_TAG_VERBOSE, "Inside insertPhone: foundUser is not null")
+            when {
+                phone.toPhoneInfo().isDefault() -> {
+                    Log.d(LOG_TAG_VERBOSE, "Inside insertPhone: passed phone is Default")
+                    isInsertInfo = false
+                }
+                foundUser == phone.toPhoneInfo() -> {
+                    Log.d(LOG_TAG_VERBOSE, "Inside insertPhone: foundUser == phone")
+                    isInsertInfo = false
+                }
+                else -> {
+                    Log.d(LOG_TAG_VERBOSE, "Inside insertPhone: delete phone")
+                    this.deletePhoneInfo(phone.number)
+                }
             }
-            this.deletePhoneInfo(phone.number)
         }
 
         val db = writableDatabase
 
-        val valuesInfo = ContentValues()
-        valuesInfo.put(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NAME, phone.name)
-        valuesInfo.put(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NUMBER, phone.number)
-        valuesInfo.put(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_IS_SPAM, phone.isSpam)
-        valuesInfo.put(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_IMAGE, phone.image)
-        db.insert(DBContract.PhoneInfoEntry.TABLE_NAME, null, valuesInfo)
+        if (isInsertInfo){
+            val valuesInfo = ContentValues()
+            valuesInfo.put(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NAME, phone.name)
+            valuesInfo.put(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NUMBER, phone.number)
+            valuesInfo.put(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_IS_SPAM, phone.isSpam)
+            valuesInfo.put(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_IMAGE, phone.image)
+            db.insert(DBContract.PhoneInfoEntry.TABLE_NAME, null, valuesInfo)
+
+            for (tag in phone.tags){
+                val valuesTags = ContentValues()
+                valuesTags.put(DBContract.PhoneLogTagsEntry.COLUMN_PHONE_LOG_TAGS_NUMBER, phone.number)
+                valuesTags.put(DBContract.PhoneLogTagsEntry.COLUMN_PHONE_LOG_TAGS_TAG, tag)
+                db.insert(DBContract.PhoneLogTagsEntry.TABLE_NAME, null, valuesTags)
+            }
+        }
 
         val valuesLog = ContentValues()
         valuesLog.put(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_NUMBER, phone.number)
         valuesLog.put(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME, phone.time)
         valuesLog.put(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE, phone.date)
         db.insert(DBContract.PhoneLogEntry.TABLE_NAME, null, valuesLog)
-
-        for (tag in phone.tags){
-            val valuesTags = ContentValues()
-            valuesTags.put(DBContract.PhoneLogTagsEntry.COLUMN_PHONE_LOG_TAGS_NUMBER, phone.number)
-            valuesTags.put(DBContract.PhoneLogTagsEntry.COLUMN_PHONE_LOG_TAGS_TAG, tag)
-            db.insert(DBContract.PhoneLogTagsEntry.TABLE_NAME, null, valuesTags)
-        }
 
         db.close()
         return true
