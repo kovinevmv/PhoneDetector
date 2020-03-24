@@ -21,6 +21,11 @@ import com.leti.phonedetector.database.PhoneLogDBHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
+// Testing phone numbers:
+// +79858123876 - Профиль с фото
+// +74995505479 - Эльдорадо Спам
+// +79112770029 - Марк Маркович
+
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor : SharedPreferences.Editor
