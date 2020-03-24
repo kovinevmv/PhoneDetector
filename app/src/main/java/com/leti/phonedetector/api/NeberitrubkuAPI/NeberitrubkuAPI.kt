@@ -3,6 +3,7 @@ package com.leti.phonedetector.api
 import android.annotation.SuppressLint
 import android.os.AsyncTask
 import android.util.Log
+import com.leti.phonedetector.LOG_TAG_ERROR
 import com.leti.phonedetector.model.PhoneInfo
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
@@ -97,7 +98,7 @@ class NeberitrubkuAPI(number_ : String, val timeout : Int){
             return try {
                 this@NeberitrubkuAPI.findInfo()
             } catch (e: Exception) {
-                Log.d("PHONEDETECTOR_VERBOSE", "Error on API: $e")
+                Log.d(LOG_TAG_ERROR, "Error on API: $e")
                 PhoneInfo(
                     number = convertPhoneDefault(
                         number
