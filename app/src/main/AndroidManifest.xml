@@ -38,7 +38,7 @@
         <receiver android:name=".notification.NotificationPublisher" />
 
         <receiver android:name=".PhoneStateReceiver">
-            <intent-filter>
+            <intent-filter android:priority="0">
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Handler
 import android.telephony.PhoneNumberUtils
 import android.telephony.TelephonyManager
+import android.telephony.TelephonyManager.ACTION_PHONE_STATE_CHANGED
 import androidx.preference.PreferenceManager
 import com.leti.phonedetector.api.GetContact.GetContactAPI
 import com.leti.phonedetector.api.NeberitrubkuAPI
@@ -24,54 +25,57 @@ class PhoneStateReceiver : BroadcastReceiver() {
     
     @SuppressLint( "SimpleDateFormat")
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == ACTION_PHONE_STATE_CHANGED){
 
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val isRun = sharedPreferences.getBoolean("activate_phone_detection_switch",false)
-        val notFindInContacts = sharedPreferences.getBoolean("disable_search_in_contacts_switch",false)
-        val showEmptyUser = sharedPreferences.getBoolean("show_empty_user", false)
-        val isCreatePushUp = sharedPreferences.getBoolean("notification_switch", false)
-        val delayNotificationTime = sharedPreferences.getInt("time_notification", 1)
-        val isShowNotificationInsteadOfPopup = sharedPreferences.getBoolean("notification_instead_overlay", false)
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val isRun = sharedPreferences.getBoolean("activate_phone_detection_switch",false)
+            val notFindInContacts = sharedPreferences.getBoolean("disable_search_in_contacts_switch",false)
+            val showEmptyUser = sharedPreferences.getBoolean("show_empty_user", false)
+            val isCreatePushUp = sharedPreferences.getBoolean("notification_switch", false)
+            val delayNotificationTime = sharedPreferences.getInt("time_notification", 1)
+            val isShowNotificationInsteadOfPopup = sharedPreferences.getBoolean("notification_instead_overlay", false)
 
-        if (!isRun) return
+            if (!isRun) return
 
-        val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
-        val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
+            val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
+            val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
 
-        when (state) {
-            TelephonyManager.EXTRA_STATE_RINGING -> {
-                Handler().postDelayed({
-                    if (incomingNumber != null) {
-                        val formattedIncoming = formatE164NumberRU(incomingNumber)
-                        if (notFindInContacts){
-                            val contactName = Contacts(context).getContactNameByPhone(formattedIncoming)
-                            if (contactName != null) return@postDelayed
-                        }
+            when (state) {
+                TelephonyManager.EXTRA_STATE_RINGING -> {
+                    Handler().postDelayed({
+                        if (incomingNumber != null) {
+                            val formattedIncoming = formatE164NumberRU(incomingNumber)
+                            if (notFindInContacts){
+                                val contactName = Contacts(context).getContactNameByPhone(formattedIncoming)
+                                if (contactName != null) return@postDelayed
+                            }
 
-                        val user = startPhoneDetection(context, formattedIncoming)
-                        if (!user.toPhoneInfo().isDefault() || showEmptyUser) {
-                            val mIntentEnabledButtons = createIntent(context, user.toPhoneInfo(), false)
-                            context.startActivity(mIntentEnabledButtons)
+                            val user = startPhoneDetection(context, formattedIncoming)
+                            if (!user.toPhoneInfo().isDefault() || showEmptyUser) {
+                                val mIntentEnabledButtons = createIntent(context, user.toPhoneInfo(), false)
+                                context.startActivity(mIntentEnabledButtons)
 
-                            if (isShowNotificationInsteadOfPopup){
-                                val mIntent = createIntent(context, user.toPhoneInfo(), true)
-                                IncomingNotification(context, mIntent, user.toPhoneInfo()).notifyNow()
+                                if (isShowNotificationInsteadOfPopup){
+                                    val mIntent = createIntent(context, user.toPhoneInfo(), true)
+                                    IncomingNotification(context, mIntent, user.toPhoneInfo()).notifyNow()
+                                }
                             }
                         }
+                    }, 100)
+                }
+                TelephonyManager.EXTRA_STATE_OFFHOOK -> {}
+                TelephonyManager.EXTRA_STATE_IDLE -> {
+                    if (incomingNumber != null && isCreatePushUp){
+                        val formattedIncoming = formatE164NumberRU(incomingNumber)
+                        val user = findUserByPhone(context, formattedIncoming)
+                        val intentOnPushUpClick = createIntent(context, user, true)
+                        if (user.isSpam)
+                            BlockNotification(context, intentOnPushUpClick, user).notify(delayNotificationTime)
                     }
-                }, 100)
-            }
-            TelephonyManager.EXTRA_STATE_OFFHOOK -> {}
-            TelephonyManager.EXTRA_STATE_IDLE -> {
-                if (incomingNumber != null && isCreatePushUp){
-                    val formattedIncoming = formatE164NumberRU(incomingNumber)
-                    val user = findUserByPhone(context, formattedIncoming)
-                    val intentOnPushUpClick = createIntent(context, user, true)
-                    if (user.isSpam)
-                        BlockNotification(context, intentOnPushUpClick, user).notify(delayNotificationTime)
                 }
             }
         }
+
     }
     fun formatE164NumberRU(number : String) : String{
         return formatE164Number(number, "RU")
