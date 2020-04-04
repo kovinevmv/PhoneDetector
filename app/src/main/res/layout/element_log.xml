@@ -42,8 +42,10 @@
             android:id="@+id/log_element_text_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="25"
+            android:maxLines="1"
             android:padding="1dp"
-            android:text="Быстрые займы"
+            android:text="Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст "
             android:textColor="#5d5d5d"
             android:textSize="16sp" />
     </LinearLayout>
@@ -65,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="1dp"
-            android:text="16:00"
+            android:text="16:00:00"
             android:textAlignment="viewEnd"
             android:textSize="16sp" />
 
@@ -73,7 +75,7 @@
             android:id="@+id/log_element_text_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="02/02/2020"
+            android:text="2020/12/01"
             android:textAlignment="viewEnd" />
     </LinearLayout>
 
