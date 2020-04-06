@@ -42,7 +42,7 @@
             android:id="@+id/log_element_text_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLength="25"
+            android:maxLength="22"
             android:maxLines="1"
             android:padding="1dp"
             android:text="Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст "
