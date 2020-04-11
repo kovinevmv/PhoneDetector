@@ -1,6 +1,7 @@
 package com.leti.phonedetector
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -9,15 +10,20 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.leti.phonedetector.database.PhoneLogDBHelper
+import com.leti.phonedetector.model.PhoneLogInfo
+import com.leti.phonedetector.overlay.OverlayCreator
+import com.leti.phonedetector.search.Search
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -85,7 +91,34 @@ class MainActivity : AppCompatActivity() {
         mSearchView.queryHint = "Search"
         mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                return false
+                mSearchView.clearFocus();
+                val foundPhones = db.findPhonesByQuery(query)
+
+                if (foundPhones.isEmpty()){
+                    val builder = AlertDialog.Builder(this@MainActivity)
+                    builder.setTitle("Nothing found.")
+                    builder.setMessage("Are you want to make search for phone number: \"${query}\"?")
+
+                    builder.setPositiveButton("Yes"){ dialog, _ ->
+                        val searcher = Search(applicationContext)
+                        val phone: PhoneLogInfo = searcher.startPhoneDetection(query)
+                        val overlayCreator = OverlayCreator(applicationContext)
+                        val mIntentEnabledButtons = overlayCreator.createIntent(phone.toPhoneInfo(), true)
+                        applicationContext.startActivity(mIntentEnabledButtons)
+
+                        adapter.update(db.findPhonesByQuery(query))
+                        dialog.dismiss()
+                    }
+
+                    builder.setNegativeButton("No"){ dialog, _ ->
+                        dialog.dismiss()
+                    }
+
+                    val dialog: AlertDialog = builder.create()
+                    dialog.show()
+                }
+
+                return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
