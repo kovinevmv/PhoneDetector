@@ -13,6 +13,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.leti.phonedetector.database.PhoneLogDBHelper
+import com.leti.phonedetector.database.TokenDBHelper
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -62,8 +63,16 @@ class SettingsActivity : AppCompatActivity() {
                 }
 
                 builder.setNegativeButton(android.R.string.no) { _, _ ->}
-
                 builder.show()
+
+                val db = TokenDBHelper(context!!)
+                val tokens = db.getTokens()
+
+                var toastText = mutableListOf("Tokens info:")
+                for (token in tokens){
+                    toastText.add("Token: ${token.token.take(10)}..., Count: ${token.remainCount}")
+                }
+                Toast.makeText(context!!, toastText.joinToString("\n"), Toast.LENGTH_LONG).show()
 
                 return@setOnPreferenceClickListener true
             }
