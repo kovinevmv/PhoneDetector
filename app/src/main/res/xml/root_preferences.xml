@@ -15,6 +15,10 @@
             app:summary="@string/search_in_contacts_description"
             app:title="@string/search_in_contacts" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/search_title">
+
         <SeekBarPreference
             android:defaultValue="5"
             android:key="detection_delay_seekbar"
@@ -24,14 +28,25 @@
             app:summary="@string/detection_delay_description" />
 
         <SwitchPreferenceCompat
-            app:key="show_empty_user"
-            app:defaultValue="false"
-            app:summary="@string/show_empty_user_description"
-            app:title="@string/show_empty_user" />
+            app:key="use_getcontact"
+            app:defaultValue="true"
+            app:summary="@string/use_getcontact_description"
+            app:title="@string/use_getcontact" />
+
+        <SwitchPreferenceCompat
+            app:key="use_neberitrubku"
+            app:defaultValue="true"
+            app:summary="@string/use_neberitrubku_description"
+            app:title="@string/use_neberitrubku" />
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/notification_header">
+        <SwitchPreferenceCompat
+            app:key="show_empty_user"
+            app:defaultValue="false"
+            app:summary="@string/show_empty_user_description"
+            app:title="@string/show_empty_user" />
 
         <SwitchPreferenceCompat
             app:key="notification_switch"

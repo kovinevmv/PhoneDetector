@@ -31,5 +31,10 @@
     <string name="notification_instead_overlay">Notification when ringing</string>
     <string name="no_cache_empty_phones_description">Don\'t save in database empty phones</string>
     <string name="no_cache_empty_phones">No cache empty phones</string>
+    <string name="search_title">Search Settings</string>
+    <string name="use_getcontact_description">Use GetContact API for search</string>
+    <string name="use_getcontact">GetContact</string>
+    <string name="use_neberitrubku_description">Use neberitrubku.ru for search</string>
+    <string name="use_neberitrubku">Neberitrubku.ru</string>
 
 </resources>
