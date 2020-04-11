@@ -17,6 +17,8 @@ import com.leti.phonedetector.model.PhoneInfo
 import com.leti.phonedetector.model.PhoneLogInfo
 import com.leti.phonedetector.notification.BlockNotification
 import com.leti.phonedetector.notification.IncomingNotification
+import com.leti.phonedetector.overlay.OverlayCreator
+import com.leti.phonedetector.search.Search
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,20 +46,24 @@ class PhoneStateReceiver : BroadcastReceiver() {
                 TelephonyManager.EXTRA_STATE_RINGING -> {
                     Handler().postDelayed({
                         if (incomingNumber != null) {
-                            val formattedIncoming = formatE164NumberRU(incomingNumber)
+                            val searcher = Search(context)
+                            val formattedIncoming = searcher.formatE164NumberRU(incomingNumber)
                             if (notFindInContacts){
                                 val contactName = Contacts(context).getContactNameByPhone(formattedIncoming)
                                 if (contactName != null) return@postDelayed
                             }
 
-                            val user = startPhoneDetection(context, formattedIncoming)
+                            val user = searcher.startPhoneDetection(formattedIncoming)
                             if (!user.toPhoneInfo().isDefault() || showEmptyUser) {
-                                val mIntentEnabledButtons = createIntent(context, user.toPhoneInfo(), false)
-                                context.startActivity(mIntentEnabledButtons)
+                                val overlayCreator = OverlayCreator(context)
 
                                 if (isShowNotificationInsteadOfPopup){
-                                    val mIntent = createIntent(context, user.toPhoneInfo(), true)
+                                    val mIntent = overlayCreator.createIntent(user.toPhoneInfo(), true)
                                     IncomingNotification(context, mIntent, user.toPhoneInfo()).notifyNow()
+                                }
+                                else{
+                                    val mIntentEnabledButtons = overlayCreator.createIntent(user.toPhoneInfo(), false)
+                                    context.startActivity(mIntentEnabledButtons)
                                 }
                             }
                         }
@@ -66,9 +72,11 @@ class PhoneStateReceiver : BroadcastReceiver() {
                 TelephonyManager.EXTRA_STATE_OFFHOOK -> {}
                 TelephonyManager.EXTRA_STATE_IDLE -> {
                     if (incomingNumber != null && isCreatePushUp){
-                        val formattedIncoming = formatE164NumberRU(incomingNumber)
-                        val user = findUserByPhone(context, formattedIncoming)
-                        val intentOnPushUpClick = createIntent(context, user, true)
+                        val searcher = Search(context)
+                        val formattedIncoming = searcher.formatE164NumberRU(incomingNumber)
+                        val user = searcher.findUserByPhone(formattedIncoming)
+                        val overlayCreator = OverlayCreator(context)
+                        val intentOnPushUpClick = overlayCreator.createIntent(user, true)
                         if (user.isSpam)
                             BlockNotification(context, intentOnPushUpClick, user).notify(delayNotificationTime)
                     }
@@ -77,103 +85,11 @@ class PhoneStateReceiver : BroadcastReceiver() {
         }
 
     }
-    fun formatE164NumberRU(number : String) : String{
-        return formatE164Number(number, "RU")
-    }
-
-    fun formatE164Number(phNum: String, countryCode: String): String {
-        return PhoneNumberUtils.formatNumberToE164(phNum, countryCode) ?: phNum
-    }
-
-    private fun findUserByPhone(context : Context, number : String) : PhoneInfo {
-        val db = PhoneLogDBHelper(context)
-        return db.findPhoneByNumber(number) ?: PhoneInfo(number = number)
-    }
-
-
-    private fun createIntent(context: Context, user: PhoneInfo, isDisplayButtons : Boolean) : Intent{
-        val mIntent = Intent(context, OverlayActivity::class.java)
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-        mIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-
-        mIntent.putExtra("user", user)
-        mIntent.putExtra("is_display_buttons", isDisplayButtons)
-        return mIntent
-    }
 
     private fun showNotification(context: Context, phone: PhoneLogInfo){
-        BlockNotification(context, createIntent(context, phone.toPhoneInfo(), true), phone.toPhoneInfo()).createNotification()
+        val overlayCreator = OverlayCreator(context)
+        val intent = overlayCreator.createIntent(phone.toPhoneInfo(), true)
+        BlockNotification(context, intent, phone.toPhoneInfo()).createNotification()
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun startPhoneDetection(context: Context, incomingNumber : String) : PhoneLogInfo {
-
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val timeout = sharedPreferences.getInt("detection_delay_seekbar", 5)
-        val isNetworkOnly = sharedPreferences.getBoolean("use_only_network_info",false)
-        val noCacheEmpty = sharedPreferences.getBoolean("no_cache_empty_phones", true)
-
-        val db = PhoneLogDBHelper(context)
-
-        val date = SimpleDateFormat("yyyy.MM.dd").format(Date())
-        val time = SimpleDateFormat("HH:mm:ss").format(Date())
-
-        val user: PhoneLogInfo = if (isNetworkOnly){
-            findUserByNetwork(context, incomingNumber, timeout, time, date)
-        }
-        else{
-            val foundUser : PhoneInfo? = db.findPhoneByNumber(incomingNumber)
-
-            if (foundUser != null && !foundUser.isDefault()) {
-                PhoneLogInfo(foundUser, time, date)
-            }
-            else{
-                val foundUserNetwork = findUserByNetwork(context, incomingNumber, timeout, time, date)
-
-                if (!foundUserNetwork.toPhoneInfo().isDefault()){
-                    foundUserNetwork
-                }
-                else {
-                    PhoneLogInfo(
-                        number = incomingNumber,
-                        date = date,
-                        time = time
-                    )
-                }
-            }
-        }
-
-        if (!noCacheEmpty || !user.toPhoneInfo().isDefault()) {
-            db.insertPhone(user)
-        }
-        return user
-    }
-
-    private fun findUserByNetwork(context : Context, number : String, timeout : Int, time : String, date : String) : PhoneLogInfo {
-        val nebUser = NeberitrubkuAPI(number, timeout).getUser()
-        val getUser = GetContactAPI(context, timeout).getAllByPhone(number)
-
-        var resultUser =
-        if (nebUser.isDefault() && !getUser.isDefault()){
-            getUser
-        }
-        else if (!nebUser.isDefault() && getUser.isDefault()){
-            nebUser
-        }
-        else if (!nebUser.isDefault() && nebUser.isSpam){
-            nebUser
-        }
-        else{
-            getUser
-        }
-
-        return PhoneLogInfo(
-            resultUser,
-            time = time,
-            date = date
-        )
-    }
 }
