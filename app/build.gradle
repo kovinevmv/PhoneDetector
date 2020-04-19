@@ -38,5 +38,5 @@ dependencies {
     implementation("org.jsoup:jsoup:1.11.3")
     implementation('com.googlecode.libphonenumber:libphonenumber:8.11.5')
     implementation('com.github.kittinunf.fuel:fuel:2.2.1')
-
+    implementation('com.github.AnyChart:AnyChart-Android:1.1.2')
 }

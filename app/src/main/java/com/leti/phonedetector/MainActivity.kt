@@ -10,11 +10,9 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -44,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        //db.fillSampleData()
+        db.fillSampleData()
 
         createSharedPref()
         createRecycleView()
@@ -91,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         mSearchView.queryHint = "Search"
         mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                mSearchView.clearFocus();
+                mSearchView.clearFocus()
                 val foundPhones = db.findPhonesByQuery(query)
 
                 if (foundPhones.isEmpty()){
@@ -162,6 +160,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.item_menu_option_is_show_spam -> {clickedOnShowSpam(item); true}
             R.id.item_menu_option_is_not_show_spam -> {clickedOnShowNotSpam(item); true}
+            R.id.item_menu_option_statistics -> {clickedOnStatistics(); true}
             R.id.item_menu_option_setting -> {clickedOnSetting(); true}
             else -> false
         }
@@ -194,6 +193,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun clickedOnStatistics(){
+        /**
+         * Redirect on Statistics Activity
+         */
+        val mIntent = Intent(this, StatisticsActivity::class.java)
+        startActivity(mIntent)
+    }
 
     private fun clickedOnSetting(){
         /**

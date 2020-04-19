@@ -24,6 +24,10 @@
     </group>
 
     <item
+        android:id="@+id/item_menu_option_statistics"
+        android:title="@string/menu_option_statistics"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/item_menu_option_setting"
         android:title="@string/menu_option_setting"
         app:showAsAction="never" />
