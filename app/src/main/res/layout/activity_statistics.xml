@@ -1,27 +1,73 @@
-<ScrollView
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
 
 
     <LinearLayout
-        android:id="@+id/stats_linear"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.anychart.AnyChartView
-            android:id="@+id/any_chart_spam"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <com.anychart.AnyChartView
-            android:id="@+id/any_chart_number"
+            <ProgressBar
+                android:id="@+id/progress_bar_chart_spam"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <com.anychart.AnyChartView
+                android:id="@+id/chart_spam"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_weight="1">
+
+            </com.anychart.AnyChartView>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
+            <ProgressBar
+                android:id="@+id/progress_bar_chart_pie_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
 
+            <com.anychart.AnyChartView
+                android:id="@+id/chart_pie_top"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progress_bar_chart_word_cloud"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <com.anychart.AnyChartView
+                android:id="@+id/chart_word_cloud"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_weight="1" />
+        </LinearLayout>
     </LinearLayout>
+
+
 </ScrollView>
