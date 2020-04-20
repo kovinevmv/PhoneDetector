@@ -22,7 +22,7 @@ android {
         }
     }
     testOptions {
-        animationsDisabled = true
+        animationsDisabled = false
         unitTests {
             includeAndroidResources = true
         }

@@ -1,39 +1,30 @@
 package com.leti.phonedetector
 
 import android.content.Context
+import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
-import android.widget.SeekBar
 import android.widget.TextView
-import androidx.appcompat.widget.SearchView
-import androidx.preference.Preference
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.*
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
-import androidx.test.espresso.matcher.PreferenceMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
-import com.leti.phonedetector.MainActivity
-import com.leti.phonedetector.R
 import com.leti.phonedetector.database.PhoneLogDBHelper
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
-import org.hamcrest.core.IsInstanceOf.instanceOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -108,8 +99,17 @@ class UITest {
             )
         onView(withId(R.id.overlay_layout)).check(matches(isDisplayed()))
         onView(withText("OK")).check(matches(isDisplayed()))
-        pressBack()
-        pressBack()
+        Espresso.pressBack()
+        Espresso.pressBack()
+    }
+
+    @Test
+    fun testSearchNotFound() {
+        onView(withId(R.id.action_search)).perform(click())
+        onView(withId(R.id.search_src_text)).perform(typeText("+79291045342"))
+        onView(withId(R.id.search_src_text)).perform(pressKey(KeyEvent.KEYCODE_ENTER))
+        onView(withText("No")).perform(click())
+        Espresso.pressBack()
     }
 
     @Test
@@ -137,7 +137,7 @@ class UITest {
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(actionOnItem<RecyclerView.ViewHolder>(
                 hasDescendant(withText(R.string.always_network)), click()))
-        pressBack()
+        Espresso.pressBack()
     }
 
     private fun getRVcount(): Int {
