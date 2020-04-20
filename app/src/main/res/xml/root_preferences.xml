@@ -20,6 +20,7 @@
     <PreferenceCategory app:title="@string/search_title">
 
         <SeekBarPreference
+            android:id="@+id/detection_timeout_slider"
             android:defaultValue="5"
             android:key="detection_delay_seekbar"
             android:max="40"
