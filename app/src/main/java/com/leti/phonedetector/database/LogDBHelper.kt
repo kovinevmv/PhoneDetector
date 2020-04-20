@@ -30,7 +30,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
                 "+79992295999",
                 false,
                 date = "2020.01.01",
-                time = "20:01"
+                time = "20:01:56"
             ),
             PhoneLogInfo(
                 "Сбербанк",
@@ -38,21 +38,21 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
                 true,
                 tags = arrayOf("Sberbank", "Постоянные звонки", "Мошенники"),
                 date = "2020.02.01",
-                time = "20:01"
+                time = "20:01:34"
             ),
             PhoneLogInfo(
                 "Pizza",
                 "+79992295997",
                 false,
                 date = "2020.01.01",
-                time = "20:02"
+                time = "20:02:55"
             ),
             PhoneLogInfo(
                 "Citron",
                 "+79992295996",
                 false,
                 date = "2020.02.01",
-                time = "10:01"
+                time = "10:01:11"
             )
         )
 
@@ -96,7 +96,7 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
             Log.d(LOG_TAG_VERBOSE, "Inside insertPhone: foundUser is not null")
             when {
                 phone.toPhoneInfo().isDefault() -> {
-                    Log.d(LOG_TAG_VERBOSE, "Inside insertPhone: passed phone is Default")
+                    Log.d(LOG_TAG_VERBOSE, "Inside insertPhone: a passed phone is Default")
                     isInsertInfo = false
                 }
                 foundUser == phone.toPhoneInfo() -> {
