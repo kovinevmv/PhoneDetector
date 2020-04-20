@@ -159,7 +159,7 @@ class StatisticsActivity : AppCompatActivity() {
 
 
         pie.data(data)
-        pie.title("Spam Call Pie Chart")
+        pie.title("Incoming Call Pie Chart")
         pie.labels().position("outside")
 
 
@@ -180,7 +180,7 @@ class StatisticsActivity : AppCompatActivity() {
 
         val tagCloud = AnyChart.tagCloud()
 
-        tagCloud.title("World Population")
+        tagCloud.title("Call Frequency Names")
 
         val ordinalColor = OrdinalColor.instantiate()
         ordinalColor.colors(
