@@ -28,5 +28,4 @@ jobs:
 
     - name: Unit tests
       run: |
-        cd app/
         bash ./gradlew test --stacktrace
