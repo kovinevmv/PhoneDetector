@@ -28,5 +28,5 @@ jobs:
 
     - name: Unit tests
       run: |
-        cd philsApp/
+        cd app/
         bash ./gradlew test --stacktrace
