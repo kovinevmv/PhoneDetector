@@ -94,8 +94,8 @@ class MainActivity : AppCompatActivity() {
 
                 if (foundPhones.isEmpty()){
                     val builder = AlertDialog.Builder(this@MainActivity)
-                    builder.setTitle("Nothing found.")
-                    builder.setMessage("Are you want to make search for phone number: \"${query}\"?")
+                    builder.setTitle("Nothing found in log.")
+                    builder.setMessage("Do you want to make search for phone number: \"${query}\" using API?")
 
                     builder.setPositiveButton("Yes"){ dialog, _ ->
                         val searcher = Search(applicationContext)
