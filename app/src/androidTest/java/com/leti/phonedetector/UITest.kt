@@ -80,6 +80,7 @@ class UITest {
                     )
                 )
             onView(withId(R.id.overlay_layout)).check(matches(isDisplayed()))
+            onView(withText(R.string.button_add_contact)).check(matches(isDisplayed()))
             onView(withId(R.id.overlay_button_exit)).check(matches(isDisplayed()))
         }
     }
@@ -97,9 +98,9 @@ class UITest {
                 )
             )
         onView(withId(R.id.overlay_layout)).check(matches(isDisplayed()))
+        onView(withText(R.string.button_add_contact)).check(matches(isDisplayed()))
         onView(withId(R.id.overlay_button_exit)).check(matches(isDisplayed()))
-        Espresso.pressBack()
-        Espresso.pressBack()
+        onView(withId(R.id.overlay_button_exit)).perform(click())
     }
 
     @Test
