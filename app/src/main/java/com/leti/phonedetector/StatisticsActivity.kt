@@ -46,6 +46,13 @@ class StatisticsActivity : AppCompatActivity() {
         return true
     }
 
+    private fun dateToMapKey(month : Int, year : Int) : String{
+        val monthString = month.toString().padStart(2, '0')
+        val yearString = year.toString()
+
+        return "${yearString}.${monthString}"
+    }
+
     private fun createSpamChart() {
         val spamView: AnyChartView = findViewById(R.id.chart_spam)
         APIlib.getInstance().setActiveAnyChartView(chart_spam)
@@ -56,27 +63,32 @@ class StatisticsActivity : AppCompatActivity() {
 
         val calendar: Calendar = Calendar.getInstance()
         val currentYear: Int = calendar.get(Calendar.YEAR)
-        val currentMonth: Int = calendar.get(Calendar.MONTH)
+        val currentMonth: Int = calendar.get(Calendar.MONTH) + 1
 
-        var phonesMap = mutableMapOf<String, Int>()
+        val phonesMap = mutableMapOf<String, Int>()
 
-        if (currentMonth == 11) {
-            for (i in 1..12) {
-                phonesMap[currentYear.toString() + '.' + i.toString().padStart(2, '0')] = 0
+        if (currentMonth == 12) {
+            // Full year
+            for (month in 1..12) {
+                phonesMap[dateToMapKey(month, currentYear)] = 0
             }
         } else {
-            for (i in (currentMonth + 2)..12) {
-                phonesMap[(currentYear - 1).toString() + '.' + i.toString().padStart(2, '0')] = 0
+            // Past year
+            for (month in (currentMonth + 1)..12) {
+                phonesMap[dateToMapKey(month, currentYear - 1)] = 0
             }
-            for (i in 1..(currentMonth + 1)) {
-                phonesMap[currentYear.toString() + '.' + i.toString().padStart(2, '0')] = 0
+            // Current year
+            for (month in 1..(currentMonth)) {
+                phonesMap[dateToMapKey(month, currentYear)] = 0
             }
         }
 
         val innerPhones = phones.filter { p -> p.isSpam }
         for (phone in innerPhones) {
             val date = phone.date.substring(0, 7)
-            phonesMap[date] = phonesMap.getOrPut(date) { 1 } + 1
+
+            if (phonesMap.containsKey(date))
+                phonesMap[date] = phonesMap.getOrPut(date) { 1 } + 1
         }
 
         val spamData: MutableList<DataEntry> = ArrayList()
