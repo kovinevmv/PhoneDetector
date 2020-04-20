@@ -293,53 +293,6 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
 
     @SuppressLint("Recycle")
     @Throws(SQLiteConstraintException::class)
-    fun getStatisticsPhoneLog(): ArrayList<PhoneLogInfo> {
-        Log.d(LOG_TAG_VERBOSE, "Call getStatisticsPhoneLog")
-
-        val phones = ArrayList<PhoneLogInfo>()
-        val db = writableDatabase
-
-        try {
-            // TODO fix sort
-            val cursor = db.rawQuery("SELECT * FROM ${DBContract.PhoneLogEntry.TABLE_NAME}",null)
-
-            if (cursor!!.moveToFirst()) {
-                while (!cursor.isAfterLast) {
-                    val number = cursor.getString(cursor.getColumnIndex(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_NUMBER))
-                    val time = cursor.getString(cursor.getColumnIndex(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME))
-                    val date = cursor.getString(cursor.getColumnIndex(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE))
-
-                    val phoneInfo : PhoneInfo? = this.findPhoneByNumber(number)
-                    if (phoneInfo != null)
-                        phones.add(
-                            PhoneLogInfo(
-                                phoneInfo,
-                                time,
-                                date
-                            )
-                        )
-
-
-                    cursor.moveToNext()
-                }
-            }
-
-        } catch (e: SQLiteException) {
-            Log.e(LOG_TAG_ERROR, "Error in readPhoneLog: $e")
-            db.execSQL(SQL_CREATE_ENTRIES)
-            db.close()
-            return phones
-        }
-
-        db.close()
-        phones.forEach{
-            Log.d("STATS LOGS", it.date)
-        }
-        return phones
-    }
-
-    @SuppressLint("Recycle")
-    @Throws(SQLiteConstraintException::class)
     fun findPhonesByQuery(query : String) : ArrayList<PhoneLogInfo>{
         // TODO SQL Injection
         Log.d(LOG_TAG_VERBOSE, "Call findPhonesByQuery with param query: '$query'")
