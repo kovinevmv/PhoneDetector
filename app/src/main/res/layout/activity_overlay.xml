@@ -58,6 +58,8 @@
                     android:id="@+id/overlay_button_exit"
                     android:layout_width="25dip"
                     android:layout_height="25dip"
+                    android:maxHeight="25dip"
+                    android:maxWidth="25dip"
                     android:textColor="#FFF"
                     android:background="@android:drawable/ic_menu_close_clear_cancel"
                     android:gravity="center_vertical|center_horizontal"/>

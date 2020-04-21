@@ -113,6 +113,5 @@ class OverlayActivity : Activity() {
 
     private fun disableActionButton(){
         overlay_button_action.visibility = View.GONE
-        overlay_button_exit.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
     }
 }
