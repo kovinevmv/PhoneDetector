@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.content_main.*
 // +79858123876 - Профиль с фото
 // +74995505479 - Эльдорадо Спам
 // +79112770029 - Марк Маркович
+// +79992294383 - Спам
 
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
