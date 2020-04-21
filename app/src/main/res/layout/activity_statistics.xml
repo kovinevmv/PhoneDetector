@@ -19,7 +19,8 @@
                 android:id="@+id/progress_bar_chart_spam"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:scaleX="0.2"
+                android:scaleY="0.2" />
 
             <com.anychart.AnyChartView
                 android:id="@+id/chart_spam"
@@ -40,7 +41,8 @@
                 android:id="@+id/progress_bar_chart_pie_top"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:scaleX="0.2"
+                android:scaleY="0.2" />
 
             <com.anychart.AnyChartView
                 android:id="@+id/chart_pie_top"
@@ -59,7 +61,8 @@
                 android:id="@+id/progress_bar_chart_word_cloud"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:scaleX="0.2"
+                android:scaleY="0.2" />
 
             <com.anychart.AnyChartView
                 android:id="@+id/chart_word_cloud"
