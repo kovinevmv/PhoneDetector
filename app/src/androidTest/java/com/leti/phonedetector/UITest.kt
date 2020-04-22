@@ -7,14 +7,13 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.*
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItem
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -55,7 +54,7 @@ class UITest {
         onView(withText("Show spam")).perform(click())
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Show not spam")).perform(click())
-        onView(allOf(ViewMatchers.withId(R.id.log_layout), isDisplayed()))
+        onView(allOf(withId(R.id.log_layout), isDisplayed()))
     }
 
     @Test
@@ -109,7 +108,7 @@ class UITest {
         onView(withId(R.id.search_src_text)).perform(typeText("+79291045342"))
         onView(withId(R.id.search_src_text)).perform(pressKey(KeyEvent.KEYCODE_ENTER))
         onView(withText("No")).perform(click())
-        Espresso.pressBack()
+        ViewActions.pressBack()
     }
 
     @Test
@@ -137,7 +136,7 @@ class UITest {
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(actionOnItem<RecyclerView.ViewHolder>(
                 hasDescendant(withText(R.string.always_network)), click()))
-        Espresso.pressBack()
+        ViewActions.pressBack()
     }
 
     private fun getRVcount(): Int {
@@ -157,16 +156,12 @@ fun hasValueEqualTo(content: String): Any {
             if (view !is TextView && view !is EditText) {
                 return false
             }
-            if (view != null) {
-                val text: String
-                text = if (view is TextView) {
-                    view.text.toString()
-                } else {
-                    (view as EditText).text.toString()
-                }
-                return text.equals(content, ignoreCase = true)
+            val text: String = if (view is TextView) {
+                view.text.toString()
+            } else {
+                (view as EditText).text.toString()
             }
-            return false
+            return text.equals(content, ignoreCase = true)
         }
     }
 }
