@@ -108,7 +108,7 @@ class StatisticsActivity : AppCompatActivity() {
             .format("{%Value} calls")
 
         spam.animation(true)
-        spam.title("Spam calls for 12 latest months").enabled(true)
+        spam.title("Spam call for the last 12 months").enabled(true)
 
         spam.yScale().minimum(0.0)
         spam.yScale().ticks().allowFractional(false)
