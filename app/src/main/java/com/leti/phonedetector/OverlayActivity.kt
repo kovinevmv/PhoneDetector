@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.leti.phonedetector.bitmap.BitmapReader
 import com.leti.phonedetector.model.DEFAULT_IMAGE
 import com.leti.phonedetector.model.PhoneInfo
 import kotlinx.android.synthetic.main.activity_overlay.*
@@ -86,18 +87,7 @@ class OverlayActivity : Activity() {
                 contactIntent.type = ContactsContract.RawContacts.CONTENT_TYPE
 
                 if (user.image != DEFAULT_IMAGE){
-                    val bit = BitmapFactory.decodeFile(user.image)
-                    val data = ArrayList<ContentValues>()
-
-                    val stream = ByteArrayOutputStream()
-                    bit.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                    val byteArray: ByteArray = stream.toByteArray()
-                    bit.recycle()
-
-                    val row = ContentValues()
-                    row.put(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)
-                    row.put(ContactsContract.CommonDataKinds.Photo.PHOTO, byteArray)
-                    data.add(row)
+                    val data = BitmapReader().readFile(user.image)
                     contactIntent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, data)
                 }
 
