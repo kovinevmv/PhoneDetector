@@ -36,10 +36,12 @@ class SettingsActivity : AppCompatActivity() {
         private val REQUEST_CODE_READ_CALL_LOG = 1
         private val REQUEST_CODE_READ_OVERLAY = 2
         private val REQUEST_CODE_CONTACTS = 3
+        private val REQUEST_CODE_CALL = 4
 
 
         private lateinit var activatePhoneDetectionSwitch : SwitchPreferenceCompat
         private lateinit var disableSearchInContactsSwitch : SwitchPreferenceCompat
+        private lateinit var makeCallOnSwipeSwitch : SwitchPreferenceCompat
         private lateinit var dropTables : Preference
 
 
@@ -48,15 +50,16 @@ class SettingsActivity : AppCompatActivity() {
 
             activatePhoneDetectionSwitch = preferenceScreen.findPreference("activate_phone_detection_switch")!!
             disableSearchInContactsSwitch = preferenceScreen.findPreference("disable_search_in_contacts_switch")!!
+            makeCallOnSwipeSwitch =  preferenceScreen.findPreference("make_call_on_swipe")!!
             dropTables = preferenceScreen.findPreference("drop_table")!!
 
             dropTables.setOnPreferenceClickListener {
-                val builder = AlertDialog.Builder(context!!)
+                val builder = AlertDialog.Builder(requireContext())
                 builder.setTitle("Clean all log and phone information")
                 builder.setMessage("This action cannot be undone. Information from logs and all detected numbers will be deleted")
 
                 builder.setPositiveButton(android.R.string.yes) { _, _ ->
-                    val db = PhoneLogDBHelper(context!!)
+                    val db = PhoneLogDBHelper(requireContext())
                     db.cleanTables()
                     Toast.makeText(context,
                         "Database was cleaned", Toast.LENGTH_SHORT).show()
@@ -65,14 +68,14 @@ class SettingsActivity : AppCompatActivity() {
                 builder.setNegativeButton(android.R.string.no) { _, _ ->}
                 builder.show()
 
-                val db = TokenDBHelper(context!!)
+                val db = TokenDBHelper(requireContext())
                 val tokens = db.getTokens()
 
-                var toastText = mutableListOf("Tokens info:")
+                val toastText = mutableListOf("Tokens info:")
                 for (token in tokens){
                     toastText.add("Token: ${token.token.take(10)}..., Count: ${token.remainCount}")
                 }
-                Toast.makeText(context!!, toastText.joinToString("\n"), Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), toastText.joinToString("\n"), Toast.LENGTH_LONG).show()
 
                 return@setOnPreferenceClickListener true
             }
@@ -90,6 +93,14 @@ class SettingsActivity : AppCompatActivity() {
                 return@setOnPreferenceClickListener true
             }
 
+            makeCallOnSwipeSwitch.setOnPreferenceClickListener {
+                if (makeCallOnSwipeSwitch.isChecked){
+                    callCallPermission()
+                }
+                return@setOnPreferenceClickListener true
+            }
+
+
         }
 
         private fun checkCallLogPermissions() : Array<String>{
@@ -104,6 +115,15 @@ class SettingsActivity : AppCompatActivity() {
             return arrayList.toTypedArray()
         }
 
+        private  fun checkCallPermissions() : Array<String>{
+            val arrayList = ArrayList<String>()
+
+            when(context?.let { checkSelfPermission(it, android.Manifest.permission.CALL_PHONE) }){
+                PackageManager.PERMISSION_DENIED -> arrayList.add(android.Manifest.permission.CALL_PHONE)
+            }
+            return arrayList.toTypedArray()
+        }
+
         private fun checkContactPermissions() : Array<String>{
             val arrayList = ArrayList<String>()
 
@@ -111,6 +131,13 @@ class SettingsActivity : AppCompatActivity() {
                 PackageManager.PERMISSION_DENIED -> arrayList.add(android.Manifest.permission.READ_CONTACTS)
             }
             return arrayList.toTypedArray()
+        }
+
+        private fun callCallPermission() {
+            val arrayList = checkCallPermissions()
+            if (arrayList.isNotEmpty()){
+                requestPermissions(arrayList, REQUEST_CODE_CALL)
+            }
         }
 
         private fun callContactPermission(){
@@ -150,6 +177,14 @@ class SettingsActivity : AppCompatActivity() {
                 if (arrayList.isNotEmpty()){
                     Toast.makeText(context, "Not permission granted. Search all phones", Toast.LENGTH_SHORT).show()
                     disableSearchInContactsSwitch.isChecked = false
+                }
+            }
+
+            if (requestCode == REQUEST_CODE_CALL){
+                val arrayList = checkCallPermissions()
+                if (arrayList.isNotEmpty()){
+                    Toast.makeText(context, "Not permission granted. Can't call :(", Toast.LENGTH_SHORT).show()
+                    makeCallOnSwipeSwitch.isChecked = false
                 }
             }
         }

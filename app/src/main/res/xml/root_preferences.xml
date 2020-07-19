@@ -15,6 +15,12 @@
             app:summary="@string/search_in_contacts_description"
             app:title="@string/search_in_contacts" />
 
+        <SwitchPreferenceCompat
+            app:key="make_call_on_swipe"
+            app:defaultValue="Off"
+            app:summary="@string/make_call_on_swipe_text"
+            app:title="@string/make_call_on_swipe" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/search_title">

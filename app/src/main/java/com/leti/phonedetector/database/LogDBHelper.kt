@@ -154,6 +154,21 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
     }
 
     @Throws(SQLiteConstraintException::class)
+    fun deleteByPhoneInfo(phone: PhoneLogInfo): Boolean {
+        Log.d(LOG_TAG_VERBOSE, "Call deleteByPhoneInfo with param number: '$phone'")
+
+        val db = writableDatabase
+
+        // TODO SQL Injection
+        db.execSQL("DELETE FROM ${DBContract.PhoneLogEntry.TABLE_NAME} WHERE ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_NUMBER} = '${phone.number}' AND ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME} = '${phone.time}' AND ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} = '${phone.date}'")
+
+        // TODO fix delete tags
+        db.execSQL("DELETE FROM ${DBContract.PhoneLogTagsEntry.TABLE_NAME} WHERE ${DBContract.PhoneLogTagsEntry.COLUMN_PHONE_LOG_TAGS_NUMBER} = '$phone'")
+        db.close()
+        return true
+    }
+
+    @Throws(SQLiteConstraintException::class)
     fun deletePhoneFull(number : String) : Boolean{
         Log.d(LOG_TAG_VERBOSE, "Call deletePhoneFull with param number: '$number'")
 

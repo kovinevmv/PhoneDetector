@@ -37,5 +37,7 @@
     <string name="use_getcontact">GetContact</string>
     <string name="use_neberitrubku_description">Use neberitrubku.ru for search</string>
     <string name="use_neberitrubku">Neberitrubku.ru</string>
+    <string name="make_call_on_swipe_text">Access to the call permission list is required</string>
+    <string name="make_call_on_swipe">Call on left swipe</string>
 
 </resources>
