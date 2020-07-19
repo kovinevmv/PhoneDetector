@@ -53,7 +53,8 @@ class Search(private val context: Context){
 
 
     @SuppressLint("SimpleDateFormat")
-    fun startPhoneDetection(incomingNumber : String) : PhoneLogInfo {
+    fun startPhoneDetection(incomingNumberRaw : String) : PhoneLogInfo {
+        val incomingNumber = this.formatE164NumberRU(incomingNumberRaw)
         val timeout = sharedPreferences.getInt("detection_delay_seekbar", 5)
         val isNetworkOnly = sharedPreferences.getBoolean("use_only_network_info",false)
         val noCacheEmpty = sharedPreferences.getBoolean("no_cache_empty_phones", true)
