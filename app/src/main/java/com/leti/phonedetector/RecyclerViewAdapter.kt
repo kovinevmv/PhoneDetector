@@ -37,7 +37,7 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
         }
         holder.nameView.text = if (phone.name.length < 25) phone.name else phone.name.take(25) + "..."
         holder.numberView.text = phone.number
-        holder.timeView.text = phone.time
+        holder.timeView.text = phone.time.take(2 + 1 + 2)
         holder.dateView.text = phone.date
         if (phone.image != DEFAULT_IMAGE) holder.imageView.setImageBitmap(BitmapFactory.decodeFile(phone.image))
 
@@ -71,7 +71,6 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
         internal val imageView: ImageView = view.findViewById(R.id.log_element_user_image) as ImageView
         internal val nameView: TextView = view.findViewById(R.id.log_element_text_name) as TextView
         internal val numberView: TextView = view.findViewById(R.id.log_element_text_number) as TextView
-        internal val checkBox: CheckBox = view.findViewById(R.id.checkbox_) as CheckBox
         private val logLayout : LinearLayout = view.findViewById(R.id.log_layout) as LinearLayout
         internal val timeView : TextView = view.findViewById(R.id.log_element_text_time) as TextView
         internal val dateView : TextView = view.findViewById(R.id.log_element_text_date) as TextView

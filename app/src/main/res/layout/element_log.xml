@@ -8,75 +8,93 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <CheckBox
-        android:id="@+id/checkbox_"
-        android:layout_width="wrap_content"
-        android:visibility="gone"
-        android:layout_height="match_parent" />
-
-    <ImageView
-        android:id="@+id/log_element_user_image"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="8dp"
-        android:src="@drawable/ic_spam" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/overlay_margin_size">
+        android:background="@android:color/white">
 
-        <TextView
-            android:id="@+id/log_element_text_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="1dp"
-            android:text="+78005553535"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/log_element_text_name"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLength="22"
-            android:maxLines="1"
-            android:padding="1dp"
-            android:text="Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст "
-            android:textColor="#5d5d5d"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:layout_alignParentLeft="true">
+
+            <ImageView
+                android:id="@+id/log_element_user_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_spam" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/overlay_margin_size">
+
+                <TextView
+                    android:id="@+id/log_element_text_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="145dp"
+                    android:padding="1dp"
+                    android:text="+78005553535"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/log_element_text_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="25"
+                    android:maxLines="1"
+                    android:padding="1dp"
+                    android:text="Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст Текст "
+                    android:textColor="#5d5d5d"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/overlay_margin_size">
+
+                <TextView
+                    android:id="@+id/log_element_text_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="1dp"
+
+                    android:text="16:00"
+                    android:textAlignment="viewEnd"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/log_element_text_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2020/12/01"
+                    android:textAlignment="viewEnd" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
 
     <Space
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/overlay_margin_size">
-
-        <TextView
-            android:id="@+id/log_element_text_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="1dp"
-            android:text="16:00:00"
-            android:textAlignment="viewEnd"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/log_element_text_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2020/12/01"
-            android:textAlignment="viewEnd" />
-    </LinearLayout>
 
 </LinearLayout>

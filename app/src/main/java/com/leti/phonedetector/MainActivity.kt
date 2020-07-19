@@ -130,6 +130,7 @@ class MainActivity : AppCompatActivity() {
         val mSearch = menu.findItem(R.id.action_search)
         val mSearchView = mSearch.actionView as SearchView
         mSearchView.queryHint = "Search"
+        mSearchView.setMaxWidth(Integer.MAX_VALUE);
         mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 mSearchView.clearFocus()
