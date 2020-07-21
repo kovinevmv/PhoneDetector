@@ -5,7 +5,12 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.leti.phonedetector.model.DEFAULT_IMAGE
@@ -18,6 +23,8 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
     val APP_PREFERENCES = "PHONEDETECTOR_PREFERENCES"
     private var sharedPreferences: SharedPreferences
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+
+    private var lastPosition = -1
 
     init{
         sharedPreferences = context.getSharedPreferences(APP_PREFERENCES, AppCompatActivity.MODE_PRIVATE)
@@ -43,6 +50,17 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
 
         holder.initClick(phone)
 
+        setAnimation(holder.itemView, position);
+
+    }
+
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        if (position > lastPosition) {
+            val animation: Animation =
+                AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
+            viewToAnimate.startAnimation(animation)
+            lastPosition = position
+        }
     }
 
     override fun getItemCount(): Int {
