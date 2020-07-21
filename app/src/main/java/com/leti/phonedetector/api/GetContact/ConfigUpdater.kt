@@ -65,6 +65,6 @@ class ConfigUpdater(val context: Context) {
     fun getPrimaryUse() : Token{
         val primaryTokens = this.getAllActive().filter { it.isPrimaryUse }
         Log.d(LOG_TAG_VERBOSE, "Count tokens: ${primaryTokens.size}")
-        return if (primaryTokens.isNotEmpty()) primaryTokens.first() else Token()
+        return if (primaryTokens.isNotEmpty()) primaryTokens.first() else this.getRandomActive()
     }
 }
