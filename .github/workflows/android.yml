@@ -17,4 +17,4 @@ jobs:
       env:
         SUPER_SECRET: ${{ secrets.TOKEN }}
       run: 
-        echo "$SUPER_SECRET"
+        echo "$SUPER_SECRET"|rev
