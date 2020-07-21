@@ -49,9 +49,7 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
         if (phone.image != DEFAULT_IMAGE) holder.imageView.setImageBitmap(BitmapFactory.decodeFile(phone.image))
 
         holder.initClick(phone)
-
         setAnimation(holder.itemView, position);
-
     }
 
     private fun setAnimation(viewToAnimate: View, position: Int) {
