@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -20,6 +19,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.preference.PreferenceManager
@@ -303,9 +303,11 @@ class MainActivity : AppCompatActivity() {
         val isDarkMode = sharedPreferencesGlobal.getBoolean("dark_mode", false)
 
         if (isDarkMode){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES;
         } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO;
         }
         delegate.applyDayNight()
     }

@@ -109,6 +109,7 @@ class SettingsActivity : AppCompatActivity() {
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
+                Toast.makeText(this@SettingsFragment.requireContext(), "Application may need to be restarted to apply the theme", Toast.LENGTH_LONG).show()
 
                 return@setOnPreferenceClickListener true
             }

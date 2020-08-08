@@ -1,26 +1,26 @@
 package com.leti.phonedetector
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.*
-import android.graphics.Bitmap
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.leti.phonedetector.bitmap.BitmapReader
 import com.leti.phonedetector.model.DEFAULT_IMAGE
 import com.leti.phonedetector.model.PhoneInfo
 import kotlinx.android.synthetic.main.activity_overlay.*
-import java.io.ByteArrayOutputStream
 
 
-class OverlayActivity : Activity() {
+class OverlayActivity : AppCompatActivity() {
 
     private lateinit var user : PhoneInfo
 
