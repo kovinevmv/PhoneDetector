@@ -39,5 +39,8 @@
     <string name="use_neberitrubku">Neberitrubku.ru</string>
     <string name="make_call_on_swipe_text">Access to the call permission is required</string>
     <string name="make_call_on_swipe">Call on left swipe</string>
+    <string name="theme_header">Theme</string>
+    <string name="dark_mode_description">Turn on dark mode</string>
+    <string name="dark_mode">Dark mode</string>
 
 </resources>

@@ -1,5 +1,6 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorBackground">
 
     <PreferenceCategory app:title="@string/messages_header">
 
@@ -46,6 +47,14 @@
             app:summary="@string/use_neberitrubku_description"
             app:title="@string/use_neberitrubku" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/theme_header">
+        <SwitchPreferenceCompat
+            app:key="dark_mode"
+            app:defaultValue="false"
+            app:summary="@string/dark_mode_description"
+            app:title="@string/dark_mode" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/notification_header">

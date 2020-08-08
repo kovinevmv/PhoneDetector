@@ -8,9 +8,11 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import com.leti.phonedetector.database.PhoneLogDBHelper
 import com.leti.phonedetector.database.TokenDBHelper
@@ -43,7 +45,7 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var disableSearchInContactsSwitch : SwitchPreferenceCompat
         private lateinit var makeCallOnSwipeSwitch : SwitchPreferenceCompat
         private lateinit var dropTables : Preference
-
+        private lateinit var changeThemeSwitch : SwitchPreferenceCompat
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -52,6 +54,7 @@ class SettingsActivity : AppCompatActivity() {
             disableSearchInContactsSwitch = preferenceScreen.findPreference("disable_search_in_contacts_switch")!!
             makeCallOnSwipeSwitch =  preferenceScreen.findPreference("make_call_on_swipe")!!
             dropTables = preferenceScreen.findPreference("drop_table")!!
+            changeThemeSwitch = preferenceScreen.findPreference("dark_mode")!!
 
             dropTables.setOnPreferenceClickListener {
                 val builder = AlertDialog.Builder(requireContext())
@@ -100,7 +103,15 @@ class SettingsActivity : AppCompatActivity() {
                 return@setOnPreferenceClickListener true
             }
 
+            changeThemeSwitch.setOnPreferenceClickListener{
+                if (changeThemeSwitch.isChecked){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
 
+                return@setOnPreferenceClickListener true
+            }
         }
 
         private fun checkCallLogPermissions() : Array<String>{

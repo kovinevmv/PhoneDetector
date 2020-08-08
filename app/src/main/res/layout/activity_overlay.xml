@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/extraColorBackground"
     tools:context=".OverlayActivity">
 
     <LinearLayout
@@ -39,7 +40,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:orientation="vertical">
@@ -49,6 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Phone Number"
+                        android:textColor="@color/colorText"
                         android:textAlignment="center"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -60,7 +62,6 @@
                     android:layout_height="25dip"
                     android:maxHeight="25dip"
                     android:maxWidth="25dip"
-                    android:textColor="#FFF"
                     android:background="@android:drawable/ic_menu_close_clear_cancel"
                     android:gravity="center_vertical|center_horizontal"/>
             </LinearLayout>
@@ -70,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Phone Name"
+                android:textColor="@color/colorText"
                 android:textAlignment="center"
                 android:textSize="16sp" />
 
@@ -77,6 +79,7 @@
                 android:id="@+id/overlay_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/extraColorText"
                 android:text="Tags\nTags\nTags\nTags"
                 android:textAllCaps="false" />
 

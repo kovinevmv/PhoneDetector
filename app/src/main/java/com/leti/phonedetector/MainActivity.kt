@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -18,6 +19,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.preference.PreferenceManager
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         //db.fillSampleData()
-
+        setTheme()
         createSharedPref()
         createRecycleView()
         createSwipeRefresh()
@@ -113,7 +115,8 @@ class MainActivity : AppCompatActivity() {
          */
         sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
         editor = sharedPreferences.edit()
-
+        editor.putBoolean("is_use_query", false)
+        editor.apply()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -293,5 +296,17 @@ class MainActivity : AppCompatActivity() {
             channel.enableVibration(false)
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    private fun setTheme(){
+        val sharedPreferencesGlobal = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
+        val isDarkMode = sharedPreferencesGlobal.getBoolean("dark_mode", false)
+
+        if (isDarkMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+        delegate.applyDayNight()
     }
 }
