@@ -1,7 +1,9 @@
 package com.leti.phonedetector
 
 import android.os.Bundle
+import androidx.annotation.RawRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.anychart.APIlib
 import com.anychart.AnyChart
 import com.anychart.AnyChartView
@@ -21,6 +23,7 @@ import java.util.*
 class StatisticsActivity : AppCompatActivity() {
 
     private lateinit var phones: ArrayList<PhoneLogInfo>
+    private var isDarkMode: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,9 @@ class StatisticsActivity : AppCompatActivity() {
 
         title = "Statistics"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val sharedPreferencesGlobal = PreferenceManager.getDefaultSharedPreferences(this)
+        isDarkMode = sharedPreferencesGlobal.getBoolean("dark_mode", false)
 
         readDataBase()
 
@@ -46,6 +52,8 @@ class StatisticsActivity : AppCompatActivity() {
         return true
     }
 
+    fun getResourceAsText(@RawRes id: Int): String = resources.openRawResource(id).bufferedReader().use { it.readText() }
+
     private fun dateToMapKey(month : Int, year : Int) : String{
         val monthString = month.toString().padStart(2, '0')
         val yearString = year.toString()
@@ -57,6 +65,11 @@ class StatisticsActivity : AppCompatActivity() {
         val spamView: AnyChartView = findViewById(R.id.chart_spam)
         APIlib.getInstance().setActiveAnyChartView(chart_spam)
         spamView.setProgressBar(findViewById(R.id.progress_bar_chart_spam))
+
+        if (this.isDarkMode){
+            APIlib.getInstance().addJSLine(getResourceAsText(R.raw.darkglamour).trimIndent())
+            APIlib.getInstance().addJSLine("anychart.theme(anychart.themes.darkGlamour);")
+        }
 
         val spam = AnyChart.column()
 
@@ -134,6 +147,11 @@ class StatisticsActivity : AppCompatActivity() {
         val chart: AnyChartView = findViewById(R.id.chart_pie_top)
         APIlib.getInstance().setActiveAnyChartView(chart_pie_top)
 
+        if (this.isDarkMode){
+            APIlib.getInstance().addJSLine(getResourceAsText(R.raw.darkglamour).trimIndent())
+            APIlib.getInstance().addJSLine("anychart.theme(anychart.themes.darkGlamour);")
+        }
+
         chart.setProgressBar(findViewById(R.id.progress_bar_chart_pie_top));
 
         val pie = AnyChart.pie()
@@ -175,6 +193,11 @@ class StatisticsActivity : AppCompatActivity() {
     private fun createWordCloud() {
         val anyChartView: AnyChartView = findViewById(R.id.chart_word_cloud)
         APIlib.getInstance().setActiveAnyChartView(chart_word_cloud)
+
+        if (this.isDarkMode){
+            APIlib.getInstance().addJSLine(getResourceAsText(R.raw.darkglamour).trimIndent())
+            APIlib.getInstance().addJSLine("anychart.theme(anychart.themes.darkGlamour);")
+        }
 
         anyChartView.setProgressBar(findViewById(R.id.progress_bar_chart_word_cloud))
 
