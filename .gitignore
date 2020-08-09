@@ -87,3 +87,4 @@ lint/tmp/
 # Android Studio
 .idea/
 src/.idea/*
+app/release/output.json
