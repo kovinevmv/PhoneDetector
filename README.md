@@ -1,6 +1,6 @@
 # Phone Detector
 
-# Screenshots
+## Screenshots
 
 | | | |   
 :---:|:---:|:---:
