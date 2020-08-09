@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
-class DataBaseTest {
+class DBTest {
     private lateinit var db: PhoneLogDBHelper
 
     @Before
