@@ -9,15 +9,16 @@ const val DEFAULT_IS_SPAM_STATE = false
 const val DEFAULT_IMAGE = "empty"
 const val DEFAULT_TIME = "23:59:59"
 const val DEFAULT_DATE = "1970.01.01"
-val DEFAULT_TAGS : Array<String> = emptyArray()
+val DEFAULT_TAGS: Array<String> = emptyArray()
 
 // Information about phone number
-class PhoneInfo(val name: String = DEFAULT_NAME,
-                val number: String = DEFAULT_NUMBER,
-                val isSpam: Boolean = DEFAULT_IS_SPAM_STATE,
-                val tags: Array<String> = DEFAULT_TAGS,
-                val image: String = DEFAULT_IMAGE
-) : Parcelable{
+class PhoneInfo(
+    val name: String = DEFAULT_NAME,
+    val number: String = DEFAULT_NUMBER,
+    val isSpam: Boolean = DEFAULT_IS_SPAM_STATE,
+    val tags: Array<String> = DEFAULT_TAGS,
+    val image: String = DEFAULT_IMAGE
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
         parcel.readString().toString(),
@@ -26,12 +27,11 @@ class PhoneInfo(val name: String = DEFAULT_NAME,
         parcel.readString().toString()
     )
 
-    fun isDefault() : Boolean{
+    fun isDefault(): Boolean {
         return name == DEFAULT_NAME &&
                isSpam == DEFAULT_IS_SPAM_STATE &&
                tags.contentEquals(DEFAULT_TAGS) &&
                image == DEFAULT_IMAGE
-
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -85,18 +85,18 @@ class PhoneInfo(val name: String = DEFAULT_NAME,
     }
 }
 
-
 // Log element with info about phone number
-class PhoneLogInfo(val name: String = DEFAULT_NAME,
-                   val number: String = DEFAULT_NUMBER,
-                   val isSpam: Boolean = DEFAULT_IS_SPAM_STATE,
-                   val tags: Array<String> = DEFAULT_TAGS,
-                   val time: String = DEFAULT_TIME,
-                   val date: String = DEFAULT_DATE,
-                   val image: String = DEFAULT_IMAGE
-) : Parcelable{
+class PhoneLogInfo(
+    val name: String = DEFAULT_NAME,
+    val number: String = DEFAULT_NUMBER,
+    val isSpam: Boolean = DEFAULT_IS_SPAM_STATE,
+    val tags: Array<String> = DEFAULT_TAGS,
+    val time: String = DEFAULT_TIME,
+    val date: String = DEFAULT_DATE,
+    val image: String = DEFAULT_IMAGE
+) : Parcelable {
 
-    constructor(parcel: Parcel) : this( parcel.readString().toString(),
+    constructor(parcel: Parcel) : this(parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readByte() != 0.toByte(),
         parcel.createStringArray() as Array<String>,
@@ -107,7 +107,7 @@ class PhoneLogInfo(val name: String = DEFAULT_NAME,
     constructor(phoneInfo: PhoneInfo, time: String = DEFAULT_TIME, date: String = DEFAULT_DATE) :
             this(phoneInfo.name, phoneInfo.number, phoneInfo.isSpam, phoneInfo.tags, time, date, phoneInfo.image)
 
-    fun toPhoneInfo() : PhoneInfo {
+    fun toPhoneInfo(): PhoneInfo {
         return PhoneInfo(
             name,
             number,
@@ -117,7 +117,7 @@ class PhoneLogInfo(val name: String = DEFAULT_NAME,
         )
     }
 
-    fun isDefault() : Boolean{
+    fun isDefault(): Boolean {
         return this.toPhoneInfo().isDefault() && time == DEFAULT_TIME && date == DEFAULT_DATE
     }
 

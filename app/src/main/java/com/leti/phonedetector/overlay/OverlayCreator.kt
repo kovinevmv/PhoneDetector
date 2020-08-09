@@ -7,7 +7,7 @@ import com.leti.phonedetector.model.PhoneInfo
 
 class OverlayCreator(private val context: Context) {
 
-    fun createIntent( user: PhoneInfo, isDisplayButtons : Boolean) : Intent {
+    fun createIntent(user: PhoneInfo, isDisplayButtons: Boolean): Intent {
         val mIntent = Intent(context, OverlayActivity::class.java)
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         mIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)

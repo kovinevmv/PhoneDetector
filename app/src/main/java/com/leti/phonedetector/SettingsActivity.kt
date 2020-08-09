@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import com.leti.phonedetector.database.PhoneLogDBHelper
 import com.leti.phonedetector.database.TokenDBHelper
@@ -40,19 +39,18 @@ class SettingsActivity : AppCompatActivity() {
         private val REQUEST_CODE_CONTACTS = 3
         private val REQUEST_CODE_CALL = 4
 
-
-        private lateinit var activatePhoneDetectionSwitch : SwitchPreferenceCompat
-        private lateinit var disableSearchInContactsSwitch : SwitchPreferenceCompat
-        private lateinit var makeCallOnSwipeSwitch : SwitchPreferenceCompat
-        private lateinit var dropTables : Preference
-        private lateinit var changeThemeSwitch : SwitchPreferenceCompat
+        private lateinit var activatePhoneDetectionSwitch: SwitchPreferenceCompat
+        private lateinit var disableSearchInContactsSwitch: SwitchPreferenceCompat
+        private lateinit var makeCallOnSwipeSwitch: SwitchPreferenceCompat
+        private lateinit var dropTables: Preference
+        private lateinit var changeThemeSwitch: SwitchPreferenceCompat
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
             activatePhoneDetectionSwitch = preferenceScreen.findPreference("activate_phone_detection_switch")!!
             disableSearchInContactsSwitch = preferenceScreen.findPreference("disable_search_in_contacts_switch")!!
-            makeCallOnSwipeSwitch =  preferenceScreen.findPreference("make_call_on_swipe")!!
+            makeCallOnSwipeSwitch = preferenceScreen.findPreference("make_call_on_swipe")!!
             dropTables = preferenceScreen.findPreference("drop_table")!!
             changeThemeSwitch = preferenceScreen.findPreference("dark_mode")!!
 
@@ -68,14 +66,14 @@ class SettingsActivity : AppCompatActivity() {
                         "Database was cleaned", Toast.LENGTH_SHORT).show()
                 }
 
-                builder.setNegativeButton(android.R.string.no) { _, _ ->}
+                builder.setNegativeButton(android.R.string.no) { _, _ -> }
                 builder.show()
 
                 val db = TokenDBHelper(requireContext())
                 val tokens = db.getTokens()
 
                 val toastText = mutableListOf("Tokens info:")
-                for (token in tokens){
+                for (token in tokens) {
                     toastText.add("Token: ${token.token.take(10)}..., Count: ${token.remainCount}")
                 }
                 Toast.makeText(requireContext(), toastText.joinToString("\n"), Toast.LENGTH_LONG).show()
@@ -84,27 +82,27 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             activatePhoneDetectionSwitch.setOnPreferenceClickListener {
-                if (activatePhoneDetectionSwitch.isChecked){
+                if (activatePhoneDetectionSwitch.isChecked) {
                     callLogRequestPermissions()
                 }
                 return@setOnPreferenceClickListener true
             }
             disableSearchInContactsSwitch.setOnPreferenceClickListener {
-                if (disableSearchInContactsSwitch.isChecked){
+                if (disableSearchInContactsSwitch.isChecked) {
                     callContactPermission()
                 }
                 return@setOnPreferenceClickListener true
             }
 
             makeCallOnSwipeSwitch.setOnPreferenceClickListener {
-                if (makeCallOnSwipeSwitch.isChecked){
+                if (makeCallOnSwipeSwitch.isChecked) {
                     callCallPermission()
                 }
                 return@setOnPreferenceClickListener true
             }
 
-            changeThemeSwitch.setOnPreferenceClickListener{
-                if (changeThemeSwitch.isChecked){
+            changeThemeSwitch.setOnPreferenceClickListener {
+                if (changeThemeSwitch.isChecked) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -115,31 +113,31 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        private fun checkCallLogPermissions() : Array<String>{
+        private fun checkCallLogPermissions(): Array<String> {
             val arrayList = ArrayList<String>()
 
-            when(context?.let { checkSelfPermission(it, android.Manifest.permission.READ_CALL_LOG) }){
+            when (context?.let { checkSelfPermission(it, android.Manifest.permission.READ_CALL_LOG) }) {
                 PackageManager.PERMISSION_DENIED -> arrayList.add(android.Manifest.permission.READ_CALL_LOG)
             }
-            when(context?.let { checkSelfPermission(it, android.Manifest.permission.READ_PHONE_STATE) }){
+            when (context?.let { checkSelfPermission(it, android.Manifest.permission.READ_PHONE_STATE) }) {
                 PackageManager.PERMISSION_DENIED -> arrayList.add(android.Manifest.permission.READ_PHONE_STATE)
             }
             return arrayList.toTypedArray()
         }
 
-        private  fun checkCallPermissions() : Array<String>{
+        private fun checkCallPermissions(): Array<String> {
             val arrayList = ArrayList<String>()
 
-            when(context?.let { checkSelfPermission(it, android.Manifest.permission.CALL_PHONE) }){
+            when (context?.let { checkSelfPermission(it, android.Manifest.permission.CALL_PHONE) }) {
                 PackageManager.PERMISSION_DENIED -> arrayList.add(android.Manifest.permission.CALL_PHONE)
             }
             return arrayList.toTypedArray()
         }
 
-        private fun checkContactPermissions() : Array<String>{
+        private fun checkContactPermissions(): Array<String> {
             val arrayList = ArrayList<String>()
 
-            when(context?.let { checkSelfPermission(it, android.Manifest.permission.READ_CONTACTS) }){
+            when (context?.let { checkSelfPermission(it, android.Manifest.permission.READ_CONTACTS) }) {
                 PackageManager.PERMISSION_DENIED -> arrayList.add(android.Manifest.permission.READ_CONTACTS)
             }
             return arrayList.toTypedArray()
@@ -147,54 +145,52 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun callCallPermission() {
             val arrayList = checkCallPermissions()
-            if (arrayList.isNotEmpty()){
+            if (arrayList.isNotEmpty()) {
                 requestPermissions(arrayList, REQUEST_CODE_CALL)
             }
         }
 
-        private fun callContactPermission(){
+        private fun callContactPermission() {
             val arrayList = checkContactPermissions()
-            if (arrayList.isNotEmpty()){
+            if (arrayList.isNotEmpty()) {
                 requestPermissions(arrayList, REQUEST_CODE_CONTACTS)
             }
         }
 
-        private fun callLogRequestPermissions(){
+        private fun callLogRequestPermissions() {
             val arrayList = checkCallLogPermissions()
             if (arrayList.isNotEmpty()) {
                 requestPermissions(arrayList, REQUEST_CODE_READ_CALL_LOG)
             }
 
-            if (!Settings.canDrawOverlays(context)){
+            if (!Settings.canDrawOverlays(context)) {
                 val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:${context?.packageName}"))
                 startActivityForResult(intent, REQUEST_CODE_READ_OVERLAY)
             }
         }
 
-
         override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             if (requestCode == REQUEST_CODE_READ_CALL_LOG) {
                 val arrayList = checkCallLogPermissions()
-                if (arrayList.isNotEmpty()){
+                if (arrayList.isNotEmpty()) {
                     Toast.makeText(context, "Not all permissions granted. Can't enable phone detection", Toast.LENGTH_SHORT).show()
                     activatePhoneDetectionSwitch.isChecked = false
-
                 }
             }
 
-            if (requestCode == REQUEST_CODE_CONTACTS){
+            if (requestCode == REQUEST_CODE_CONTACTS) {
                 val arrayList = checkContactPermissions()
-                if (arrayList.isNotEmpty()){
+                if (arrayList.isNotEmpty()) {
                     Toast.makeText(context, "Not permission granted. Search all phones", Toast.LENGTH_SHORT).show()
                     disableSearchInContactsSwitch.isChecked = false
                 }
             }
 
-            if (requestCode == REQUEST_CODE_CALL){
+            if (requestCode == REQUEST_CODE_CALL) {
                 val arrayList = checkCallPermissions()
-                if (arrayList.isNotEmpty()){
+                if (arrayList.isNotEmpty()) {
                     Toast.makeText(context, "Not permission granted. Can't call :(", Toast.LENGTH_SHORT).show()
                     makeCallOnSwipeSwitch.isChecked = false
                 }
@@ -202,8 +198,8 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            if (requestCode == REQUEST_CODE_READ_OVERLAY){
-                if (!Settings.canDrawOverlays(context)){
+            if (requestCode == REQUEST_CODE_READ_OVERLAY) {
+                if (!Settings.canDrawOverlays(context)) {
                     Toast.makeText(context, "Overlay not granted", Toast.LENGTH_SHORT).show()
                     activatePhoneDetectionSwitch.isChecked = false
                 }

@@ -19,7 +19,7 @@ object DBContract {
         companion object {
             const val TABLE_NAME = "phone_log"
             const val COLUMN_LOG_PHONE_NUMBER = "number"
-            const val COLUMN_LOG_PHONE_TIME= "time"
+            const val COLUMN_LOG_PHONE_TIME = "time"
             const val COLUMN_LOG_PHONE_DATE = "date"
         }
     }

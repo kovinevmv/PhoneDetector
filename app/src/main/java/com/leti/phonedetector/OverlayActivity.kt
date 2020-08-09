@@ -19,10 +19,9 @@ import com.leti.phonedetector.model.DEFAULT_IMAGE
 import com.leti.phonedetector.model.PhoneInfo
 import kotlinx.android.synthetic.main.activity_overlay.*
 
-
 class OverlayActivity : AppCompatActivity() {
 
-    private lateinit var user : PhoneInfo
+    private lateinit var user: PhoneInfo
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,14 +32,14 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun createUserByIntentExtra(){
+    private fun createUserByIntentExtra() {
         user = intent.getParcelableExtra("user") ?: return
 
         overlay_text_view_number.text = user.number
         overlay_text_view_name.text = user.name
         overlay_tags.text = user.tags.joinToString(separator = "\n")
 
-        when(user.isSpam){
+        when (user.isSpam) {
             true -> setSpamSettings()
             false -> setNotSpamSettings()
         }
@@ -51,7 +50,7 @@ class OverlayActivity : AppCompatActivity() {
 
     @SuppressLint("ServiceCast", "Recycle")
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun setSpamSettings(){
+    private fun setSpamSettings() {
         overlay_user_image.setImageResource(R.drawable.ic_spam)
         val isDisplayButtons = intent.getBooleanExtra("is_display_buttons", true)
         if (!isDisplayButtons) {
@@ -59,7 +58,7 @@ class OverlayActivity : AppCompatActivity() {
         } else {
             overlay_button_action.text = resources.getString(R.string.button_block_number)
 
-            overlay_button_action.setOnClickListener{
+            overlay_button_action.setOnClickListener {
                 Toast.makeText(this@OverlayActivity, "Number has been copied to clipboard", Toast.LENGTH_SHORT).show()
 
                 val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -70,10 +69,9 @@ class OverlayActivity : AppCompatActivity() {
                 this.startActivity(telecomManager.createManageBlockedNumbersIntent(), null)
             }
         }
-
     }
 
-    private fun setNotSpamSettings(){
+    private fun setNotSpamSettings() {
         overlay_user_image.setImageResource(R.drawable.ic_empty_user)
         val isDisplayButtons = intent.getBooleanExtra("is_display_buttons", true)
         if (!isDisplayButtons) {
@@ -82,11 +80,11 @@ class OverlayActivity : AppCompatActivity() {
 
             overlay_button_action.text = resources.getString(R.string.button_add_contact)
 
-            overlay_button_action.setOnClickListener{
+            overlay_button_action.setOnClickListener {
                 val contactIntent = Intent(ContactsContract.Intents.Insert.ACTION)
                 contactIntent.type = ContactsContract.RawContacts.CONTENT_TYPE
 
-                if (user.image != DEFAULT_IMAGE){
+                if (user.image != DEFAULT_IMAGE) {
                     val data = BitmapReader().readFile(user.image)
                     contactIntent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, data)
                 }
@@ -95,13 +93,12 @@ class OverlayActivity : AppCompatActivity() {
                     .putExtra(ContactsContract.Intents.Insert.NAME, user.name)
                     .putExtra(ContactsContract.Intents.Insert.PHONE, user.number)
 
-
                 startActivityForResult(contactIntent, 1)
             }
         }
     }
 
-    private fun disableActionButton(){
+    private fun disableActionButton() {
         overlay_button_action.visibility = View.GONE
     }
 }

@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.provider.ContactsContract
 import java.io.ByteArrayOutputStream
 
-
 class BitmapReader {
     private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
         val height = options.outHeight
@@ -22,7 +21,7 @@ class BitmapReader {
         return inSampleSize
     }
 
-    fun decodeFromResource(res: String,  reqWidth: Int, reqHeight: Int): Bitmap {
+    fun decodeFromResource(res: String, reqWidth: Int, reqHeight: Int): Bitmap {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeFile(res, options)

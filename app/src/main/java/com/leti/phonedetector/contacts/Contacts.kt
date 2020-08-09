@@ -15,7 +15,7 @@ class Contacts(val context: Context) {
             ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
             Uri.encode(phoneNumber)
         )
-        var contactName : String? = null
+        var contactName: String? = null
         val cursor = context.contentResolver.query(uri, arrayOf(ContactsContract.PhoneLookup.DISPLAY_NAME), null, null, null)
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -26,7 +26,7 @@ class Contacts(val context: Context) {
         return contactName
     }
 
-    private fun isPermissionGranted(context: Context) : Boolean{
+    private fun isPermissionGranted(context: Context): Boolean {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
     }
 }

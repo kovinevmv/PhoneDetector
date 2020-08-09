@@ -13,10 +13,10 @@ import com.leti.phonedetector.model.PhoneLogInfo
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Search(private val context: Context){
+class Search(private val context: Context) {
     val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-    private fun findUserByNetwork(number : String, timeout : Int, time : String, date : String) : PhoneLogInfo {
+    private fun findUserByNetwork(number: String, timeout: Int, time: String, date: String): PhoneLogInfo {
         val use_getcontact = sharedPreferences.getBoolean("use_getcontact", true)
         val use_neberitrubku = sharedPreferences.getBoolean("use_neberitrubku", true)
 
@@ -31,16 +31,13 @@ class Search(private val context: Context){
         val getUser = if (use_getcontact) GetContactAPI(context, timeout).getAllByPhone(number) else PhoneInfo(number = number)
 
         val resultUser =
-            if (nebUser.isDefault() && !getUser.isDefault()){
+            if (nebUser.isDefault() && !getUser.isDefault()) {
                 getUser
-            }
-            else if (!nebUser.isDefault() && getUser.isDefault()){
+            } else if (!nebUser.isDefault() && getUser.isDefault()) {
                 nebUser
-            }
-            else if (!nebUser.isDefault() && nebUser.isSpam){
+            } else if (!nebUser.isDefault() && nebUser.isSpam) {
                 nebUser
-            }
-            else{
+            } else {
                 getUser
             }
 
@@ -51,12 +48,11 @@ class Search(private val context: Context){
         )
     }
 
-
     @SuppressLint("SimpleDateFormat")
-    fun startPhoneDetection(incomingNumberRaw : String) : PhoneLogInfo {
+    fun startPhoneDetection(incomingNumberRaw: String): PhoneLogInfo {
         val incomingNumber = this.formatE164NumberRU(incomingNumberRaw)
         val timeout = sharedPreferences.getInt("detection_delay_seekbar", 5)
-        val isNetworkOnly = sharedPreferences.getBoolean("use_only_network_info",false)
+        val isNetworkOnly = sharedPreferences.getBoolean("use_only_network_info", false)
         val noCacheEmpty = sharedPreferences.getBoolean("no_cache_empty_phones", true)
 
         val db = PhoneLogDBHelper(context)
@@ -64,22 +60,19 @@ class Search(private val context: Context){
         val date = SimpleDateFormat("yyyy.MM.dd").format(Date())
         val time = SimpleDateFormat("HH:mm:ss").format(Date())
 
-        val user: PhoneLogInfo = if (isNetworkOnly){
+        val user: PhoneLogInfo = if (isNetworkOnly) {
             this.findUserByNetwork(incomingNumber, timeout, time, date)
-        }
-        else{
-            val foundUser : PhoneInfo? = db.findPhoneByNumber(incomingNumber)
+        } else {
+            val foundUser: PhoneInfo? = db.findPhoneByNumber(incomingNumber)
 
             if (foundUser != null && !foundUser.isDefault()) {
                 PhoneLogInfo(foundUser, time, date)
-            }
-            else{
+            } else {
                 val foundUserNetwork = this.findUserByNetwork(incomingNumber, timeout, time, date)
 
-                if (!foundUserNetwork.toPhoneInfo().isDefault()){
+                if (!foundUserNetwork.toPhoneInfo().isDefault()) {
                     foundUserNetwork
-                }
-                else {
+                } else {
                     PhoneLogInfo(
                         number = incomingNumber,
                         date = date,
@@ -95,7 +88,7 @@ class Search(private val context: Context){
         return user
     }
 
-    fun formatE164NumberRU(number : String) : String{
+    fun formatE164NumberRU(number: String): String {
         return formatE164Number(number, "RU")
     }
 
@@ -103,9 +96,8 @@ class Search(private val context: Context){
         return PhoneNumberUtils.formatNumberToE164(phNum, countryCode) ?: phNum
     }
 
-    fun findUserByPhone(number : String) : PhoneInfo {
+    fun findUserByPhone(number: String): PhoneInfo {
         val db = PhoneLogDBHelper(context)
         return db.findPhoneByNumber(number) ?: PhoneInfo(number = number)
     }
-
 }

@@ -16,9 +16,8 @@ import com.anychart.enums.*
 import com.anychart.scales.OrdinalColor
 import com.leti.phonedetector.database.PhoneLogDBHelper
 import com.leti.phonedetector.model.PhoneLogInfo
-import kotlinx.android.synthetic.main.activity_statistics.*
 import java.util.*
-
+import kotlinx.android.synthetic.main.activity_statistics.*
 
 class StatisticsActivity : AppCompatActivity() {
 
@@ -54,11 +53,11 @@ class StatisticsActivity : AppCompatActivity() {
 
     fun getResourceAsText(@RawRes id: Int): String = resources.openRawResource(id).bufferedReader().use { it.readText() }
 
-    private fun dateToMapKey(month : Int, year : Int) : String{
+    private fun dateToMapKey(month: Int, year: Int): String {
         val monthString = month.toString().padStart(2, '0')
         val yearString = year.toString()
 
-        return "${yearString}.${monthString}"
+        return "$yearString.$monthString"
     }
 
     private fun createSpamChart() {
@@ -66,13 +65,12 @@ class StatisticsActivity : AppCompatActivity() {
         APIlib.getInstance().setActiveAnyChartView(chart_spam)
         spamView.setProgressBar(findViewById(R.id.progress_bar_chart_spam))
 
-        if (this.isDarkMode){
+        if (this.isDarkMode) {
             APIlib.getInstance().addJSLine(getResourceAsText(R.raw.darkglamour).trimIndent())
             APIlib.getInstance().addJSLine("anychart.theme(anychart.themes.darkGlamour);")
         }
 
         val spam = AnyChart.column()
-
 
         val calendar: Calendar = Calendar.getInstance()
         val currentYear: Int = calendar.get(Calendar.YEAR)
@@ -147,12 +145,12 @@ class StatisticsActivity : AppCompatActivity() {
         val chart: AnyChartView = findViewById(R.id.chart_pie_top)
         APIlib.getInstance().setActiveAnyChartView(chart_pie_top)
 
-        if (this.isDarkMode){
+        if (this.isDarkMode) {
             APIlib.getInstance().addJSLine(getResourceAsText(R.raw.darkglamour).trimIndent())
             APIlib.getInstance().addJSLine("anychart.theme(anychart.themes.darkGlamour);")
         }
 
-        chart.setProgressBar(findViewById(R.id.progress_bar_chart_pie_top));
+        chart.setProgressBar(findViewById(R.id.progress_bar_chart_pie_top))
 
         val pie = AnyChart.pie()
 
@@ -175,17 +173,14 @@ class StatisticsActivity : AppCompatActivity() {
             )
         )
 
-
         pie.data(data)
         pie.title("Incoming Call Pie Chart")
         pie.labels().position("outside")
-
 
         pie.legend()
             .position("center-bottom")
             .itemsLayout(LegendLayout.HORIZONTAL)
             .align(Align.CENTER)
-
 
         chart.setChart(pie)
     }
@@ -194,7 +189,7 @@ class StatisticsActivity : AppCompatActivity() {
         val anyChartView: AnyChartView = findViewById(R.id.chart_word_cloud)
         APIlib.getInstance().setActiveAnyChartView(chart_word_cloud)
 
-        if (this.isDarkMode){
+        if (this.isDarkMode) {
             APIlib.getInstance().addJSLine(getResourceAsText(R.raw.darkglamour).trimIndent())
             APIlib.getInstance().addJSLine("anychart.theme(anychart.themes.darkGlamour);")
         }
@@ -217,7 +212,6 @@ class StatisticsActivity : AppCompatActivity() {
         tagCloud.colorRange().enabled(true)
         tagCloud.colorRange().colorLineSize(15.0)
 
-
         val data: MutableList<DataEntry> = ArrayList()
 
         val phonesMap = mutableMapOf<Boolean, MutableMap<String, Int>>()
@@ -234,7 +228,6 @@ class StatisticsActivity : AppCompatActivity() {
                 data.add(CategoryValueDataEntry(name, if (isSpam) "Spam" else "Not spam", count))
             }
         }
-
 
         tagCloud.data(data)
 

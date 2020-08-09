@@ -42,8 +42,8 @@ import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor : SharedPreferences.Editor
-    private lateinit var adapter : DataAdapter
+    private lateinit var editor: SharedPreferences.Editor
+    private lateinit var adapter: DataAdapter
     private lateinit var phones: ArrayList<PhoneLogInfo>
 
     private val db = PhoneLogDBHelper(this)
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        //db.fillSampleData()
+        // db.fillSampleData()
         setTheme()
         createSharedPref()
         createRecycleView()
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         createChannel()
     }
 
-    private fun createRecycleView(){
+    private fun createRecycleView() {
         /**
          * Create RecycleView with list of phone call activity of user
          */
@@ -83,8 +83,8 @@ class MainActivity : AppCompatActivity() {
 
             override fun onSwipedRight(position: Int) {
                 val sharedPreferencesGlobal = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
-                val canCall = sharedPreferencesGlobal.getBoolean("make_call_on_swipe",false)
-                if (canCall){
+                val canCall = sharedPreferencesGlobal.getBoolean("make_call_on_swipe", false)
+                if (canCall) {
                     val intent =
                         Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phones[position].number))
                     if (ActivityCompat.checkSelfPermission(
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("CommitPrefEdits")
-    fun createSharedPref(){
+    fun createSharedPref() {
         /**
          * Init Shared Preferences for save current options in Menu after close app
          * Options: is_show_spam, is_show_not_spam
@@ -133,18 +133,18 @@ class MainActivity : AppCompatActivity() {
         val mSearch = menu.findItem(R.id.action_search)
         val mSearchView = mSearch.actionView as SearchView
         mSearchView.queryHint = "Search"
-        mSearchView.setMaxWidth(Integer.MAX_VALUE);
+        mSearchView.setMaxWidth(Integer.MAX_VALUE)
         mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 mSearchView.clearFocus()
                 val foundPhones = db.findPhonesByQuery(query)
 
-                if (foundPhones.isEmpty()){
+                if (foundPhones.isEmpty()) {
                     val builder = AlertDialog.Builder(this@MainActivity)
                     builder.setTitle("Nothing found in log.")
                     builder.setMessage("Do you want to make search for phone number: \"${query}\" using API?")
 
-                    builder.setPositiveButton("Yes"){ dialog, _ ->
+                    builder.setPositiveButton("Yes") { dialog, _ ->
                         val searcher = Search(applicationContext)
                         val phone: PhoneLogInfo = searcher.startPhoneDetection(query)
                         val overlayCreator = OverlayCreator(applicationContext)
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
                         dialog.dismiss()
                     }
 
-                    builder.setNegativeButton("No"){ dialog, _ ->
+                    builder.setNegativeButton("No") { dialog, _ ->
                         dialog.dismiss()
                     }
 
@@ -168,13 +168,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText != ""){
+                if (newText != "") {
                     editor.putBoolean("is_use_query", true)
                     editor.putString("last_query", newText)
                     editor.apply()
                     phones = db.findPhonesByQuery(newText)
                     adapter.update(phones)
-                } else{
+                } else {
                     editor.putBoolean("is_use_query", false)
                     editor.apply()
                     phones = db.readPhoneLog()
@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
-        mSearchView.setOnCloseListener{
+        mSearchView.setOnCloseListener {
             editor.putBoolean("is_use_query", false)
             editor.apply()
 
@@ -199,7 +199,6 @@ class MainActivity : AppCompatActivity() {
         super.onRestart()
         phones = db.readPhoneLog()
         adapter.update(phones)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -209,15 +208,15 @@ class MainActivity : AppCompatActivity() {
          * @return default value true if ok
          */
         return when (item.itemId) {
-            R.id.item_menu_option_is_show_spam -> {clickedOnShowSpam(item); true}
-            R.id.item_menu_option_is_not_show_spam -> {clickedOnShowNotSpam(item); true}
-            R.id.item_menu_option_statistics -> {clickedOnStatistics(); true}
-            R.id.item_menu_option_setting -> {clickedOnSetting(); true}
+            R.id.item_menu_option_is_show_spam -> { clickedOnShowSpam(item); true }
+            R.id.item_menu_option_is_not_show_spam -> { clickedOnShowNotSpam(item); true }
+            R.id.item_menu_option_statistics -> { clickedOnStatistics(); true }
+            R.id.item_menu_option_setting -> { clickedOnSetting(); true }
             else -> false
         }
     }
 
-    private fun clickedOnShowSpam(item : MenuItem){
+    private fun clickedOnShowSpam(item: MenuItem) {
         /**
          * Update state in Shared Pref and CheckBox state of 'Show Spam'
          * @param item element 'Show Spam'
@@ -226,7 +225,7 @@ class MainActivity : AppCompatActivity() {
         updateRecycleView()
     }
 
-    private fun clickedOnShowNotSpam(item : MenuItem){
+    private fun clickedOnShowNotSpam(item: MenuItem) {
         /**
          * Update state in Shared Pref and CheckBox state of 'Show Not Spam'
          * @param item element 'Show Spam'
@@ -235,18 +234,17 @@ class MainActivity : AppCompatActivity() {
         updateRecycleView()
     }
 
-    private fun updateRecycleView(){
-        if (sharedPreferences.getBoolean("is_use_query", false)){
+    private fun updateRecycleView() {
+        if (sharedPreferences.getBoolean("is_use_query", false)) {
             phones = db.findPhonesByQuery(sharedPreferences.getString("last_query", "*").toString())
             adapter.update(phones)
-        }
-        else {
+        } else {
             phones = db.readPhoneLog()
             adapter.update(phones)
         }
     }
 
-    private fun clickedOnStatistics(){
+    private fun clickedOnStatistics() {
         /**
          * Redirect on Statistics Activity
          */
@@ -254,7 +252,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(mIntent)
     }
 
-    private fun clickedOnSetting(){
+    private fun clickedOnSetting() {
         /**
          * Redirect on Settings Activity
          */
@@ -262,7 +260,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(mIntent)
     }
 
-    private fun updateMenuOptionState(item : MenuItem, key : String, state : Boolean){
+    private fun updateMenuOptionState(item: MenuItem, key: String, state: Boolean) {
         /**
          * Save state of element of list
          * @param item element of list. Example: 'Show spam'
@@ -275,14 +273,14 @@ class MainActivity : AppCompatActivity() {
         item.isChecked = state
     }
 
-    private fun createSwipeRefresh(){
+    private fun createSwipeRefresh() {
         swipe_refresh_layout.setOnRefreshListener {
             updateRecycleView()
             swipe_refresh_layout.isRefreshing = false
         }
     }
 
-    private fun createChannel(){
+    private fun createChannel() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -298,16 +296,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setTheme(){
+    private fun setTheme() {
         val sharedPreferencesGlobal = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
         val isDarkMode = sharedPreferencesGlobal.getBoolean("dark_mode", false)
 
-        if (isDarkMode){
+        if (isDarkMode) {
             setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES;
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
         } else {
             setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO;
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
         }
         delegate.applyDayNight()
     }

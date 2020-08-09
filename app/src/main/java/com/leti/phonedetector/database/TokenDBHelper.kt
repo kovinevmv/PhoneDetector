@@ -10,8 +10,6 @@ import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.leti.phonedetector.*
-import com.leti.phonedetector.model.PhoneInfo
-import com.leti.phonedetector.model.PhoneLogInfo
 import com.leti.phonedetector.model.Token
 import kotlin.collections.ArrayList
 
@@ -27,13 +25,13 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
         cleanTables(db)
     }
 
-    private fun cleanTables(db: SQLiteDatabase){
+    private fun cleanTables(db: SQLiteDatabase) {
         db.execSQL(drop_tokens)
 
         onCreate(db)
     }
 
-    fun cleanTables(){
+    fun cleanTables() {
         val db = writableDatabase
         cleanTables(db)
         db.close()
@@ -50,7 +48,7 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
         val foundToken = this.findToken(token.token)
         Log.d(LOG_TAG_VERBOSE, "Found token: ${foundToken?.token}")
 
-        if (foundToken != null){
+        if (foundToken != null) {
             this.deleteToken(token.token)
         }
 
@@ -71,9 +69,8 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
         return true
     }
 
-
     @Throws(SQLiteConstraintException::class)
-    fun deleteToken(token : String) : Boolean{
+    fun deleteToken(token: String): Boolean {
         Log.d(LOG_TAG_VERBOSE, "Call deleteToken with param token: '$token'")
 
         val db = writableDatabase
@@ -103,7 +100,6 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
                     cursor.moveToNext()
                 }
             }
-
         } catch (e: SQLiteException) {
             Log.e(LOG_TAG_ERROR, "Error in findToken: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
@@ -131,7 +127,6 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
                     cursor.moveToNext()
                 }
             }
-
         } catch (e: SQLiteException) {
             Log.e(LOG_TAG_ERROR, "Error in getTokens: $e")
             db.execSQL(SQL_CREATE_ENTRIES)
@@ -144,7 +139,7 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
     }
 
     @Throws(SQLiteConstraintException::class)
-    fun updateToken(token : Token){
+    fun updateToken(token: Token) {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(DBContract.TokenEntry.COLUMN_AES_KEY, token.aesKey)
@@ -160,7 +155,7 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
         db.close()
     }
 
-    private fun parseCursor(cursor : Cursor) : Token{
+    private fun parseCursor(cursor: Cursor): Token {
         val aesKey = cursor.getString(cursor.getColumnIndex(DBContract.TokenEntry.COLUMN_AES_KEY))
         val androidOS = cursor.getString(cursor.getColumnIndex(DBContract.TokenEntry.COLUMN_ANDROID_OS))
         val deviceId = cursor.getString(cursor.getColumnIndex(DBContract.TokenEntry.COLUMN_DEVICE_ID))
@@ -193,5 +188,4 @@ class TokenDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_N
 
         private val SQL_DELETE_ENTRIES = drop_tokens
     }
-
 }

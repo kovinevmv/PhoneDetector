@@ -26,7 +26,7 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
 
     private var lastPosition = -1
 
-    init{
+    init {
         sharedPreferences = context.getSharedPreferences(APP_PREFERENCES, AppCompatActivity.MODE_PRIVATE)
         this.update(phones)
     }
@@ -38,7 +38,7 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val phone = phones[position]
-        when(phone.isSpam){
+        when (phone.isSpam) {
             true -> holder.imageView.setImageResource(R.drawable.ic_spam)
             false -> holder.imageView.setImageResource(R.drawable.ic_empty_user)
         }
@@ -49,7 +49,7 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
         if (phone.image != DEFAULT_IMAGE) holder.imageView.setImageBitmap(BitmapFactory.decodeFile(phone.image))
 
         holder.initClick(phone)
-        setAnimation(holder.itemView, position);
+        setAnimation(holder.itemView, position)
     }
 
     private fun setAnimation(viewToAnimate: View, position: Int) {
@@ -65,13 +65,13 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
         return phones.size
     }
 
-    fun update(data : ArrayList<PhoneLogInfo>) {
+    fun update(data: ArrayList<PhoneLogInfo>) {
         phones = filterShow(data)
         this.notifyDataSetChanged()
     }
 
-    private fun filterShow(data : ArrayList<PhoneLogInfo>) : ArrayList<PhoneLogInfo>{
-        val showSpam : Boolean = sharedPreferences.getBoolean("is_show_spam", true)
+    private fun filterShow(data: ArrayList<PhoneLogInfo>): ArrayList<PhoneLogInfo> {
+        val showSpam: Boolean = sharedPreferences.getBoolean("is_show_spam", true)
         val showNotSpam: Boolean = sharedPreferences.getBoolean("is_show_not_spam", true)
 
         return when {
@@ -87,18 +87,18 @@ internal class DataAdapter(val context: Context, private var phones: ArrayList<P
         internal val imageView: ImageView = view.findViewById(R.id.log_element_user_image) as ImageView
         internal val nameView: TextView = view.findViewById(R.id.log_element_text_name) as TextView
         internal val numberView: TextView = view.findViewById(R.id.log_element_text_number) as TextView
-        private val logLayout : LinearLayout = view.findViewById(R.id.log_layout) as LinearLayout
-        internal val timeView : TextView = view.findViewById(R.id.log_element_text_time) as TextView
-        internal val dateView : TextView = view.findViewById(R.id.log_element_text_date) as TextView
+        private val logLayout: LinearLayout = view.findViewById(R.id.log_layout) as LinearLayout
+        internal val timeView: TextView = view.findViewById(R.id.log_element_text_time) as TextView
+        internal val dateView: TextView = view.findViewById(R.id.log_element_text_date) as TextView
 
-        fun initClick(phone : PhoneLogInfo){
-            logLayout.setOnClickListener{
+        fun initClick(phone: PhoneLogInfo) {
+            logLayout.setOnClickListener {
                 val mIntent = Intent(this@DataAdapter.context, OverlayActivity::class.java)
                 mIntent.putExtra("user", phone.toPhoneInfo())
                 mIntent.putExtra("is_display_buttons", true)
                 this@DataAdapter.context.startActivity(mIntent)
             }
-            logLayout.setOnLongClickListener{
+            logLayout.setOnLongClickListener {
                 Toast.makeText(this@DataAdapter.context, "Number has been copied to clipboard", Toast.LENGTH_SHORT).show()
 
                 val number = numberView.text
