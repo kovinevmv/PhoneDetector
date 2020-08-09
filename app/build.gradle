@@ -55,3 +55,5 @@ dependencies {
     implementation 'com.github.tsuryo:Swipeable-RecyclerView:1.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
+
+apply from: "ktlint.gradle"
