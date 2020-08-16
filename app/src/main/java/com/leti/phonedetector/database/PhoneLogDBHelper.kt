@@ -267,25 +267,44 @@ class PhoneLogDBHelper(val context: Context) : SQLiteOpenHelper(context, DATABAS
 
         try {
             // TODO fix sort
-            val cursor = db.rawQuery("SELECT * FROM ${DBContract.PhoneLogEntry.TABLE_NAME} " +
-                    "ORDER BY ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} DESC, ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME} DESC", null)
+            val cursor = db.rawQuery(
+                "SELECT * FROM ${DBContract.PhoneLogEntry.TABLE_NAME} LEFT JOIN " +
+                    "${DBContract.PhoneInfoEntry.TABLE_NAME} ON " +
+                    "${DBContract.PhoneLogEntry.TABLE_NAME}.${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_NUMBER} == " +
+                    "${DBContract.PhoneInfoEntry.TABLE_NAME}.${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NUMBER} " +
+                    "ORDER BY ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} DESC, " +
+                    "${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME} DESC", null)
+
+            Log.d(LOG_TAG_VERBOSE, "SELECT * FROM ${DBContract.PhoneLogEntry.TABLE_NAME} LEFT JOIN " +
+                "${DBContract.PhoneInfoEntry.TABLE_NAME} ON " +
+                "${DBContract.PhoneLogEntry.TABLE_NAME}.${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_NUMBER} == " +
+                "${DBContract.PhoneInfoEntry.TABLE_NAME}.${DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NUMBER} " +
+                "ORDER BY ${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE} DESC, " +
+                "${DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME} DESC")
 
             if (cursor!!.moveToFirst()) {
                 while (!cursor.isAfterLast) {
                     val number = cursor.getString(cursor.getColumnIndex(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_NUMBER))
                     val time = cursor.getString(cursor.getColumnIndex(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_TIME))
                     val date = cursor.getString(cursor.getColumnIndex(DBContract.PhoneLogEntry.COLUMN_LOG_PHONE_DATE))
+                    val name = cursor.getString(cursor.getColumnIndex(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_NAME))
+                    val isSpam = cursor.getInt(cursor.getColumnIndex(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_IS_SPAM))
+                    val image = cursor.getString(cursor.getColumnIndex(DBContract.PhoneInfoEntry.COLUMN_INFO_PHONE_IMAGE))
 
-                    val phoneInfo: PhoneInfo? = this.findPhoneByNumber(number)
-                    if (phoneInfo != null)
-                        phones.add(
-                            PhoneLogInfo(
-                                phoneInfo,
-                                time,
-                                date
-                            )
+                    val tags = this.findTagsByPhoneNumber(number)
+                    phones.add(
+                        PhoneLogInfo(
+                            PhoneInfo(
+                                name,
+                                number,
+                                isSpam != 0,
+                                tags.toTypedArray(),
+                                image
+                            ),
+                            time,
+                            date
                         )
-
+                    )
                     cursor.moveToNext()
                 }
             }
