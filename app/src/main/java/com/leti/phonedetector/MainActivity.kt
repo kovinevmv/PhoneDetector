@@ -3,16 +3,17 @@ package com.leti.phonedetector
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -280,6 +281,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getThemeAccentColor(context: Context): Int {
+        val value = TypedValue()
+        context.theme.resolveAttribute(R.attr.colorAccent, value, true)
+        return value.data
+    }
+
     private fun createChannel() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -290,7 +297,9 @@ class MainActivity : AppCompatActivity() {
             )
             channel.description = "Notify to add phone number to block list"
             channel.enableLights(true)
-            channel.lightColor = Color.RED
+            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            channel.enableLights(true)
+            channel.lightColor = this.getThemeAccentColor(this)
             channel.enableVibration(false)
             notificationManager.createNotificationChannel(channel)
         }

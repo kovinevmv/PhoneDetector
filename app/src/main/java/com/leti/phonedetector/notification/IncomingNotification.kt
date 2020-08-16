@@ -16,15 +16,20 @@ class IncomingNotification(val context: Context, val intent: Intent, val phone: 
     private fun createNotification(): Notification {
         val snoozePendingIntent = PendingIntent.getActivity(context, System.currentTimeMillis().toInt(), intent, 0)
 
+        val bigText = NotificationCompat.BigTextStyle()
+        bigText.bigText(phone.number + "\n" + phone.tags.joinToString(separator = "\n"))
+        bigText.setBigContentTitle(phone.name)
+
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
             setSmallIcon(R.drawable.ic_notification_icon)
             setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher))
-            setContentTitle(phone.number)
-            setContentText(phone.name)
-            if (phone.tags.isNotEmpty()) setStyle(NotificationCompat.BigTextStyle().bigText(phone.tags.joinToString(separator = "\n")))
+            setContentTitle(phone.name)
+            setContentText(phone.number)
+            if (phone.tags.isNotEmpty()) setStyle(bigText)
             setContentIntent(snoozePendingIntent)
             setAutoCancel(true)
             setSound(null)
+            priority = NotificationCompat.PRIORITY_HIGH
         }
 
         return builder.build()
