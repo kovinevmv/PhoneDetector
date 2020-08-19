@@ -22,7 +22,7 @@
   var e = {
     palette: {
       type: "distinct",
-      items: "#D81B60 #ce93d8 #ab47bc #d81b60 #880e4f #ffd600 #ff6e40 #03a9f4 #5e35b1 #1976d2".split(
+      items: "#D81B60 #7b5881 #ab47bc #d81b60 #880e4f #ffd600 #ff6e40 #03a9f4 #5e35b1 #1976d2".split(
         " "
       )
     },

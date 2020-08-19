@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
+    <color name="navigationBarColor">#303030</color>
     <color name="colorAccent">#E82B70</color>
     <color name="colorBackground">#202020</color>
     <color name="extraColorBackground">#303030</color>
