@@ -88,3 +88,4 @@ lint/tmp/
 .idea/
 src/.idea/*
 app/release/output.json
+app/release/output-metadata.json
