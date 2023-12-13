@@ -1,8 +1,8 @@
 package com.leti.phonedetector.api.GetContact
 
-const val APP_VERSION = "4.9.9"
+const val APP_VERSION = "5.6.2"
 const val BASE_URL = "https://pbssrv-centralevents.com"
-const val API_VERSION = "v2.5"
+const val API_VERSION = "v2.8"
 const val COUNTRY = "RU"
-const val HMAC_KEY = "2Wq7)qkX~cp7)H|n_tc&o+:G_USN3/-uIi~>M+c ;Oq]E{t9)RC_5|lhAA_Qq%_4"
+const val HMAC_KEY = "y1gY|J%&6V kTi\$>_Ali8]/xCqmMMP1\$*)I8FwJ,*r_YUM 4h?@7+@#<>+w-e3VW"
 const val MOD_EXP = 900719925481
