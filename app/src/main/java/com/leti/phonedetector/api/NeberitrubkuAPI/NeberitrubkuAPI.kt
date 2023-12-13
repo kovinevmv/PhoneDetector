@@ -37,7 +37,7 @@ class NeberitrubkuAPI(number_: String, val timeout: Int) {
     }
 
     fun findInfo(): PhoneInfo {
-        val doc = Jsoup.connect("https://www.neberitrubku.ru/nomer-telefona/$number").timeout(timeout * 1000 + 1).get()
+        val doc = Jsoup.connect("$url/$number").timeout(timeout * 1000 + 1).get()
         val categories = doc.select("div.categories")
         val ratings = doc.select("div.ratings")
         val comments = doc.select("span.review_comment")

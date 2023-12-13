@@ -73,7 +73,7 @@
                 android:text="Phone Name"
                 android:textColor="@color/colorText"
                 android:textAlignment="center"
-                android:textSize="16sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/overlay_tags"
